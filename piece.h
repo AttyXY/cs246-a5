@@ -6,12 +6,12 @@
 
 class Piece {
     public:
-        PieceType type;
-        Colour c;
         Coord loc;
+        Colour colour;
         bool hasMoved;
         bool enPassable;
-
+        //PieceType type;
+        
         Piece(PieceType type = P,
               Colour c = White,
               Coord loc = Coord{'a', '1'} );
