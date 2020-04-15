@@ -2,6 +2,7 @@
 #define PIECE_H
 #include <iostream>
 #include <memory>
+#include <vector>
 #include "enums.h"
 #include "coord.h"
 

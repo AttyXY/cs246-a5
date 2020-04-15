@@ -1,15 +1,15 @@
 #include "king.h"
 using namespace std;
 
-bool King::isLegal(Coord start, Coord end, vector<vector<shared_ptr<Pieces>>> &tile) {
+bool King::isLegal(Coord start, Coord end, vector<vector<shared_ptr<Piece>>> &tile) {
     //check if the end is out of the grid
     if (end.getRow() < 0 || end.getRow() > 7 || end.getCol() < 0 || end.getCol() > 7) {
         return false;
     }
 
     //check if the end if occupied by own colour
-    if ((tile[start.getRow()][start.getCol()]->colour == tile[end.getRow()][end.getCol()]->colour)
-            && tile[end.getRow()][end.getCol()] != nullptr) {
+    if ((tile[start.getCol()][start.getRow()]->colour == tile[end.getCol()][end.getRow()]->colour)
+            && tile[end.getCol()][end.getRow()] != nullptr) {
                 return false;
             }
     
