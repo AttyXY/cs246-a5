@@ -3,6 +3,12 @@ using namespace std;
 
 Coord::Coord(int row, int col): row{row}, col{col} {}
 Coord::~Coord() {}
+int Coord::getX(void) {
+    return row;
+}
+int Coord::getY(void) {
+    return col;
+}
 
 ostream &operator<<(ostream &out, const Coord &c) {
     cout << toupper(c.row) << c.col;

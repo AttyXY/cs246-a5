@@ -28,6 +28,10 @@ int main(int argc, char *argv[]) {
 	// TODO: Parse flags
 
 	// Parse commands
+    cout << "WELCOME TO CHESS!" << endl;
+    cout << "PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:" << endl;
+    cout << "- setup" << endl << endl;
+
 	string command{""};
 	while (cin >> command) {
 		// Setup
