@@ -4,7 +4,6 @@
 
 class King: public Piece {
     public:
-        King(Colour colour);
         bool isLegal(void);
 }
 
