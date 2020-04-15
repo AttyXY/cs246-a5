@@ -8,15 +8,15 @@ class Piece {
     public:
         Coord loc;
         Colour colour;
-        bool hasMoved;
-        bool enPassable;
+        bool hasMoved = false;
+        bool enPassable = false;
         //PieceType type;
         
-        Piece(PieceType type = P,
+        /*Piece(PieceType type = P,
               Colour c = White,
-              Coord loc = Coord{'a', '1'} );
-        ~Piece();
-        virtual bool isLegal(void) = 0;
+              Coord loc = Coord{'a', '1'} );*/
+        //~Piece();
+        virtual bool isLegal(Coord, Coord, std::vector<std::vector<std::shared_ptr<Piece>>> &grid) = 0;
 };
 
 std::ostream &operator<<(std::ostream &out, const Piece &p);
