@@ -4,7 +4,7 @@
 
 class King: public Piece {
     public:
-        bool isLegal(void);
+        bool isLegal(Coord, Coord, std::vector<std::vector<std::shared_ptr<Piece>>> &tile);
 }
 
 #endif
