@@ -1,6 +1,8 @@
 #include "king.h"
 using namespace std;
 
+King::King(Colour colour) : Piece{colour} {}
+
 bool King::isLegal(Coord start, Coord end, vector<vector<shared_ptr<Piece>>> &tile) {
     //check if the end is out of the grid
     if (end.getRow() < 0 || end.getRow() > 7 || end.getCol() < 0 || end.getCol() > 7) {
