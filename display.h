@@ -1,19 +1,23 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
-#include <iostream>
+// #include <iostream>
 #include <vector>
+#include "observer.h"
+#include "subject.h"
+#include "state.h"
 
-class Display {
+class Display: public Observer<State> {
+    protected:
+        std::vector<std::vector<char>> tile;
     public:
-        vector<vector<char>> pieces;
-        void update(void);
-
-        Display();
-        ~Display();
+        // void update(void);
+        void notify(Subject<State> &whoFrom);
+        // Display();
+        // ~Display();
 };
 
 
-std::ostream &operator<<(std::ostream &out, const Display &d);
-std::istream &operator>>(std::istream &in, Display &d);
+// std::ostream &operator<<(std::ostream &out, const Display &d);
+// std::istream &operator>>(std::istream &in, Display &d);
 
 #endif
