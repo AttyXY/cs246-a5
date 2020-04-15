@@ -12,9 +12,7 @@ class Piece {
         bool hasMoved;
         bool enPassable;
 
-        Piece(PieceType type = P,
-              Colour c = White,
-              Coord loc = Coord{'a', '1'} );
+        Piece(Colour c = White);
         ~Piece();
         virtual bool isLegal(void) = 0;
 };
