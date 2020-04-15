@@ -11,6 +11,7 @@ class Piece {
         Coord loc;
         bool hasMoved;
         bool enPassable;
+        //makeChanges
 
         Piece(PieceType type = P,
               Colour c = White,
