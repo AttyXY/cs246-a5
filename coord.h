@@ -20,8 +20,8 @@ class Coord {
 
         Coord(int row = 0, int col = 0);
         ~Coord();
-        int getX(void);
-        int getY(void);
+        int getRow(void);
+        int getCol(void);
 
 };
 
