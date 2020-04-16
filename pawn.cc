@@ -17,54 +17,66 @@ bool Pawn::isLegal(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
 
     // check if move is valid
     if (colour == Colour::White) {
-        if (!hasMoved) {
-            if (m.end.getCol() - m.start.getCol() == 2) {
-                return true;
-            }
-        } else if (m.end.getCol() - m.start.getCol() == 1) {
-            if ((m.end.getRow() - m.start.getRow() == 0) &&
-                (tiles[m.end.getCol()][m.end.getRow()] != nullptr)) {
-                return true;
-            } else if (m.end.getRow() - m.start.getRow() == 1) {
-                // check for capturable piece
-                shared_ptr<Piece> front = tiles[m.end.getCol()][m.end.getRow() + 1];
-                if ((front != nullptr) && (front->colour != colour)) {
-                    return true;
+        // Moving forward move
+        if (m.end.getCol() == m.start.getCol()) {
+            // Check if it can move forward by 2
+            if (!hasMoved) {
+                if (m.end.getRow() - m.start.getRow() == 2) {
+                    // Check if there is any piece is between start and end
+                    if (tiles[m.start.getCol()][m.start.getRow() + 1] == nullptr) {
+                        return true;
+                    }
                 }
-                // check for en_passanable piece
-                shared_ptr<Piece> left = tiles[m.end.getCol() - 1][m.end.getRow()];
-                shared_ptr<Piece> right = tiles[m.end.getCol() + 1][m.end.getRow()];
-                if ((left->pt == 'P' && left->is_en_passanable) ||
-                    (right->pt == 'P' && right->is_en_passanable)) {
+            }
+            // Check if it can move forward by 1
+            if (m.end.getRow() - m.start.getRow() == 1) {
+                // Check if there is any piece at the end tile
+                if (tiles[m.start.getCol()][m.end.getRow()] == nullptr) {
                     return true;
                 }
             }
-        }
-    } else {
-        if (!hasMoved) {
-            if (m.start.getCol() - m.end.getCol() == 2) {
-                return true;
-            }
-        } else if (m.start.getCol() - m.end.getCol() == 1) {
-            if ((m.start.getRow() - m.end.getRow() == 0) &&
-                (tiles[m.end.getCol()][m.end.getRow()] != nullptr)) {
-                return true;
-            } else if (m.start.getRow() - m.end.getRow() == 1) {
-                // check for capturable piece
-                shared_ptr<Piece> front = tiles[m.end.getCol()][m.end.getRow() - 1];
-                if ((front != nullptr) && (front->colour != colour)) {
-                    return true;
-                }
-                // check for en_passanable piece
-                shared_ptr<Piece> left = tiles[m.end.getCol() - 1][m.end.getRow()];
-                shared_ptr<Piece> right = tiles[m.end.getCol() + 1][m.end.getRow()];
-                if ((left->pt == 'P' && left->is_en_passanable) ||
-                    (right->pt == 'P' && right->is_en_passanable)) {
-                    return true;
+        } else {
+            // Check if it moves diagonally up by 1
+            if (m.end.getRow() - m.start.getRow() == 1) {
+                if (abs(m.end.getCol() - m.start.getCol()) == 1) {
+                    // Check if there is some black piece at the end
+                    if ((tiles[m.end.getCol()][m.end.getRow()] != nullptr) &&
+                        (tiles[m.end.getCol()][m.end.getRow()]->colour == Colour::Black)) {
+                            return true;
+                        }
                 }
             }
         }
-
+    } else if (colour == Colour::Black) {
+        if (m.end.getCol() == m.start.getCol()) {
+            // Check if it can move forward by 2
+            if (!hasMoved) {
+                if (m.end.getRow() - m.start.getRow() == -2) {
+                    // Check if there is any piece is between start and end
+                    if (tiles[m.start.getCol()][m.start.getRow() - 1] == nullptr) {
+                        return true;
+                    }
+                }
+            }
+            // Check if it can move forward by 1
+            if (m.end.getRow() - m.start.getRow() == -1) {
+                // Check if there is any piece at the end tile
+                if (tiles[m.start.getCol()][m.end.getRow()] == nullptr) {
+                    return true;
+                }
+            }
+        } else {
+            // Check if it moves diagonally up by 1
+            if (m.end.getRow() - m.start.getRow() == -1) {
+                if (abs(m.end.getCol() - m.start.getCol()) == 1) {
+                    // Check if there is some black piece at the end
+                    if ((tiles[m.end.getCol()][m.end.getRow()] != nullptr) &&
+                        (tiles[m.end.getCol()][m.end.getRow()]->colour == Colour::White)) {
+                            return true;
+                        }
+                }
+            }
+        }
     }
     return false;
 }

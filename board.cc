@@ -1,7 +1,7 @@
 #include "board.h"
 using namespace std;
 
-Board::Board(std::vector<std::vector<char>> &setupTiles) {
+void Board::init(std::vector<std::vector<char>> &setupTiles) {
     charTiles = setupTiles;
 
     // TODO: Convert setupTiles into board
@@ -73,7 +73,7 @@ Board::Board(std::vector<std::vector<char>> &setupTiles) {
     this->attach(gd.get());
     this->setState(State{StateType::NewGrid, Move{MoveType::NoType, Coordinate{},
                                                     Coordinate{}, '-', tempGrid}});
-    this->notifyObservers();
+    this->notify();
 
     */
     //gd = std::make_shared<GraphicsDisplay>();
@@ -82,7 +82,7 @@ Board::Board(std::vector<std::vector<char>> &setupTiles) {
 Board::~Board() {}
 
 bool Board::move(Move m) {
-    /* LEGAL MOVE CHECK
+    /* LEGAL MOVE CHECKS
     // TODO: check
     if (isCheck(m)) {
         whiteInCheck = true;

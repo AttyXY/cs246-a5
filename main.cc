@@ -64,7 +64,6 @@ int main(int argc, char *argv[]) {
 	vector<char> row(8, '-');
 	vector<vector<char>> setupTiles(8, row);
 	bool whiteTurn = true;
-
     shared_ptr<Player> p1;
     shared_ptr<Player> p2;
 
@@ -106,7 +105,6 @@ int main(int argc, char *argv[]) {
 				} else {
 					// TODO: Invalid command error
 				}
-            }
             /*
 
 		} else if (command == "game") {
@@ -167,8 +165,6 @@ int main(int argc, char *argv[]) {
             // todo
         }
         // quit peacefully?
-
-
 		*/
         }
     }

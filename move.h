@@ -8,7 +8,7 @@ class Move {
         Coord start;
         Coord end;
 
-        Move(Coord start, Coord end);
+        Move(Coord start = 0, Coord end = 0);
         ~Move();
 };
 

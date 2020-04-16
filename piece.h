@@ -12,7 +12,7 @@ class Piece {
         Coord loc;
         PieceType pt;
         bool hasMoved = false;
-        bool is_en_passanable = false;
+        bool isEnPassanable = false;
 
         Piece(Colour colour, PieceType pt);
         ~Piece();
