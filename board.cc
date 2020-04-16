@@ -126,6 +126,9 @@ bool Board::move(Move m) {
         b.move(p, m)
         p.hasMoved = true;
     }
+    else {
+        lastMoveValid = false;
+    }
     */
 
     return false;
