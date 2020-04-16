@@ -3,6 +3,8 @@
 #include <iostream>
 #include "enums.h"
 #include "move.h"
+#include "subject.h"
+#include "state.h"
 
 
 class Player {
@@ -12,7 +14,7 @@ class Player {
 
         Player(Colour c, int score);
         ~Player();
-        virtual bool move(Move m) = 0;
+        virtual void move(Move m) = 0;
         //virtual void undo(void) = 0;
         //virtual void redo(void) = 0;
 };

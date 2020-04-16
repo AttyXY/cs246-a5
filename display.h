@@ -8,10 +8,10 @@
 
 class Display: public Observer<State> {
     protected:
-        std::vector<std::vector<char>> tile;
+        std::vector<std::vector<char>> tiles;
     // public:
     //     void update(void);
-    //     void notify(Subject<State> &whoFrom);
+    //     void update(Subject<State> &whoFrom);
     //     Display();
     //     ~Display();
 };

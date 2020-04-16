@@ -1,27 +1,22 @@
 #ifndef STATE_H
 #define STATE_H
 #include "enums.h"
-#include "coord.h"
-
-/* State types are:
-    TODO
-*/
-
-enum class StateType {NewTile, /*PlayerMove,*/ UpdatingBoard, /*NoType*/};
-enum class MoveType { PawnPromotion, Castle, Normal, NoType, Enpassant };
-
-struct Move {
-  MoveType moveType;
-  Coord newLoc;
-  Coord oldLoc;
-  char pawnPromotion;
-  std::vector<std::vector<char>> tile;
-};
+#include "move.h"
 
 struct State {
-  StateType type;
-  Move move;
-  Colour c;
+    Move m;
+    Colour c;
+    std::vector<std::vector<char>> tiles;
+
+    State(Move m = Move{},
+          Colour c = Colour::NoColour,
+          std::vector<std::vector<char>> tiles = std::vector<std::vector<char>>()
+    ) {
+        this->m = m;
+        this->c = c;
+        this->tiles = tiles;
+    }
+    //m{m}, c{c}, tiles{tiles} {}
 };
 
 #endif
