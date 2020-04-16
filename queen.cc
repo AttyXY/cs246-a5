@@ -16,8 +16,8 @@ bool Queen::isLegal(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
     }
 
     //Constant
-    int ver = abs(m.start.getRow() - m.end.getRow())
-    int hor = abs(m.start.getCol() - m.end.getCol())
+    int ver = abs(m.start.getRow() - m.end.getRow());
+    int hor = abs(m.start.getCol() - m.end.getCol());
 
     //Queen can move vertically
     if (m.start.getCol() == m.end.getCol()) {
@@ -40,19 +40,19 @@ bool Queen::isLegal(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
     }
     
     //Queen can move horizontally
-    if (start.getRow() == end.getRow()) {
-        if(start.getCol() > end.getCol()) {
+    if (m.start.getRow() == m.end.getRow()) {
+        if(m.start.getCol() > m.end.getCol()) {
             for(int n = 1; n < hor; n++) {
-                if(tile[start.getCol() - n][start.getRow()] != nullptr) {
+                if(tiles[m.start.getCol() - n][m.start.getRow()] != nullptr) {
                     return false;
                 }
             }
             return true;
         }
 
-        if(start.getCol() < end.getCol()) {
+        if(m.start.getCol() < m.end.getCol()) {
             for(int n = 1; n < hor; n++) {
-                if(tile[start.getCol() + n][start.getRow()] != nullptr) {
+                if(tiles[m.start.getCol() + n][m.start.getRow()] != nullptr) {
                     return false;
                 }
             }
