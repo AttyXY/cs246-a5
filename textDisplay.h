@@ -10,7 +10,7 @@ class TextDisplay: public Display {
         void printTile();
     public:
         TextDisplay();
-        void notify(Subject<State> &whoFrom); // This updates the textDisplay with the grid it receives
+        void update(Subject<State> &whoFrom); // This updates the textDisplay with the grid it receives
 };
 
 #endif

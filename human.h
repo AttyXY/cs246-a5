@@ -1,15 +1,15 @@
 #ifndef HUMAN_H
 #define HUMAN_H
 #include <iostream>
-#include "enums.h"
-#include "move.h"
+#include "player.h"
 
 
-class Human {
+class Human : public Player {
     public:
-        Human(Colour c, int score);
+        Human(Colour c, int score = 0);
         ~Human();
-        bool move(Move m);
+
+        //void move(Move m);
         //void undo(void);
         //void redo(void);
 };

@@ -31,13 +31,6 @@ bool Pawn::isLegal(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
                 if ((front != nullptr) && (front->colour != colour)) {
                     return true;
                 }
-                // check for en_passanable piece
-                shared_ptr<Piece> left = tiles[m.end.getCol() - 1][m.end.getRow()];
-                shared_ptr<Piece> right = tiles[m.end.getCol() + 1][m.end.getRow()];
-                if ((left->pt == 'P' && left->is_en_passanable) ||
-                    (right->pt == 'P' && right->is_en_passanable)) {
-                    return true;
-                }
             }
         }
     } else {
@@ -53,13 +46,6 @@ bool Pawn::isLegal(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
                 // check for capturable piece
                 shared_ptr<Piece> front = tiles[m.end.getCol()][m.end.getRow() - 1];
                 if ((front != nullptr) && (front->colour != colour)) {
-                    return true;
-                }
-                // check for en_passanable piece
-                shared_ptr<Piece> left = tiles[m.end.getCol() - 1][m.end.getRow()];
-                shared_ptr<Piece> right = tiles[m.end.getCol() + 1][m.end.getRow()];
-                if ((left->pt == 'P' && left->is_en_passanable) ||
-                    (right->pt == 'P' && right->is_en_passanable)) {
                     return true;
                 }
             }

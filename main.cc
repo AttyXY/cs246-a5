@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "board.h"
+#include "human.h"
 //#include "game.h"
 using namespace std;
 
@@ -59,9 +60,13 @@ void setupDefaultTiles(std::vector<std::vector<char>> &tiles) {
 }
 
 int main(int argc, char *argv[]) {
-	bool whiteTurn = true;
 	vector<char> row(8, '-');
 	vector<vector<char>> setupTiles(8, row);
+	bool whiteTurn = true;
+
+    shared_ptr<Board> b;
+    shared_ptr<Player> p1;
+    shared_ptr<Player> p2;
 
 
 	// TODO: Parse flags
@@ -97,32 +102,70 @@ int main(int argc, char *argv[]) {
 					}
 				} else if (command == "done") {
 					// TODO: Check setup is valid
-					Board b{setupTiles};
+					b->init(setupTiles);
 				} else {
 					// TODO: Invalid command error
 				}
 			}
-		/*
+            /*
+
 		} else if (command == "game") {
+            cout << "STARTING GAME!" << endl;
+
 			cin >> command;
 			if (command == "human") {
-				Player p1 {}
-				Player p2 {};
+                p1 = make_shared<Human>(Colour::White);
+                p2 = make_shared<Human>(Colour::Black);
                 setupDefaultTiles(setupTiles);
-				Board b{setupTiles};
-				Game g = new Game{p1, p2, board};
+				b->init(setupTiles);
 
+                p1->attach(b.get());
+                p2->attach(b.get());
+            }
 
 				} else if (command == "move") {
+                    Coord start;
+                    Coord end;
+                    cin >> start;
+                    cin >> end;
+                    Move m{start, end};
+                    if (isWhiteTurn) {
+                        p1->move(m);
+                    } else {
+                        p2->move(m);
+                    }
+                    if (b->whiteInCheck) {
+                        cout << "White is in check." << endl;
+                        if (b->isCheckmate) {
+                            cout << "Checkmate! Black wins!" << endl;
+                        }
+                    } else if (b->blackInCheck) {
+                        cout << "Black is in check." << endl;
+                        if (b->isCheckmate) {
+                            cout << "Checkmate! White wins!" << endl;
+                        }
+                    } else if (b->isStalemate) {
+                        cout << "Stalemate!" << endl;
+                    }
+
 					// todo
 				} else if (command = "resign") {
+                    if (isWhiteTurn) {
+                        ++p2->score;
+                        cout << "Black wins!" << endl;
+                    } else {
+                        ++p1->score;
+                        cout << "White wins!" << endl;
+                    }
 					// print score
-					// quit gracefully?
+                    cout << "Final Score:" << endl;
+                    cout << "White: " << p1->score << endl;
+                    cout << "Black: " << p2->score << endl;
 				}
 			} else if (command == "computer") {
 				// todo
 			}
-
+            // quit peacefully?
 		*/
 		}
 	}

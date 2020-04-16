@@ -1,15 +1,14 @@
 #ifndef _OBSERVER_H_
 #define _OBSERVER_H_
+#include "state.h"
 
-// DO NOT MODIFY THIS FILE!
 
-template <typename StateType> class Subject;
-class Cell;
+template <typename TemplateType> class Subject;
 
-template <typename StateType> class Observer {
- public:
-  virtual void notify(Subject<StateType> &whoFrom) = 0; // pass the Subject that called the notify method
-  virtual ~Observer() = default;
+template <typename TemplateType> class Observer {
+    public:
+        virtual void update(Subject<TemplateType> &whoFrom) = 0; // pass the Subject that called the notify method
+        virtual ~Observer() = default;
 };
 
 #endif

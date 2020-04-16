@@ -1,47 +1,41 @@
 #ifndef SUBJECT_H
 #define SUBJECT_H
 #include <vector>
+#include "state.h"
 
-/* A note on StateType:
 
-   We have separated the collection of fields into two parts:  its Info
-   and its State.
+template <typename TemplateType> class Observer;
 
-   State is for the parts of the subject that, when changed, trigger
-   notifications.  This is the information that the Observer "gets" when it
-   calls getState on the subject.  It comprises the type of state, a direction,
-   and a colour.  For more details, see state.h.
-*/
+template <typename TemplateType> class Subject {
+    std::vector<Observer<TemplateType>*> observers;
+    TemplateType state;
 
-// DO NOT MODIFY THIS FILE!
+    public:
+        void attach(Observer<TemplateType> *o);
+        void notify();
 
-template <typename StateType> class Observer;
-
-template <typename StateType> class Subject {
-  std::vector<Observer<StateType>*> observers;
-  StateType state;
- protected:
-  void setState(StateType newS);
- public:
-  void attach(Observer<StateType> *o);
-  void notifyObservers();
-  StateType getState() const;
+        void setState(TemplateType newS);
+        TemplateType getState() const;
 };
 
-template <typename StateType>
-void Subject<StateType>::attach(Observer<StateType> *o) {
-  observers.emplace_back(o);
+template <typename TemplateType>
+void Subject<TemplateType>::attach(Observer<TemplateType> *o) {
+    observers.emplace_back(o);
 }
 
-template <typename StateType>
-void Subject<StateType>::notifyObservers() {
-  for (auto &ob : observers) ob->notify(*this);
+template <typename TemplateType>
+void Subject<TemplateType>::notify() {
+    for (auto &ob : observers) ob->update(*this);
 }
 
-template <typename StateType>
-void Subject<StateType>::setState(StateType newS) { state = newS; }
+template <typename TemplateType>
+void Subject<TemplateType>::setState(TemplateType newS) {
+    state = newS;
+}
 
-template <typename StateType>
-StateType Subject<StateType>::getState() const { return state; }
+template <typename TemplateType>
+TemplateType Subject<TemplateType>::getState() const {
+    return state;
+}
 
 #endif
