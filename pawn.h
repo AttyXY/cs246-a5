@@ -1,12 +1,12 @@
-#ifndef KING_H
-#define KING_H
+#ifndef PAWN_H
+#define PAWN_H
 #include <vector>
 #include <memory>
 #include "piece.h"
 
-class King: public Piece {
+class Pawn: public Piece {
      public:
-        King(Colour colour, PieceType pt);
+        Pawn(Colour colour, PieceType pt);
         bool isLegal(
             Move m,
             std::vector<std::vector<std::shared_ptr<Piece>>> &tiles
