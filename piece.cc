@@ -4,7 +4,7 @@ using namespace std;
 Piece::Piece(Colour colour, PieceType pt): colour{colour}, pt{pt} {}
 Piece::~Piece() {}
 
-/*std::ostream &operator<<(std::ostream &out, const Piece &p) {
-    cout << p.type << endl;
+std::ostream &operator<<(std::ostream &out, const Piece &p) {
+    cout << p.colour << "::" << p.pt << endl;
     return out;
-} */
+}
