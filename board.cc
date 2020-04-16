@@ -1,26 +1,72 @@
 #include "board.h"
 using namespace std;
 
-Board::Board(std::vector<std::vector<char>> &setupGrid) {
-    // TODO: Convert setupGrid into board
+Board::Board(std::vector<std::vector<char>> &setupTiles) {
+    charTiles = setupTiles;
+
+    // TODO: Convert setupTiles into board
+    for (int row = 0; row < 8; ++row) {
+        tiles.emplace_back(std::vector<std::shared_ptr<Piece>>());
+        for (int col = 0; col < 8; ++col) {
+            tiles[col].emplace_back(nullptr);
+        }
+    }
+
     /*
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8, ++col) {
-            case 'r': {
-                pieces[x][y] = make_shared<Rook>
+            switch(setupTiles[col][row]) {
+                case 'k': {
+                    tiles[col][row] =
+                        std::make_shared<King>(Colour::Black, PieceType::K);
+                }
+                case 'K': {
+                    tiles[col][row] =
+                        std::make_shared<King>(Colour::White, PieceType::K);
+                }
+                case 'q': {
+                    tiles[col][row] = std::make_shared<Queen>(Colour::Black);
+                }
+                case 'Q': {
+                    tiles[col][row] = std::make_shared<Queen>(Colour::White);
+                }
+                case 'r': {
+                    tiles[col][row] = std::make_shared<Rook>(Colour::Black);
+                }
+                case 'R' {
+                    tiles[col][row] = std::make_shared<Rook>(Colour::White);
+                }
+                case 'n': {
+                    tiles[col][row] = std::make_shared<Knight>(Colour::Black);
+                }
+                case 'N': {
+                    tiles[col][row] = std::make_shared<Knight>(Colour::White);
+                }
+                case 'b': {
+                    tiles[col][row] = std::make_shared<Bishop>(Colour::Black);
+                }
+                case 'B': {
+                    tiles[col][row] = std::make_shared<Bishop>(Colour::White);
+                }
+                case 'p': {
+                    tiles[col][row] = std::make_shared<Pawn>(Colour::Black);
+                }
+                case 'P': {
+                    tiles[col][row] = std::make_shared<Pawn>(Colour::White);
+                }
             }
-            case 'R' {
-
-            }
-            case 'n':
-
         }
     }
-    */
-}
+    td = std::make_shared<TextDisplay();
 
-Board::Board() {
-    // TODO: Create default board
+    this->attach(td.get());
+    this->attach(gd.get());
+    this->setState(State{StateType::NewGrid, Move{MoveType::NoType, Coordinate{},
+                                                    Coordinate{}, '-', tempGrid}});
+    this->notifyObservers();
+
+    */
+    //gd = std::make_shared<GraphicsDisplay>();
 }
 
 Board::~Board() {}

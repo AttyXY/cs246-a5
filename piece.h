@@ -1,24 +1,25 @@
 #ifndef PIECE_H
 #define PIECE_H
 #include <iostream>
+#include <memory>
+#include <vector>
 #include "enums.h"
-#include "coord.h"
+#include "move.h"
 
 class Piece {
     public:
-        PieceType type;
-        Colour c;
+        Colour colour;
         Coord loc;
-        bool hasMoved;
-        bool enPassable;
+        PieceType pt;
+        bool hasMoved = false;
+        bool is_en_passanable = false;
 
-        Piece(PieceType type = P,
-              Colour c = White,
-              Coord loc = Coord{'a', '1'} );
+        Piece(Colour colour, PieceType pt);
         ~Piece();
-        virtual bool isLegal(void) = 0;
+
+        virtual bool isLegal(Move m, std::vector<std::vector<std::shared_ptr<Piece>>> &tiles) = 0;
 };
 
-std::ostream &operator<<(std::ostream &out, const Piece &p);
+//std::ostream &operator<<(std::ostream &out, const Piece &p);
 
 #endif

@@ -9,15 +9,16 @@
 
 class Board {
     public:
-        std::vector<std::vector<Piece>> pieces;
+        std::vector<std::vector<std::shared_ptr<Piece>>> tiles;
+        std::vector<std::vector<char>> charTiles;
         //std::vector<Moves> moves;
         bool whiteCastled;
         bool blackCastled;
         bool whiteInCheck;
         bool blackInCheck;
+        bool is_en_passanable = false;
 
-        Board(std::vector<std::vector<char>> &setupGrid);
-        Board();
+        Board(std::vector<std::vector<char>> &setupTiles);
         ~Board();
         /*
         //void notify();
