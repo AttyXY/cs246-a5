@@ -8,7 +8,6 @@
 #include "board.h"
 #include "player.h"
 #include "human.h"
-//#include "game.h"
 using namespace std;
 
 void outputSetupTiles(std::vector<std::vector<char>> &tiles) {
@@ -75,7 +74,7 @@ int main(int argc, char *argv[]) {
 	vector<char> row(8, '-');
 	vector<vector<char>> setupTiles(8, row);
 	bool whiteTurn = true;
-    shared_ptr<Board> b;
+    shared_ptr<Board> b = make_shared<Board>();
     shared_ptr<Player> p1;
     shared_ptr<Player> p2;
 
@@ -119,11 +118,13 @@ int main(int argc, char *argv[]) {
                     } else if (command == "done") {
                         // TODO: Check setup is valid
                         b->init(setupTiles);
+                        break;
                     } else {
                         throw invalid_argument("Invalid command.");
                     }
                 }
             }
+            break;
             /*
             else if (command == "game") {
                 cout << "STARTING GAME!" << endl;
