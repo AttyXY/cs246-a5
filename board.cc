@@ -17,10 +17,12 @@ Board::Board(std::vector<std::vector<char>> &setupTiles) {
         for (int col = 0; col < 8, ++col) {
             switch(setupTiles[col][row]) {
                 case 'k': {
-                    tiles[col][row] = std::make_shared<King>(Colour::Black);
+                    tiles[col][row] =
+                        std::make_shared<King>(Colour::Black, PieceType::K);
                 }
                 case 'K': {
-                    tiles[col][row] = std::make_shared<King>(Colour::White);
+                    tiles[col][row] =
+                        std::make_shared<King>(Colour::White, PieceType::K);
                 }
                 case 'q': {
                     tiles[col][row] = std::make_shared<Queen>(Colour::Black);
@@ -55,7 +57,16 @@ Board::Board(std::vector<std::vector<char>> &setupTiles) {
             }
         }
     }
+    td = std::make_shared<TextDisplay();
+
+    this->attach(td.get());
+    this->attach(gd.get());
+    this->setState(State{StateType::NewGrid, Move{MoveType::NoType, Coordinate{},
+                                                    Coordinate{}, '-', tempGrid}});
+    this->notifyObservers();
+
     */
+    //gd = std::make_shared<GraphicsDisplay>();
 }
 
 Board::~Board() {}

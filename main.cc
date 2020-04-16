@@ -50,7 +50,10 @@ void setupDefaultTiles(std::vector<std::vector<char>> &tiles) {
                 tiles[col][row] = 'P';
             } else if (row == 6) {
                 tiles[col][row] = 'p';
+            } else {
+                tiles[col][row] = '-';
             }
+
         }
     }
 }

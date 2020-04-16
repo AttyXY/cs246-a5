@@ -16,6 +16,7 @@ class Board {
         bool blackCastled;
         bool whiteInCheck;
         bool blackInCheck;
+        bool is_en_passanable = false;
 
         Board(std::vector<std::vector<char>> &setupTiles);
         ~Board();
