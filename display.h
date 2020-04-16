@@ -9,15 +9,11 @@
 class Display: public Observer<State> {
     protected:
         std::vector<std::vector<char>> tile;
-    public:
-        // void update(void);
-        void notify(Subject<State> &whoFrom);
-        // Display();
-        // ~Display();
+    // public:
+    //     void update(void);
+    //     void notify(Subject<State> &whoFrom);
+    //     Display();
+    //     ~Display();
 };
-
-
-// std::ostream &operator<<(std::ostream &out, const Display &d);
-// std::istream &operator>>(std::istream &in, Display &d);
 
 #endif
