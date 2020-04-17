@@ -7,7 +7,7 @@
 class Bishop: public Piece {
      public:
         Bishop(Colour colour, PieceType pt);
-        bool isLegal(
+        bool isLegalMove(
             Move m,
             std::vector<std::vector<std::shared_ptr<Piece>>> &tiles
         ) override;

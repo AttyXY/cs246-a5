@@ -2,35 +2,41 @@
 #define BOARD_H
 #include <iostream>
 #include <vector>
-#include <memory>
-#include "piece.h"
-#include "state.h"
-#include "subject.h"
 #include "observer.h"
-//#include "move.h"
+#include "subject.h"
+#include "state.h"
+#include "move.h"
 
-class Board {
+#include "piece.h"
+#include "king.h"
+#include "queen.h"
+#include "rook.h"
+#include "bishop.h"
+#include "knight.h"
+#include "pawn.h"
+
+
+class Board : public Observer<State>, public Subject<State> {
     public:
         std::vector<std::vector<std::shared_ptr<Piece>>> tiles;
         std::vector<std::vector<char>> charTiles;
-        void init(std::vector<std::vector<char>> &setupTiles);
-        bool move(Move m);
-        Board();
+        void init(const std::vector<std::vector<char>> &setupTiles);
+        bool isLegalMove(Subject<State> &whoFrom);
+        // bool isCapture(Subject<State> &whoFrom);
         ~Board();
 
-        /*
-        //void update();
-        void add(Piece p);
-        void remove(Coord c);
-        void update(void);
-        void undo(void);
+        // Subject-observer
+        void update(Subject<State> &whoFrom);
+
+        // Basic move
+        void movePiece(const Move &m);
+        void removePiece(const Coord &c);
+        void addPiece(const Coord &start, const Coord &end);
+        // void undo(void);
         // void redo(void);
-        //TextDisplay td;
-        //GraphDisplay gd;
-        */
 
 
-        /*
+       bool legalLastMove = true;
         // Special moves
         bool whiteCastled = false;
         bool blackCastled = false;
@@ -47,16 +53,12 @@ class Board {
         bool isCheckmate(Move m);
         bool isStalemate(Move m);
 
-        //std::vector<Moves> moves;
+        std::vector<Move> moves;
         bool isThreefoldRepeat(Move m);
-        */
 
-        /*
         // Endgame detection
-        bool isStalemate = false;
-        bool isCheckmate = false;
-        */
-
+        bool stalemated = false;
+        bool checkmated = false;
 
 };
 

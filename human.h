@@ -1,6 +1,5 @@
 #ifndef HUMAN_H
 #define HUMAN_H
-#include <iostream>
 #include "player.h"
 
 
@@ -9,7 +8,7 @@ class Human : public Player {
         Human(Colour c, int score = 0);
         ~Human();
 
-        //void move(Move m);
+        void move(Move m) override;
         //void undo(void);
         //void redo(void);
 };

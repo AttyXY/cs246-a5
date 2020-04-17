@@ -1,152 +1,187 @@
 #include "board.h"
 using namespace std;
 
-Board::Board() {
-    // vector<char> row(8, '-');
-	// charTiles = vector<vector<char>>(8, row);
-}
 
-void Board::init(vector<vector<char>> &setupTiles) {
+Board::~Board() {}
+
+void Board::init(const vector<vector<char>> &setupTiles) {
     // Copy setupTiles into charTiles
     charTiles = setupTiles;
 
-    // TODO: Convert setupTiles into board
-    for (int row = 0; row < 8; ++row) {
+    // Convert setupTiles into board
+    for (size_t row = 0; row < charTiles.size(); ++row) {
         tiles.emplace_back(std::vector<std::shared_ptr<Piece>>());
-        for (int col = 0; col < 8; ++col) {
-            tiles[col].emplace_back(nullptr);
+        for (size_t col = 0; col < charTiles[row].size(); ++col) {
+            tiles[row].emplace_back(nullptr);
         }
     }
 
-
-    /*
-    for (int row = 0; row < 8; ++row) {
-        for (int col = 0; col < 8, ++col) {
+    for (size_t row = 0; row < tiles.size(); ++row) {
+        for (size_t col = 0; col < tiles[row].size(); ++col) {
             switch(setupTiles[col][row]) {
                 case 'k': {
                     tiles[col][row] =
                         std::make_shared<King>(Colour::Black, PieceType::K);
+                    break;
                 }
                 case 'K': {
                     tiles[col][row] =
                         std::make_shared<King>(Colour::White, PieceType::K);
+                    break;
                 }
                 case 'q': {
                     tiles[col][row] =
                         std::make_shared<Queen>(Colour::Black, PieceType::Q);
+                    break;
                 }
                 case 'Q': {
                     tiles[col][row] =
                         std::make_shared<Queen>(Colour::White, PieceType::Q);
+                    break;
                 }
                 case 'r': {
                     tiles[col][row] =
                         std::make_shared<Rook>(Colour::Black, PieceType::R);
+                    break;
                 }
-                case 'R' {
+                case 'R': {
                     tiles[col][row] =
                         std::make_shared<Rook>(Colour::White, PieceType::R);
+                    break;
                 }
                 case 'n': {
                     tiles[col][row] =
                         std::make_shared<Knight>(Colour::Black, PieceType::N);
+                    break;
                 }
                 case 'N': {
                     tiles[col][row] =
                         std::make_shared<Knight>(Colour::White, PieceType::N);
+                    break;
                 }
                 case 'b': {
                     tiles[col][row] =
                         std::make_shared<Bishop>(Colour::Black, PieceType::B);
+                    break;
                 }
                 case 'B': {
                     tiles[col][row] =
                         std::make_shared<Bishop>(Colour::White, PieceType::B);
+                    break;
                 }
                 case 'p': {
                     tiles[col][row] =
                         std::make_shared<Pawn>(Colour::Black, PieceType::P);
+                    break;
                 }
                 case 'P': {
                     tiles[col][row] =
                         std::make_shared<Pawn>(Colour::White, PieceType::P);
+                    break;
                 }
             }
         }
     }
-    td = std::make_shared<TextDisplay();
+    // td = std::make_shared<TextDisplay>();
+    // attach(td.get());
+    // this->attach(gd.get());
+    // this->setState(State{StateType::NewGrid, Move{MoveType::NoType, Coordinate{},
+    //                                                 Coordinate{}, '-', tempGrid}});
+    // this->notify();
 
-    this->attach(td.get());
-    this->attach(gd.get());
-    this->setState(State{StateType::NewGrid, Move{MoveType::NoType, Coordinate{},
-                                                    Coordinate{}, '-', tempGrid}});
-    this->notify();
-
-    */
-    //gd = std::make_shared<GraphicsDisplay>();
+    // gd = std::make_shared<GraphicsDisplay>();
 }
 
-Board::~Board() {}
 
-bool Board::move(Move m) {
-    /* LEGAL MOVE CHECKS
-    // TODO: check
-    if (isCheck(m)) {
-        whiteInCheck = true;
-        blackInCheck = true;
-        // TODO: checkmate
-    }
-    // TODO: stalemate
-    bool isStalemate(Move m) {
-        // Insufficient pieces
-        if (King and Bishop || King and Knight) {
+void Board::update(Subject<State> &whoFrom) {
+    State s = whoFrom.getState();
+    // cout << "From board: " << s.m.start << " " << s.m.end << endl;
+    legalLastMove = isLegalMove(whoFrom);
 
-        }
-        // No legal moves
-        for (auto &p: pieces) {if (p.legalMove(m))}
-    }
-    if (isStalemate(m)) {
+    State newS{s.m, s.colour, charTiles};
+    setState(newS);
+    notify();
+}
 
+bool Board::isLegalMove(Subject<State> &whoFrom) {
+    State s = whoFrom.getState();
+    Move m = s.m;
+    Coord start = m.start;
+    Coord end = m.end;
+
+    // STANDARD CHECKS
+    // tiles[end.row][end.col]->colour; // works
+    // cout << colourToStr.at(tiles[end.row][end.col]->colour) << endl;
+    if (tiles[end.row][end.col]->colour == Colour::White) {
+        cout << "reee" << endl;
     }
+    // if ((s.colour == tiles[end.row][end.col]->colour) || // Move onto own piece
+    //     (tiles[start.row][start.col] == nullptr) ||  // Empty tile
+    //     (s.colour != tiles[start.row][start.col]->colour) // Move other player's piece
+    //     // TODO: Weird segfault with the case below
+    //  ) {
+    //      return false;
+    //  }
+
+    // TODO: LEGAL MOVE CHECKS
+    // if (isCheck(m)) {
+    //     whiteInCheck = true;
+    //     blackInCheck = true;
+    //     // TODO: checkmate
+    // }
+    // // TODO: stalemate
+    // bool isStalemate(Move m) {
+    //     // Insufficient pieces
+    //     if (King and Bishop || King and Knight) {
+
+    //     }
+    //     // No legal moves
+    //     for (auto &p: pieces) {if (p.legalMove(m))}
+    // }
+    // if (isStalemate(m)) {
+
+    // }
     // TODO: threefold repetition
     // TODO: fifty-move-rule
-    */
 
-    /* VALID MOVE CHECKS
-    shared_ptr<Piece> p = grid[m.start.col][m.start.row];
-
+    // TODO: SPECIAL MOVE CHECKS
     // TODO: castling
-    if (isCastling(m)) {
-        castle(m);
-    }
+    // if (isCastling(m)) {
+    //     castle(m);
+    // }
     // TODO: pawn promotion
-    else if (isPawnPromotion(m)) {
+    // else if (isPawnPromotion(m)) {
 
-    }
+    // }
     // TODO: en passant
-    else if (isEnPassant(m)) {
-        enPassant(m);
+    // else if (isEnPassant(m)) {
+    //     enPassant(m);
+    // }
+
+    // BASIC MOVE CHECKS
+    // movePiece(m);
+    // tiles[start.row][start.col]->isLegalMove(m, tiles);
+    if (tiles[start.row][start.col]->isLegalMove(m, tiles)) {
+        movePiece(m);
+        // tiles[start.row][start.col]->hasMoved = true;
+    } else {
+        return false;
     }
 
-    // regular move
-    else if (p.IsLegal(m)) {
-        b.move(p, m)
-        p.hasMoved = true;
-    }
-    else {
-        lastMoveValid = false;
-    }
-    */
-
-    return false;
+    return true;
 }
 
-/*
-void Board::add(Piece p) {}
-void Board::remove(Coord c) {}
-void Board::update(void) {}
-//void undo(void)
-// void redo(void);
-//TextDisplay td;
-//GraphDisplay gd;
-*/
+void Board::movePiece(const Move &m) {
+    addPiece(m.start, m.end);
+    removePiece(m.start);
+}
+
+void Board::removePiece(const Coord &c) {
+    charTiles[c.row][c.col] = '-';
+    tiles[c.row][c.col] = nullptr;
+}
+
+void Board::addPiece(const Coord &start, const Coord &end) {
+    charTiles[end.row][end.col] = charTiles[start.row][start.col];
+    tiles[end.row][end.col] = tiles[start.row][start.col];
+}
