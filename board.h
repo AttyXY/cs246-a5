@@ -15,6 +15,7 @@ class Board {
         std::vector<std::vector<char>> charTiles;
         void init(std::vector<std::vector<char>> &setupTiles);
         bool move(Move m);
+        Board();
         ~Board();
 
         /*

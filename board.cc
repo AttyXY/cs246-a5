@@ -1,7 +1,13 @@
 #include "board.h"
 using namespace std;
 
-void Board::init(std::vector<std::vector<char>> &setupTiles) {
+Board::Board() {
+    // vector<char> row(8, '-');
+	// charTiles = vector<vector<char>>(8, row);
+}
+
+void Board::init(vector<vector<char>> &setupTiles) {
+    // Copy setupTiles into charTiles
     charTiles = setupTiles;
 
     // TODO: Convert setupTiles into board
@@ -11,6 +17,7 @@ void Board::init(std::vector<std::vector<char>> &setupTiles) {
             tiles[col].emplace_back(nullptr);
         }
     }
+
 
     /*
     for (int row = 0; row < 8; ++row) {
