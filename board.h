@@ -50,10 +50,10 @@ class Board : public Observer<State>, public Subject<State> {
         bool isEnPassant(Move m);
         bool isPawnPromotion(Move m);
 
-        bool whiteInCheck = false;
-        bool blackInCheck = false;
+        bool whiteInCheck = false; //white is dying
+        bool blackInCheck = false; //black is dying
         int movesSinceCaptureOrPawn = 0;
-        bool isCheck(Move m);
+        bool isCheck();
         bool isCheckmate(Move m);
         bool isStalemate(Move m);
 
