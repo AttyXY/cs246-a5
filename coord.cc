@@ -16,12 +16,17 @@ ostream &operator<<(ostream &out, const Coord &c) {
 }
 
 istream &operator>>(istream &in, Coord &c) {
-    char row;
-    int col;
-    cin >> row;
+    char col;
+    int row;
     cin >> col;
+    cin >> row;
 
-    c.row = c.rowIdx[row];
-    c.col = col - 1;
+    c.col = c.colIdx[col];
+    c.row = row - 1;
+
+    // validate input
+    if (c.col < 0 || c.col > 7 || c.row < 0 || c.row > 7) {
+        throw invalid_argument("Invalid coordinate.");
+    }
     return in;
 }

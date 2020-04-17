@@ -14,8 +14,13 @@ class Board: public Subject<State>, public Observer<State> {
         std::vector<std::vector<std::shared_ptr<Piece>>> tiles;
         std::vector<std::vector<char>> charTiles;
         void init(std::vector<std::vector<char>> &setupTiles);
+<<<<<<< HEAD
         bool canMove(Subject<State> &whoFrom);
         bool lastMoveValid = true;
+=======
+        bool move(Move m);
+        Board();
+>>>>>>> 7d2dd0b2ef4844f624d286f7788995f68a5addde
         ~Board();
   
         
