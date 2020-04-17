@@ -23,6 +23,10 @@ class Board : public Observer<State>, public Subject<State> {
         void init(const std::vector<std::vector<char>> &setupTiles);
         bool isLegalMove(Subject<State> &whoFrom);
         // bool isCapture(Subject<State> &whoFrom);
+        std::vector<std::shared_ptr<Piece>> whitePieces;
+        std::vector<std::shared_ptr<Piece>> blackPieces;
+        std::shared_ptr<Piece> wk;
+        std::shared_ptr<Piece> bk;
         ~Board();
 
         // Subject-observer
@@ -46,10 +50,10 @@ class Board : public Observer<State>, public Subject<State> {
         bool isEnPassant(Move m);
         bool isPawnPromotion(Move m);
 
-        bool whiteInCheck = false;
-        bool blackInCheck = false;
+        bool whiteInCheck = false; //white is dying
+        bool blackInCheck = false; //black is dying
         int movesSinceCaptureOrPawn = 0;
-        bool isCheck(Move m);
+        bool isCheck();
         bool isCheckmate(Move m);
         bool isStalemate(Move m);
 

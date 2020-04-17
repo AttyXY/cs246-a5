@@ -10,6 +10,7 @@ class Piece {
     public:
         Colour colour;
         PieceType pt;
+        Coord pos;
         bool hasMoved = false;
         bool isEnPassanable = false;
 
