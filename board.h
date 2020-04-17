@@ -36,8 +36,8 @@ class Board : public Observer<State>, public Subject<State> {
         void movePiece(const Move &m);
         void removePiece(const Coord &c);
         void addPiece(const Coord &start, const Coord &end);
-        // void undo(void);
-        // void redo(void);
+        // void undo();
+        // void redo();
 
 
        bool legalLastMove = true;
@@ -53,7 +53,7 @@ class Board : public Observer<State>, public Subject<State> {
         bool whiteInCheck = false; //white is dying
         bool blackInCheck = false; //black is dying
         int movesSinceCaptureOrPawn = 0;
-        bool isCheck();
+        bool isCheck(Move m);
         bool isCheckmate(Move m);
         bool isStalemate(Move m);
 
