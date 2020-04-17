@@ -3,11 +3,12 @@
 #include <iostream>
 #include "enums.h"
 #include "move.h"
+#include "observer.h"
 #include "subject.h"
 #include "state.h"
 
 
-class Player {
+class Player : public Subject<State> {
     public:
         Colour c;
         int score = 0;

@@ -7,7 +7,7 @@ class Coord {
     public:
         int row;
         int col;
-        std::map<char, int> colIdx = {
+        std::map<char, int> colToIdx = {
             {'a', 0},
             {'b', 1},
             {'c', 2},
@@ -16,6 +16,16 @@ class Coord {
             {'f', 5},
             {'g', 6},
             {'h', 7}
+        };
+        std::map<int, char> idxToCol = {
+            {0, 'a'},
+            {1, 'b'},
+            {2, 'c'},
+            {3, 'd'},
+            {4, 'e'},
+            {5, 'f'},
+            {6, 'g'},
+            {7, 'h'}
         };
 
         Coord(int row = 0, int col = 0);

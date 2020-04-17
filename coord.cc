@@ -11,7 +11,7 @@ int Coord::getCol(void) {
 }
 
 ostream &operator<<(ostream &out, const Coord &c) {
-    cout << toupper(c.row) << c.col;
+    cout << c.idxToCol.at(c.col) << c.row + 1;
     return out;
 }
 
@@ -21,7 +21,7 @@ istream &operator>>(istream &in, Coord &c) {
     cin >> col;
     cin >> row;
 
-    c.col = c.colIdx[col];
+    c.col = c.colToIdx.at(col);
     c.row = row - 1;
 
     // validate input

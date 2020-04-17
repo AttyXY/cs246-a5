@@ -12,7 +12,4 @@ class Move {
         ~Move();
 };
 
-std::ostream &operator<<(std::ostream &out, const Move &m);
-std::istream &operator>>(std::istream &in, Move &m);
-
 #endif

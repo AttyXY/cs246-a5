@@ -60,7 +60,7 @@ void setupDefaultTiles(std::vector<std::vector<char>> &tiles) {
     }
 }
 
-template <typename Type> bool isValidInput(Type &t) {
+template <typename Type> bool getValidInput(Type &t) {
     try {
         cin >> t;
         return true;
@@ -70,14 +70,14 @@ template <typename Type> bool isValidInput(Type &t) {
     return false;
 }
 
+
 int main(int argc, char *argv[]) {
 	vector<char> row(8, '-');
 	vector<vector<char>> setupTiles(8, row);
-	bool whiteTurn = true;
+	bool isWhiteTurn = true;
     shared_ptr<Board> b = make_shared<Board>();
     shared_ptr<Player> p1;
     shared_ptr<Player> p2;
-
 
 	// TODO: Parse flags
 
@@ -88,107 +88,113 @@ int main(int argc, char *argv[]) {
     cout << "- game [player1] [player2]" << endl;
     cout << endl;
 
-	string command{""};
-    try {
-        while (cin >> command) {
-            if (command == "setup") {
-                cout << "STARTING SETUP" << endl;
+    string command;
+    while (cin >> command) {
+        if (command == "setup") {
+            cout << "STARTING SETUP" << endl << endl;
 
-                char piece;
-                Coord location;
-                string turn;
-                while (cin >> command) {
-                    if (command == "+") {
-                        // TODO: Make sure piece is valid
-                        if (isValidInput(piece) && isValidInput(location)) {
-                            setupTiles[location.row][location.col] = piece;
-                            outputSetupTiles(setupTiles);
-                        }
-                    } else if (command == "-") {
-                        if (isValidInput(piece) && isValidInput(location)) {
-                            setupTiles[location.row][location.col] = '-';
-                            outputSetupTiles(setupTiles);
-                        }
-                    } else if (command == "=") {
-                        // TODO: Make sure turn is valid
-                        cin >> turn;
-                        if (turn == "black") {
-                            whiteTurn = false;
-                        }
-                    } else if (command == "done") {
-                        // TODO: Check setup is valid
-                        b->init(setupTiles);
-                        break;
-                    } else {
-                        throw invalid_argument("Invalid command.");
+            char piece;
+            Coord coord;
+            string turn;
+            while (cin >> command) {
+                if (command == "+") {
+                    // TODO: Make sure piece is valid
+                    if (getValidInput(piece) && getValidInput(coord)) {
+                        setupTiles[coord.row][coord.col] = piece;
+                        outputSetupTiles(setupTiles);
                     }
-                }
-            }
-            break;
-            /*
-            else if (command == "game") {
-                cout << "STARTING GAME!" << endl;
-
-                cin >> command;
-                if (command == "computer") {
-                    // TODO
-                }
-                else if (command == "human") {
-                    p1 = make_shared<Human>(Colour::White);
-                    p2 = make_shared<Human>(Colour::Black);
-                    setupDefaultTiles(setupTiles);
+                } else if (command == "-") {
+                    if (getValidInput(piece) && getValidInput(coord)) {
+                        setupTiles[coord.row][coord.col] = '-';
+                        outputSetupTiles(setupTiles);
+                    }
+                } else if (command == "=") {
+                    // TODO: Make sure turn is valid
+                    cin >> turn;
+                    if (turn == "black") {
+                        isWhiteTurn = false;
+                    }
+                } else if (command == "done") {
+                    // TODO: Check setup is valid
                     b->init(setupTiles);
-                    p1->attach(b.get());
-                    p2->attach(b.get());
-                    Move m;
-                    p1->move(m);
-                    if (command == "move") {
-                        Coord start;
-                        Coord end;
-                        cin >> start;
-                        cin >> end;
-                        Move m{start, end};
-                        if (isWhiteTurn) {
-                            p1->move(m);
-                        } else {
-                            p2->move(m);
-                        }
-
-                        if (b->whiteInCheck) {
-                            cout << "White is in check." << endl;
-                            if (b->isCheckmate) {
-                                cout << "Checkmate! Black wins!" << endl;
-                            }
-                        } else if (b->blackInCheck) {
-                            cout << "Black is in check." << endl;
-                            if (b->isCheckmate) {
-                                cout << "Checkmate! White wins!" << endl;
-                            }
-                        } else if (b->isStalemate) {
-                            cout << "Stalemate!" << endl;
-                        } else if (!b->lastMoveValid) {
-                            cout << "Invalid move. Input another move." << endl;
-                        }
-                    }
-                    else if (command = "resign") {
-                        if (isWhiteTurn) {
-                            ++p2->score;
-                            cout << "Black wins!" << endl;
-                        } else {
-                            ++p1->score;
-                            cout << "White wins!" << endl;
-                        }
-                        // print score
-                        cout << "Final Score:" << endl;
-                        cout << "White: " << p1->score << endl;
-                        cout << "Black: " << p2->score << endl;
-                    }
+                    break;
+                } else {
+                    throw invalid_argument("Invalid command.");
                 }
             }
-            */
         }
-    }
-    catch (...) {
-        // TODO
+        else if (command == "game") {
+            // TODO: Validate player input
+            string player1;
+            string player2;
+            cin >> player1;
+            cin >> player2;
+
+            if (player1 == "computer") {
+                // p1 = make_shared<Computer>(Colour::White);
+            } else if (player1 == "human") {
+                p1 = make_shared<Human>(Colour::White);
+            }
+            if (player2 == "computer") {
+                // p2 = make_shared<Computer>(Colour::Black);
+            } else if (player1 == "human") {
+                p2 = make_shared<Human>(Colour::Black);
+            }
+            setupDefaultTiles(setupTiles);
+            b->init(setupTiles);
+            p1->attach(b.get());
+            p2->attach(b.get());
+
+
+            cout << "STARTING GAME!" << endl << endl;
+            while (cin >> command) {
+                if (command == "move") {
+                    Coord start;
+                    Coord end;
+                    Move m;
+                    if (getValidInput(start) && getValidInput(end)) {
+                        m.start = start; m.end = end;
+                    }
+
+                    // Move + output outcome
+                    if (isWhiteTurn) {
+                        p1->move(m);
+                    } else {
+                        p2->move(m);
+                    }
+
+                    if (b->whiteInCheck) {
+                        cout << "White is in check." << endl;
+                        if (b->checkmated) {
+                            cout << "Checkmate! Black wins!" << endl;
+                        }
+                    } else if (b->blackInCheck) {
+                        cout << "Black is in check." << endl;
+                        if (b->checkmated) {
+                            cout << "Checkmate! White wins!" << endl;
+                        }
+                    } else if (b->stalemated) {
+                        cout << "Stalemate!" << endl;
+                    } else if (!b->legalLastMove) {
+                        cout << "Invalid move. Input another move." << endl;
+                    }
+                }
+                else if (command == "resign") {
+                    if (isWhiteTurn) {
+                        ++p2->score;
+                        cout << "Black wins!" << endl;
+                    } else {
+                        ++p1->score;
+                        cout << "White wins!" << endl;
+                    }
+                    // print score
+                    cout << "Final Score:" << endl;
+                    cout << "White: " << p1->score << endl;
+                    cout << "Black: " << p2->score << endl;
+                }
+                break;
+            }
+        }
+        break;
     }
 }
