@@ -150,9 +150,25 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
     //  }
 
     // TODO: LEGAL MOVE CHECKS
-    // if (isCheck()) {
-    //     // TODO: checkmate
-    // }
+     if (isCheck(m)) {
+            if(s.colour == Colour::White) {
+                if (whiteInCheck) {
+                    //undo();
+                    return false;
+                } else if (blackInCheck) {
+                    //TODO: CHECK
+                    return true;
+                }
+            } else if (s.colour == Colour::Black) {
+                if (whiteInCheck) {
+                    //TODO: CHECK
+                    return true;
+                } else if (blackInCheck){
+                    //undo();
+                    return false;
+                }
+            }
+     }
     // // TODO: stalemate
     // bool isStalemate(Move m) {
     //     // Insufficient pieces
@@ -208,9 +224,17 @@ void Board::removePiece(const Coord &c) {
 void Board::addPiece(const Coord &start, const Coord &end) {
     charTiles[end.row][end.col] = charTiles[start.row][start.col];
     tiles[end.row][end.col] = tiles[start.row][start.col];
+    if (tiles[end.row][end.col]->pt == PieceType::K) {
+        if (tiles[end.row][end.col]->colour == Colour::White) {
+            wk = tiles[end.row][end.col];
+        } else if (tiles[end.row][end.col]->colour == Colour::Black) {
+            bk = tiles[end.row][end.col];
+        }
+    }
 }
 
-bool Board::isWhiteCheck() {
+bool Board::isCheck(Move m) {
+    movePiece(m);
     for (int n = 0; n < (int)blackPieces.size(); n++) {
         Move newMove{blackPieces[n]->pos, wk->pos};
         if (blackPieces[n]->isLegalMove(newMove, tiles)) {
@@ -218,11 +242,7 @@ bool Board::isWhiteCheck() {
             return true;
         }
     }
-    return false;
-}
-
-bool Board::isBlackCheck() {
-        for (int n = 0; n < (int)whitePieces.size(); n++) {
+    for (int n = 0; n < (int)whitePieces.size(); n++) {
         Move newMove{whitePieces[n]->pos, bk->pos};
         if (whitePieces[n]->isLegalMove(newMove, tiles)) {
             blackInCheck = true;
