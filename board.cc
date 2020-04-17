@@ -210,7 +210,7 @@ void Board::addPiece(const Coord &start, const Coord &end) {
     tiles[end.row][end.col] = tiles[start.row][start.col];
 }
 
-bool Board::isCheck() {
+bool Board::isWhiteCheck() {
     for (int n = 0; n < (int)blackPieces.size(); n++) {
         Move newMove{blackPieces[n]->pos, wk->pos};
         if (blackPieces[n]->isLegalMove(newMove, tiles)) {
@@ -218,7 +218,11 @@ bool Board::isCheck() {
             return true;
         }
     }
-    for (int n = 0; n < (int)whitePieces.size(); n++) {
+    return false;
+}
+
+bool Board::isBlackCheck() {
+        for (int n = 0; n < (int)whitePieces.size(); n++) {
         Move newMove{whitePieces[n]->pos, bk->pos};
         if (whitePieces[n]->isLegalMove(newMove, tiles)) {
             blackInCheck = true;

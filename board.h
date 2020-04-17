@@ -53,7 +53,8 @@ class Board : public Observer<State>, public Subject<State> {
         bool whiteInCheck = false; //white is dying
         bool blackInCheck = false; //black is dying
         int movesSinceCaptureOrPawn = 0;
-        bool isCheck();
+        bool isBlackCheck();
+        bool isWhiteCheck();
         bool isCheckmate(Move m);
         bool isStalemate(Move m);
 
