@@ -4,18 +4,6 @@ using namespace std;
 Pawn::Pawn(Colour colour, PieceType pt) : Piece{colour, pt} {}
 
 bool Pawn::isLegalMove(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
-    // check if the end is out of the grid
-    if (m.end.getRow() < 0 || m.end.getRow() > 7 || m.end.getCol() < 0 || m.end.getCol() > 7) {
-        return false;
-    }
-
-    // check if the end if occupied by own colour
-    if ((tiles[m.start.getCol()][m.start.getRow()]->colour == tiles[m.end.getCol()][m.end.getRow()]->colour)
-        && tiles[m.end.getCol()][m.end.getRow()] != nullptr) {
-        return false;
-    }
-
-    // check if move is valid
     if (colour == Colour::White) {
         // Moving forward move
         if (m.end.getCol() == m.start.getCol()) {

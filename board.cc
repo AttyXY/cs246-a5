@@ -110,13 +110,18 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
     Coord end = m.end;
 
     // STANDARD CHECKS
-    if ((tiles[start.row][start.col] == nullptr) ||  // Empty tile
-        (s.colour != tiles[start.row][start.col]->colour) // Move other player's piece
-        // TODO: Weird segfault with the case below
-        // (s.colour != tiles[end.row][end.col]->colour) { // Move onto own piece
-     ) {
-         return false;
-     }
+    // tiles[end.row][end.col]->colour; // works
+    // cout << colourToStr.at(tiles[end.row][end.col]->colour) << endl;
+    if (tiles[end.row][end.col]->colour == Colour::White) {
+        cout << "reee" << endl;
+    }
+    // if ((s.colour == tiles[end.row][end.col]->colour) || // Move onto own piece
+    //     (tiles[start.row][start.col] == nullptr) ||  // Empty tile
+    //     (s.colour != tiles[start.row][start.col]->colour) // Move other player's piece
+    //     // TODO: Weird segfault with the case below
+    //  ) {
+    //      return false;
+    //  }
 
     // TODO: LEGAL MOVE CHECKS
     // if (isCheck(m)) {
@@ -154,13 +159,14 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
     // }
 
     // BASIC MOVE CHECKS
-    movePiece(m);
-    // if (tiles[start.row][start.col]->isLegalMove(m, tiles)) {
-    //     movePiece(m);
-    //     tiles[start.row][start.col]->hasMoved = true;
-    // } else {
-    //     return false;
-    // }
+    // movePiece(m);
+    // tiles[start.row][start.col]->isLegalMove(m, tiles);
+    if (tiles[start.row][start.col]->isLegalMove(m, tiles)) {
+        movePiece(m);
+        // tiles[start.row][start.col]->hasMoved = true;
+    } else {
+        return false;
+    }
 
     return true;
 }

@@ -22,6 +22,7 @@ class Board : public Observer<State>, public Subject<State> {
         std::vector<std::vector<char>> charTiles;
         void init(const std::vector<std::vector<char>> &setupTiles);
         bool isLegalMove(Subject<State> &whoFrom);
+        // bool isCapture(Subject<State> &whoFrom);
         ~Board();
 
         // Subject-observer
