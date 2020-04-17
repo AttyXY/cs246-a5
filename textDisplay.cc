@@ -1,114 +1,112 @@
 #include "textDisplay.h"
-#include "coord.h"
-#include "state.h"
+using namespace std;
 
-TextDisplay::TextDisplay() {}
 
-void TextDisplay::update(Subject<State> &whoFrom) {
-    /*
-    State s = whoFrom.getState();
-    MoveState m = whoFrom.getState().move;
-    switch (s.type)
-    {
-    // case StateType::PlayerMove:
-    //     break;
-    // case StateType::NoType:
-    //     break;
-    case StateType::NewTile:
-        tiles = m.tiles
-        printTile();
-        break;
-    case StateType::UpdatingBoard:
-        Coord oldLoc = m.oldLoc;
-        Coord newLoc = m.newLoc;
-        char oldPiece = tiles[oldLoc.getCol()][oldLoc.getRow()];
-        switch (m.moveType)
-        {
-        case MoveType::Normal:
-        {
-            tiles[newLoc.getCol()][newLoc.getRow()] = oldPiece;
-            if ((oldLoc.getCol() % 2 == 0 && oldLoc.getRow() % 2 == 0) ||
-                (oldLoc.getCol() % 2 != 0 && oldLoc.getRow() % 2 != 0))
-            {
-                tiles[oldLoc.getCol()][oldLoc.getRow()] = '-';
-            }
-            else
-            {
-                tiles[oldLoc.getCol()][oldLoc.getRow()] = ' ';
-            }
-            break;
-        }
-        case MoveType::PawnPromotion:
-        {
-            char pawnPromotion = m.pawnPromotion;
-            if ((oldLoc.getCol() % 2 == 0 && oldLoc.getRow() % 2 == 0) ||
-                (oldLoc.getCol() % 2 != 0 && oldLoc.getRow() % 2 != 0))
-            {
-                tiles[oldLoc.getCol()][oldLoc.getRow()] = '-';
-            }
-            else
-            {
-                tiles[oldLoc.getCol()][oldLoc.getRow()] = ' ';
-            }
-            if (pawnPromotion == 'Q' || pawnPromotion == 'q')
-            {
-                tiles[newLoc.getCol()][newLoc.getRow()] = {isupper(oldPiece) ? 'Q' : 'q'};
-            }
-            else if (pawnPromotion == 'B' || pawnPromotion == 'b')
-            {
-                tiles[newLoc.getCol()][newLoc.getRow()] = {isupper(oldPiece) ? 'B' : 'b'};
-            }
-            else if (pawnPromotion == 'R' || pawnPromotion == 'r')
-            {
-                tiles[newLoc.getCol()][newLoc.getRow()] = {isupper(oldPiece) ? 'R' : 'r'};
-            }
-            else if (pawnPromotion == 'N' || pawnPromotion == 'n')
-            {
-                tiles[newLoc.getCol()][newLoc.getRow()] = {isupper(oldPiece) ? 'N' : 'n'};
-            }
-            break;
-        }
-        case MoveType::Castle:
-        {
-            char rook;
-            if (newLoc.getCol() == 2)
-            {
-                rook = tiles[0][newLoc.getRow()];
-                tiles[4][newLoc.getRow()] = {newLoc.getRow() ? ' ' : '-'};
-                tiles[2][newLoc.getRow()] = oldPiece;
-                tiles[0][newLoc.getRow()] = {newLoc.getRow() ? ' ' : '-'};
-                tiles[3][newLoc.getRow()] = rook;
-            }
-            else if (newLoc.getCol() == 6)
-            {
-                rook = tiles[7][newLoc.getRow()];
-                tiles[4][newLoc.getRow()] = {newLoc.getRow() ? ' ' : '-'};
-                tiles[6][newLoc.getRow()] = oldPiece;
-                tiles[7][newLoc.getRow()] = {newLoc.getRow() ? '-' : ' '};
-                tiles[5][newLoc.getRow()] = rook;
-            }
-            break;
-        }
-        case MoveType::Enpassant:
-            break;
-        }
-        printTile();
-        break;
-    }
-    */
+TextDisplay::TextDisplay() {
+    vector<char> row(8, '-');
+	tiles = vector<vector<char>>(8, row);
 }
 
-void TextDisplay::printTile()
-{
-    for (int row = 0; row < 8; row++)
-    {
-        std::cout << 8 - row << "  ";
-        for (int col = 0; row < 8; col++)
-        {
-            std::cout << tiles[col][7 - row];
+void TextDisplay::printTiles() {
+    for (int row = 8; row > 0; --row) {
+		cout << row << "  "; // print rows in reverse
+		for (int col = 0; col < 8; ++col) {
+			cout << tiles[row - 1][col];
+		}
+		cout << endl;
+	}
+	cout << "   abcdefgh" << endl << endl;
+}
+
+
+
+
+bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
+    if (!custom) {
+        for (int row = 0; row < 8; ++row) {
+            for (int col = 0; col < 8; ++col) {
+                if (col == 0) {
+                    if (row == 0 || row == 7) {
+                        tiles[col][row] = 'R';
+                    } else if (row == 1 || row == 6) {
+                        tiles[col][row] = 'N';
+                    } else if (row == 2 || row == 5) {
+                        tiles[col][row] = 'B';
+                    }  else if (row == 3) {
+                        tiles[col][row] = 'Q';
+                    } else if (row == 4) {
+                        tiles[col][row] = 'K';
+                    }
+                } else if (col == 7) {
+                    if (row == 0 || row == 7) {
+                        tiles[col][row] = 'r';
+                    } else if (row == 1 || row == 6) {
+                        tiles[col][row] = 'n';
+                    } else if (row == 2 || row == 5) {
+                        tiles[col][row] = 'b';
+                    }  else if (row == 3) {
+                        tiles[col][row] = 'q';
+                    } else if (row == 4) {
+                        tiles[col][row] = 'k';
+                    }
+                } else if (col == 1) {
+                    tiles[col][row] = 'P';
+                } else if (col == 6) {
+                    tiles[col][row] = 'p';
+                } else {
+                    tiles[col][row] = '-';
+                }
+            }
         }
-        std::cout << std::endl;
+    } else {
+        string command;
+        char piece;
+        Coord coord;
+        while (cin >> command) {
+            if (command == "+") {
+                if (isValidPiece(piece) && IsValidInput(coord)) {
+                    tiles[coord.row][coord.col] = piece;
+                    printTiles();
+                }
+            } else if (command == "-") {
+                if (isValidPiece(piece) && IsValidInput(coord)) {
+                    tiles[coord.row][coord.col] = '-';
+                    printTiles();
+                }
+            } else if (command == "=") {
+                string turn;
+                cin >> turn;
+                if (turn == "black") {
+                    isWhiteTurn = false;
+                } else if (turn == "white") {
+                    isWhiteTurn = true;
+                } else {
+                    cout << "Invalid turn colour." << endl;
+                }
+            } else if (command == "done") {
+                // TODO: Check setup is valid
+                // if (!isValidSetup()) {
+                //     return false;
+                // }
+                return true;
+            } else {
+                cout << "Invalid command." << endl;
+                // throw invalid_argument("Invalid command.");
+            }
+        }
     }
-    std::cout << std::endl;
-    std::cout << "   abcdefgh" << std::endl;
+    return true;
+}
+
+// bool TextDisplay::isValidSetup() {
+    // bool oneWhiteKing = false;
+    // bool oneBlackKing = false;
+    // bool noPawnsLastRows = true;
+    // bool kingInCheck = false;
+// }
+
+void TextDisplay::update(Subject<State> &whoFrom) {
+    State s = whoFrom.getState();
+    cout << s.m.start << endl;
+    cout << s.m.end << endl;
 }

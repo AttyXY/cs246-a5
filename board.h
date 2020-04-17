@@ -2,11 +2,9 @@
 #define BOARD_H
 #include <iostream>
 #include <vector>
-#include <memory>
-#include "state.h"
-#include "subject.h"
 #include "observer.h"
-#include "textDisplay.h"
+#include "subject.h"
+#include "state.h"
 #include "move.h"
 
 #include "piece.h"
@@ -20,16 +18,13 @@
 
 class Board : public Observer<State>, public Subject<State> {
     public:
-        // Init
         std::vector<std::vector<std::shared_ptr<Piece>>> tiles;
         std::vector<std::vector<char>> charTiles;
-        void init(std::vector<std::vector<char>> &setupTiles);
+        void init(const std::vector<std::vector<char>> &setupTiles);
         bool move(Move m);
-        // Board();
         ~Board();
 
         // Subject-observer
-        std::shared_ptr<TextDisplay> td;
         void update(Subject<State> &whoFrom);
 
         /*

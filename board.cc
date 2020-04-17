@@ -2,14 +2,9 @@
 using namespace std;
 
 
-// Board::Board() {
-    // vector<char> row(8, '-');
-	// charTiles = vector<vector<char>>(8, row);
-// }
-
 Board::~Board() {}
 
-void Board::init(vector<vector<char>> &setupTiles) {
+void Board::init(const vector<vector<char>> &setupTiles) {
     // Copy setupTiles into charTiles
     charTiles = setupTiles;
 
@@ -87,8 +82,8 @@ void Board::init(vector<vector<char>> &setupTiles) {
             }
         }
     }
-    td = std::make_shared<TextDisplay>();
-    attach(td.get());
+    // td = std::make_shared<TextDisplay>();
+    // attach(td.get());
     // this->attach(gd.get());
     // this->setState(State{StateType::NewGrid, Move{MoveType::NoType, Coordinate{},
     //                                                 Coordinate{}, '-', tempGrid}});
@@ -100,8 +95,11 @@ void Board::init(vector<vector<char>> &setupTiles) {
 
 void Board::update(Subject<State> &whoFrom) {
     State s = whoFrom.getState();
-    // cout << s.m.start << endl;
-    // cout << s.m.end << endl;
+    cout << s.m.start << endl;
+    cout << s.m.end << endl;
+
+    setState(s);
+    notify();
 }
 
 bool Board::move(Move m) {

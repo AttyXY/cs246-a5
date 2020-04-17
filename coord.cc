@@ -21,12 +21,15 @@ istream &operator>>(istream &in, Coord &c) {
     cin >> col;
     cin >> row;
 
-    c.col = c.colToIdx.at(col);
     c.row = row - 1;
-
-    // validate input
-    if (c.col < 0 || c.col > 7 || c.row < 0 || c.row > 7) {
+    if (c.row < 0 || c.row > 7) {
         throw invalid_argument("Invalid coordinate.");
     }
+    try {
+        c.col = c.colToIdx.at(col);
+    } catch (const out_of_range &e) {
+        throw invalid_argument("Invalid coordinate.");
+    }
+
     return in;
 }
