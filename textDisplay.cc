@@ -4,98 +4,85 @@
 
 TextDisplay::TextDisplay() {}
 
-void TextDisplay::update(Subject<State> &whoFrom) {
-    /*
+void TextDisplay::update(Subject<State> &whoFrom)
+{
     State s = whoFrom.getState();
-    MoveState m = whoFrom.getState().move;
-    switch (s.type)
+    Move m = whoFrom.getState().m;
+    Coord start = whoFrom.getState().m.start;
+    Coord end = whoFrom.getState().m.end;
+    char oldPiece = tiles[start.getCol()][start.getRow()];
+
+    switch (s.moveType)
     {
-    // case StateType::PlayerMove:
-    //     break;
-    // case StateType::NoType:
-    //     break;
-    case StateType::NewTile:
-        tiles = m.tiles
-        printTile();
-        break;
-    case StateType::UpdatingBoard:
-        Coord oldLoc = m.oldLoc;
-        Coord newLoc = m.newLoc;
-        char oldPiece = tiles[oldLoc.getCol()][oldLoc.getRow()];
-        switch (m.moveType)
+    case MoveType::Normal:
+    {
+        tiles[end.getCol()][end.getRow()] = oldPiece;
+        if ((start.getCol() % 2 == 0 && start.getRow() % 2 == 0) ||
+            (start.getCol() % 2 != 0 && start.getRow() % 2 != 0))
         {
-        case MoveType::Normal:
+            tiles[start.getCol()][start.getRow()] = '-';
+        }
+        else
         {
-            tiles[newLoc.getCol()][newLoc.getRow()] = oldPiece;
-            if ((oldLoc.getCol() % 2 == 0 && oldLoc.getRow() % 2 == 0) ||
-                (oldLoc.getCol() % 2 != 0 && oldLoc.getRow() % 2 != 0))
-            {
-                tiles[oldLoc.getCol()][oldLoc.getRow()] = '-';
-            }
-            else
-            {
-                tiles[oldLoc.getCol()][oldLoc.getRow()] = ' ';
-            }
-            break;
+            tiles[start.getCol()][start.getRow()] = ' ';
         }
-        case MoveType::PawnPromotion:
-        {
-            char pawnPromotion = m.pawnPromotion;
-            if ((oldLoc.getCol() % 2 == 0 && oldLoc.getRow() % 2 == 0) ||
-                (oldLoc.getCol() % 2 != 0 && oldLoc.getRow() % 2 != 0))
-            {
-                tiles[oldLoc.getCol()][oldLoc.getRow()] = '-';
-            }
-            else
-            {
-                tiles[oldLoc.getCol()][oldLoc.getRow()] = ' ';
-            }
-            if (pawnPromotion == 'Q' || pawnPromotion == 'q')
-            {
-                tiles[newLoc.getCol()][newLoc.getRow()] = {isupper(oldPiece) ? 'Q' : 'q'};
-            }
-            else if (pawnPromotion == 'B' || pawnPromotion == 'b')
-            {
-                tiles[newLoc.getCol()][newLoc.getRow()] = {isupper(oldPiece) ? 'B' : 'b'};
-            }
-            else if (pawnPromotion == 'R' || pawnPromotion == 'r')
-            {
-                tiles[newLoc.getCol()][newLoc.getRow()] = {isupper(oldPiece) ? 'R' : 'r'};
-            }
-            else if (pawnPromotion == 'N' || pawnPromotion == 'n')
-            {
-                tiles[newLoc.getCol()][newLoc.getRow()] = {isupper(oldPiece) ? 'N' : 'n'};
-            }
-            break;
-        }
-        case MoveType::Castle:
-        {
-            char rook;
-            if (newLoc.getCol() == 2)
-            {
-                rook = tiles[0][newLoc.getRow()];
-                tiles[4][newLoc.getRow()] = {newLoc.getRow() ? ' ' : '-'};
-                tiles[2][newLoc.getRow()] = oldPiece;
-                tiles[0][newLoc.getRow()] = {newLoc.getRow() ? ' ' : '-'};
-                tiles[3][newLoc.getRow()] = rook;
-            }
-            else if (newLoc.getCol() == 6)
-            {
-                rook = tiles[7][newLoc.getRow()];
-                tiles[4][newLoc.getRow()] = {newLoc.getRow() ? ' ' : '-'};
-                tiles[6][newLoc.getRow()] = oldPiece;
-                tiles[7][newLoc.getRow()] = {newLoc.getRow() ? '-' : ' '};
-                tiles[5][newLoc.getRow()] = rook;
-            }
-            break;
-        }
-        case MoveType::Enpassant:
-            break;
-        }
-        printTile();
         break;
     }
-    */
+    // case MoveType::PawnPromotion:
+    // {
+    //     char pawnPromotion = s.promotion;
+    //     if ((start.getCol() % 2 == 0 && start.getRow() % 2 == 0) ||
+    //         (start.getCol() % 2 != 0 && start.getRow() % 2 != 0))
+    //     {
+    //         tiles[start.getCol()][start.getRow()] = '-';
+    //     }
+    //     else
+    //     {
+    //         tiles[start.getCol()][start.getRow()] = ' ';
+    //     }
+    //     if (pawnPromotion == 'Q' || pawnPromotion == 'q')
+    //     {
+    //         tiles[end.getCol()][end.getRow()] = {isupper(oldPiece) ? 'Q' : 'q'};
+    //     }
+    //     else if (pawnPromotion == 'B' || pawnPromotion == 'b')
+    //     {
+    //         tiles[end.getCol()][end.getRow()] = {isupper(oldPiece) ? 'B' : 'b'};
+    //     }
+    //     else if (pawnPromotion == 'R' || pawnPromotion == 'r')
+    //     {
+    //         tiles[end.getCol()][end.getRow()] = {isupper(oldPiece) ? 'R' : 'r'};
+    //     }
+    //     else if (pawnPromotion == 'N' || pawnPromotion == 'n')
+    //     {
+    //         tiles[end.getCol()][end.getRow()] = {isupper(oldPiece) ? 'N' : 'n'};
+    //     }
+    //     break;
+    // }
+    // case MoveType::Castle:
+    // {
+    //     char rook;
+    //     if (end.getCol() == 2)
+    //     {
+    //         rook = tiles[0][end.getRow()];
+    //         tiles[4][end.getRow()] = {end.getRow() ? ' ' : '-'};
+    //         tiles[2][end.getRow()] = oldPiece;
+    //         tiles[0][end.getRow()] = {end.getRow() ? ' ' : '-'};
+    //         tiles[3][end.getRow()] = rook;
+    //     }
+    //     else if (end.getCol() == 6)
+    //     {
+    //         rook = tiles[7][end.getRow()];
+    //         tiles[4][end.getRow()] = {end.getRow() ? ' ' : '-'};
+    //         tiles[6][end.getRow()] = oldPiece;
+    //         tiles[7][end.getRow()] = {end.getRow() ? '-' : ' '};
+    //         tiles[5][end.getRow()] = rook;
+    //     }
+    //     break;
+    // }
+    // case MoveType::EnPassant:
+    //     break;
+    // }
+    printTile();
 }
 
 void TextDisplay::printTile()

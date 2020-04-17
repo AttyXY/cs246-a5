@@ -7,48 +7,54 @@
 #include "state.h"
 #include "subject.h"
 #include "observer.h"
-//#include "move.h"
+// #include "move.h"
 
-class Board {
+class Board: public Subject<State>, public Observer<State> {
     public:
         std::vector<std::vector<std::shared_ptr<Piece>>> tiles;
         std::vector<std::vector<char>> charTiles;
         void init(std::vector<std::vector<char>> &setupTiles);
-        bool move(Move m);
+        bool canMove(Subject<State> &whoFrom);
+        bool lastMoveValid = true;
         ~Board();
-
-        /*
-        //void update();
-        void add(Piece p);
+  
+        
+        // //void update();
+        void add(Move m); // remove at old coord
         void remove(Coord c);
-        void update(void);
-        void undo(void);
-        // void redo(void);
-        //TextDisplay td;
-        //GraphDisplay gd;
-        */
+        // void update(void);
+        // void undo(void);
+        // // void redo(void);
+        // //TextDisplay td;
+        // //GraphDisplay gd;
+        
 
 
-        /*
-        // Special moves
-        bool whiteCastled = false;
-        bool blackCastled = false;
-        bool isCastling(Move m);
+        
+        // Checks Special moves
+        // bool whiteCastled = false;
+        // bool blackCastled = false;
+        bool isCastling(Subject<State> &whoFrom);
 
-        bool isEnPassanable = false;
-        bool isEnPassant(Move m);
-        bool isPawnPromotion(Move m);
+        // bool isEnPassanable = false;
+        bool isEnPassant(Subject<State> &whoFrom);
+        bool isPawnPromotion(Subject<State> &whoFrom);
 
-        bool whiteInCheck = false;
-        bool blackInCheck = false;
-        int movesSinceCaptureOrPawn = 0;
-        bool isCheck(Move m);
-        bool isCheckmate(Move m);
-        bool isStalemate(Move m);
+        // bool whiteInCheck = false;
+        // bool blackInCheck = false;
+        // int movesSinceCaptureOrPawn = 0;
+        // bool isCheck(Move m);
+        // bool isCheckmate(Move m);
+        // bool isStalemate(Move m);
 
-        //std::vector<Moves> moves;
-        bool isThreefoldRepeat(Move m);
-        */
+        // //Special moves
+        // void castle(Subject <State> &whoFrom);
+        // bool promotePawn(Subject <State> &whoFrom);
+        // void enPassant(Move m);
+
+        // //std::vector<Moves> moves;
+        // bool isThreefoldRepeat(Move m);
+        
 
         /*
         // Endgame detection
@@ -56,7 +62,11 @@ class Board {
         bool isCheckmate = false;
         */
 
-
+        // To make our life easier
+        bool isWhite(Coord pos);
+        bool isBlack(Coord pos);
+        void update(Subject <State> &whoFrom);
+ 
 };
 
 #endif

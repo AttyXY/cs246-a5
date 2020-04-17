@@ -4,12 +4,14 @@
 #include "enums.h"
 #include "move.h"
 #include "subject.h"
+#include "observer.h"
 #include "state.h"
 
 
-class Player {
+class Player: public Subject<State> {
     public:
         Colour c;
+        PlayerType playerType;
         int score = 0;
 
         Player(Colour c, int score);

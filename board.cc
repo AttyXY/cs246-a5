@@ -81,65 +81,140 @@ void Board::init(std::vector<std::vector<char>> &setupTiles) {
 
 Board::~Board() {}
 
-bool Board::move(Move m) {
+bool Board::canMove(Subject <State> &whoFrom) { // check if can move
     /* LEGAL MOVE CHECKS
+    
     // TODO: check
     if (isCheck(m)) {
         whiteInCheck = true;
         blackInCheck = true;
         // TODO: checkmate
     }
-    // TODO: stalemate
-    bool isStalemate(Move m) {
-        // Insufficient pieces
-        if (King and Bishop || King and Knight) {
-
-        }
-        // No legal moves
-        for (auto &p: pieces) {if (p.legalMove(m))}
-    }
-    if (isStalemate(m)) {
-
+    else if (isStalemate(m)) {
+        // no legal move 
+        // game is a draw
     }
     // TODO: threefold repetition
     // TODO: fifty-move-rule
     */
+    State s = whoFrom.getState();
+    Colour playerColour = whoFrom.getState().c;
+    Move playerMove = whoFrom.getState().m;
+    Coord start = whoFrom.getState().m.start;
+    Coord end = whoFrom.getState().m.end;
+    shared_ptr<Piece> p = tiles[start.getCol()][start.getRow()];
 
-    /* VALID MOVE CHECKS
-    shared_ptr<Piece> p = grid[m.start.col][m.start.row];
+    //If the piece is not moving
+    if(start.getCol() == end.getCol() && start.getRow() == end.getRow()){
+        return false;
+    }
+    //If player tries to move an empty tile
+    if(!p) return false;
 
-    // TODO: castling
-    if (isCastling(m)) {
-        castle(m);
-    }
-    // TODO: pawn promotion
-    else if (isPawnPromotion(m)) {
+    //If the regular move is illegal
+    if(!p->isLegal(playerMove,tiles)) return false; // isLegal checks if piece is moving within board, is valid, or if the piece is capturing enemy's piece
 
-    }
-    // TODO: en passant
-    else if (isEnPassant(m)) {
-        enPassant(m);
-    }
+    //If a white player tries to move a black piece
+    if(playerColour == Colour::White && isBlack(start)) return false;
 
-    // regular move
-    else if (p.IsLegal(m)) {
-        b.move(p, m)
-        p.hasMoved = true;
-    }
-    else {
-        lastMoveValid = false;
-    }
-    */
+    //If a black player tries to move a white piece
+    if(playerColour == Colour::Black && isWhite(start)) return false;
 
-    return false;
+    return true;
 }
 
-/*
-void Board::add(Piece p) {}
-void Board::remove(Coord c) {}
-void Board::update(void) {}
+void Board::update(Subject<State> &whoFrom){ // Player notifies Board
+    Coord start = whoFrom.getState().m.start;
+    Coord end = whoFrom.getState().m.end;
+    Move playerMove = whoFrom.getState().m;
+    Colour playerColour = whoFrom.getState().c;
+    if(canMove(whoFrom)){
+        // checks if special move
+        if(isPawnPromotion(whoFrom)){
+            // lastMoveValid = promotePawn(whoFrom); // return boolean
+            return; 
+        }else if (isEnPassant(whoFrom)){
+            // lastMoveValid = isEnpassant(whoFrom); // return boolean
+            return;
+        }else if (isCastling(whoFrom)){
+            // lastMoveValid = castle(whoFrom); // return boolean
+            return;
+        } else { //if regular move
+            lastMoveValid = true;
+            add(playerMove);
+            State s;
+            s.m = whoFrom.getState().m;
+            s.c = whoFrom.getState().c;
+            s.moveType = MoveType::Normal;// to tell td to print normal move 
+            s.tiles = charTiles;
+            this->setState(s);
+            this->notify(); //notifies td and gd 
+            return;
+        }
+    } else {
+        lastMoveValid = false;
+        return;
+    }
+}
+
+void Board::add(Move m) {
+    Coord start = m.start;
+    Coord end = m.end;
+    std::shared_ptr<Piece> p = tiles[start.getCol()][start.getRow()];
+    std::shared_ptr<Piece> capturedPiece = tiles[end.getCol()][end.getRow()];
+    if(capturedPiece){ // check if a piece if captured
+        remove(end);
+    }
+    p->loc = end;
+    if(!p->hasMoved){
+        p->hasMoved = true;
+    }
+    tiles[end.getCol()][end.getRow()] = p;
+    tiles[start.getCol()][start.getRow()] = nullptr;
+}
+
+void Board::remove(Coord c) {
+    if(tiles[c.getCol()][c.getRow()]){
+        tiles[c.getCol()][c.getRow()] = nullptr;
+    }
+    // if using vector of blackPieces $ whitePieces needs to delete the corresponding piece
+}
+
 //void undo(void)
 // void redo(void);
 //TextDisplay td;
 //GraphDisplay gd;
-*/
+
+//  // TODO: stalemate
+//     bool isStalemate(Move m) {
+//         // Insufficient pieces
+//         if (King and Bishop || King and Knight) {
+
+//         }
+//         // No legal moves
+//         for (auto &p: pieces) {if (p.legalMove(m))}
+//     }
+
+
+bool Board::isPawnPromotion(Subject<State> &whoFrom){
+    return false;
+}
+bool Board::isEnPassant(Subject<State> &whoFrom){
+    return false;
+}
+bool Board::isCastling(Subject<State> &whoFrom){
+    return false;
+}
+
+bool Board::isBlack(Coord pos){
+    shared_ptr<Piece> p = tiles[pos.getCol()][pos.getRow()];
+    if(p->colour == Colour::Black) return true;
+    return false;
+}
+
+
+bool Board::isWhite(Coord pos){
+    shared_ptr<Piece> p = tiles[pos.getCol()][pos.getRow()];
+    if(p->colour == Colour::White) return true;
+    return false;
+}

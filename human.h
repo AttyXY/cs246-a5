@@ -9,9 +9,9 @@ class Human : public Player {
         Human(Colour c, int score = 0);
         ~Human();
 
-        //void move(Move m);
+        void move(Move m, char promotion = 0);
         //void undo(void);
-        //void redo(void);
+        //void redo(void);  
 };
 
 #endif
