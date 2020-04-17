@@ -3,7 +3,7 @@ using namespace std;
 
 Queen::Queen(Colour colour, PieceType pt): Piece{colour, pt} {}
 
-bool Queen::isLegal(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
+bool Queen::isLegalMove(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
     //Check if the end is out of the grid
     if (m.end.getRow() < 0 || m.end.getRow() > 7 || m.end.getCol() < 0 || m.end.getCol() > 7) {
         return false;
@@ -38,7 +38,7 @@ bool Queen::isLegal(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
             return true;
         }
     }
-    
+
     //Queen can move horizontally
     if (m.start.getRow() == m.end.getRow()) {
         if(m.start.getCol() > m.end.getCol()) {
@@ -97,7 +97,7 @@ bool Queen::isLegal(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
                 }
                 return true;
             }
-        }       
+        }
     }
     return false;
 }

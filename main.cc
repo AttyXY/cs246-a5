@@ -20,13 +20,15 @@ int main(int argc, char *argv[]) {
     string command;
     while (cin >> command) {
         if (command != "game" && command != "setup") {
-            cout << "Invalid command." << endl << endl;
+            cout << "Invalid command." << endl;
         }
         else if (command == "game") {
             if (!g->customSetup) {
                 g->td->setupTiles(g->isWhiteTurn, false);
             }
             g->b->init(g->td->tiles);
+            g->b->attach(g->td.get());
+            // g->b->attach(g->gd);
             g->runGame();
         }
         else {

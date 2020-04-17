@@ -9,7 +9,6 @@
 class Piece {
     public:
         Colour colour;
-        Coord loc;
         PieceType pt;
         bool hasMoved = false;
         bool isEnPassanable = false;
@@ -17,7 +16,7 @@ class Piece {
         Piece(Colour colour, PieceType pt);
         ~Piece();
 
-        virtual bool isLegal(Move m, std::vector<std::vector<std::shared_ptr<Piece>>> &tiles) = 0;
+        virtual bool isLegalMove(Move m, std::vector<std::vector<std::shared_ptr<Piece>>> &tiles) = 0;
 };
 
 //std::ostream &operator<<(std::ostream &out, const Piece &p);

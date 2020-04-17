@@ -95,72 +95,87 @@ void Board::init(const vector<vector<char>> &setupTiles) {
 
 void Board::update(Subject<State> &whoFrom) {
     State s = whoFrom.getState();
-    cout << s.m.start << endl;
-    cout << s.m.end << endl;
+    // cout << "From board: " << s.m.start << " " << s.m.end << endl;
+    legalLastMove = isLegalMove(whoFrom);
 
-    setState(s);
+    State newS{s.m, s.colour, charTiles};
+    setState(newS);
     notify();
 }
 
-bool Board::move(Move m) {
-    /* LEGAL MOVE CHECKS
-    // TODO: check
-    if (isCheck(m)) {
-        whiteInCheck = true;
-        blackInCheck = true;
-        // TODO: checkmate
-    }
-    // TODO: stalemate
-    bool isStalemate(Move m) {
-        // Insufficient pieces
-        if (King and Bishop || King and Knight) {
+bool Board::isLegalMove(Subject<State> &whoFrom) {
+    State s = whoFrom.getState();
+    Move m = s.m;
+    Coord start = m.start;
+    Coord end = m.end;
 
-        }
-        // No legal moves
-        for (auto &p: pieces) {if (p.legalMove(m))}
-    }
-    if (isStalemate(m)) {
+    // STANDARD CHECKS
+    if ((tiles[start.row][start.col] == nullptr) ||  // Empty tile
+        (s.colour != tiles[start.row][start.col]->colour) // Move other player's piece
+        // TODO: Weird segfault with the case below
+        // (s.colour != tiles[end.row][end.col]->colour) { // Move onto own piece
+     ) {
+         return false;
+     }
 
-    }
+    // TODO: LEGAL MOVE CHECKS
+    // if (isCheck(m)) {
+    //     whiteInCheck = true;
+    //     blackInCheck = true;
+    //     // TODO: checkmate
+    // }
+    // // TODO: stalemate
+    // bool isStalemate(Move m) {
+    //     // Insufficient pieces
+    //     if (King and Bishop || King and Knight) {
+
+    //     }
+    //     // No legal moves
+    //     for (auto &p: pieces) {if (p.legalMove(m))}
+    // }
+    // if (isStalemate(m)) {
+
+    // }
     // TODO: threefold repetition
     // TODO: fifty-move-rule
-    */
 
-    /* VALID MOVE CHECKS
-    shared_ptr<Piece> p = grid[m.start.col][m.start.row];
-
+    // TODO: SPECIAL MOVE CHECKS
     // TODO: castling
-    if (isCastling(m)) {
-        castle(m);
-    }
+    // if (isCastling(m)) {
+    //     castle(m);
+    // }
     // TODO: pawn promotion
-    else if (isPawnPromotion(m)) {
+    // else if (isPawnPromotion(m)) {
 
-    }
+    // }
     // TODO: en passant
-    else if (isEnPassant(m)) {
-        enPassant(m);
-    }
+    // else if (isEnPassant(m)) {
+    //     enPassant(m);
+    // }
 
-    // regular move
-    else if (p.IsLegal(m)) {
-        b.move(p, m)
-        p.hasMoved = true;
-    }
-    else {
-        lastMoveValid = false;
-    }
-    */
+    // BASIC MOVE CHECKS
+    movePiece(m);
+    // if (tiles[start.row][start.col]->isLegalMove(m, tiles)) {
+    //     movePiece(m);
+    //     tiles[start.row][start.col]->hasMoved = true;
+    // } else {
+    //     return false;
+    // }
 
-    return false;
+    return true;
 }
 
-/*
-void Board::add(Piece p) {}
-void Board::remove(Coord c) {}
-void Board::update(void) {}
-//void undo(void)
-// void redo(void);
-//TextDisplay td;
-//GraphDisplay gd;
-*/
+void Board::movePiece(const Move &m) {
+    addPiece(m.start, m.end);
+    removePiece(m.start);
+}
+
+void Board::removePiece(const Coord &c) {
+    charTiles[c.row][c.col] = '-';
+    tiles[c.row][c.col] = nullptr;
+}
+
+void Board::addPiece(const Coord &start, const Coord &end) {
+    charTiles[end.row][end.col] = charTiles[start.row][start.col];
+    tiles[end.row][end.col] = tiles[start.row][start.col];
+}

@@ -21,20 +21,18 @@ class Board : public Observer<State>, public Subject<State> {
         std::vector<std::vector<std::shared_ptr<Piece>>> tiles;
         std::vector<std::vector<char>> charTiles;
         void init(const std::vector<std::vector<char>> &setupTiles);
-        bool move(Move m);
+        bool isLegalMove(Subject<State> &whoFrom);
         ~Board();
 
         // Subject-observer
         void update(Subject<State> &whoFrom);
 
-        /*
-        void add(Piece p);
-        void remove(Coord c);
-        void update(void);
-        void undo(void);
+        // Basic move
+        void movePiece(const Move &m);
+        void removePiece(const Coord &c);
+        void addPiece(const Coord &start, const Coord &end);
+        // void undo(void);
         // void redo(void);
-        //GraphDisplay gd;
-        */
 
 
        bool legalLastMove = true;

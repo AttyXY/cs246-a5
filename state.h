@@ -6,13 +6,14 @@
 
 struct State {
     Move m;
-    Colour c;
+    Colour colour;
     std::vector<std::vector<char>> tiles;
 
     State(Move m = Move{},
-          Colour c = Colour::NoColour,
-          std::vector<std::vector<char>> tiles = std::vector<std::vector<char>>()
-    ) : m{m}, c{c}, tiles{tiles} {}
+          Colour colour = Colour::NoColour,
+          const std::vector<std::vector<char>> &tiles =
+            std::vector<std::vector<char>>()
+    ) : m{m}, colour{colour}, tiles{tiles} {}
 };
 
 #endif

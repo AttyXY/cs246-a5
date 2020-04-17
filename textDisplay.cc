@@ -8,8 +8,8 @@ TextDisplay::TextDisplay() {
 }
 
 void TextDisplay::printTiles() {
-    for (int row = 8; row > 0; --row) {
-		cout << row << "  "; // print rows in reverse
+    for (int row = 8; row > 0; --row) { // print rows in reverse
+		cout << row << "  ";
 		for (int col = 0; col < 8; ++col) {
 			cout << tiles[row - 1][col];
 		}
@@ -23,38 +23,38 @@ void TextDisplay::printTiles() {
 
 bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
     if (!custom) {
-        for (int row = 0; row < 8; ++row) {
-            for (int col = 0; col < 8; ++col) {
-                if (col == 0) {
-                    if (row == 0 || row == 7) {
-                        tiles[col][row] = 'R';
-                    } else if (row == 1 || row == 6) {
-                        tiles[col][row] = 'N';
-                    } else if (row == 2 || row == 5) {
-                        tiles[col][row] = 'B';
-                    }  else if (row == 3) {
-                        tiles[col][row] = 'Q';
-                    } else if (row == 4) {
-                        tiles[col][row] = 'K';
+        for (int col = 0; col < 8; ++col) {
+            for (int row = 0; row < 8; ++row) {
+                if (row == 0) {
+                    if (col == 0 || col == 7) {
+                        tiles[row][col] = 'R';
+                    } else if (col == 1 || col == 6) {
+                        tiles[row][col] = 'N';
+                    } else if (col == 2 || col == 5) {
+                        tiles[row][col] = 'B';
+                    }  else if (col == 3) {
+                        tiles[row][col] = 'Q';
+                    } else if (col == 4) {
+                        tiles[row][col] = 'K';
                     }
-                } else if (col == 7) {
-                    if (row == 0 || row == 7) {
-                        tiles[col][row] = 'r';
-                    } else if (row == 1 || row == 6) {
-                        tiles[col][row] = 'n';
-                    } else if (row == 2 || row == 5) {
-                        tiles[col][row] = 'b';
-                    }  else if (row == 3) {
-                        tiles[col][row] = 'q';
-                    } else if (row == 4) {
-                        tiles[col][row] = 'k';
+                } else if (row == 7) {
+                    if (col == 0 || col == 7) {
+                        tiles[row][col] = 'r';
+                    } else if (col == 1 || col == 6) {
+                        tiles[row][col] = 'n';
+                    } else if (col == 2 || col == 5) {
+                        tiles[row][col] = 'b';
+                    }  else if (col == 3) {
+                        tiles[row][col] = 'q';
+                    } else if (col == 4) {
+                        tiles[row][col] = 'k';
                     }
-                } else if (col == 1) {
-                    tiles[col][row] = 'P';
-                } else if (col == 6) {
-                    tiles[col][row] = 'p';
+                } else if (row == 1) {
+                    tiles[row][col] = 'P';
+                } else if (row == 6) {
+                    tiles[row][col] = 'p';
                 } else {
-                    tiles[col][row] = '-';
+                    tiles[row][col] = '-';
                 }
             }
         }
@@ -107,6 +107,16 @@ bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
 
 void TextDisplay::update(Subject<State> &whoFrom) {
     State s = whoFrom.getState();
-    cout << s.m.start << endl;
-    cout << s.m.end << endl;
+    // for (int row = 8; row > 0; --row) {
+	// 	cout << row << "  "; // print rows in reverse
+	// 	for (int col = 0; col < 8; ++col) {
+	// 		cout << s.tiles[row - 1][col];
+	// 	}
+	// 	cout << endl;
+	// }
+	// cout << "   abcdefgh" << endl << endl;
+
+    tiles = s.tiles;
+    printTiles();
+    // cout << "From textDisplay: " << s.m.start << " " << s.m.end << endl;
 }

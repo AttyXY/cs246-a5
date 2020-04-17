@@ -51,15 +51,17 @@ void Game::runGame(void) {
             // char promotedPiece;
             if (IsValidInput(start) && IsValidInput(end)) {
                 m.start = start; m.end = end;
+            } else {
+                continue; // TODO: prints program for some reason?
             }
 
-            // Move + output outcome
             if (isWhiteTurn) {
                 p1->move(m);
             } else {
                 p2->move(m);
             }
 
+            // Output board state
             if (b->whiteInCheck) {
                 cout << "White is in check." << endl;
                 if (b->checkmated) {
