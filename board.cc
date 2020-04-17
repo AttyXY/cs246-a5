@@ -108,14 +108,6 @@ void Board::init(const vector<vector<char>> &setupTiles) {
             }
         }
     }
-    // td = std::make_shared<TextDisplay>();
-    // attach(td.get());
-    // this->attach(gd.get());
-    // this->setState(State{StateType::NewGrid, Move{MoveType::NoType, Coordinate{},
-    //                                                 Coordinate{}, '-', tempGrid}});
-    // this->notify();
-
-    // gd = std::make_shared<GraphicsDisplay>();
 }
 
 
@@ -136,18 +128,15 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
     Coord end = m.end;
 
     // STANDARD CHECKS
-    // tiles[end.row][end.col]->colour; // works
-    // cout << colourToStr.at(tiles[end.row][end.col]->colour) << endl;
-    if (tiles[end.row][end.col]->colour == Colour::White) {
-        cout << "reee" << endl;
+    if (tiles[end.row][end.col] != nullptr) {
+        if ((s.colour == tiles[end.row][end.col]->colour) || // Move onto own piece
+            (s.colour != tiles[start.row][start.col]->colour)) { // Move other player's piece
+            return false;
+        }
     }
-    // if ((s.colour == tiles[end.row][end.col]->colour) || // Move onto own piece
-    //     (tiles[start.row][start.col] == nullptr) ||  // Empty tile
-    //     (s.colour != tiles[start.row][start.col]->colour) // Move other player's piece
-    //     // TODO: Weird segfault with the case below
-    //  ) {
-    //      return false;
-    //  }
+    if (tiles[start.row][start.col] == nullptr) { // Empty tile
+        return false;
+    }
 
     // TODO: LEGAL MOVE CHECKS
      if (isCheck(m)) {
@@ -199,11 +188,9 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
     // }
 
     // BASIC MOVE CHECKS
-    // movePiece(m);
-    // tiles[start.row][start.col]->isLegalMove(m, tiles);
     if (tiles[start.row][start.col]->isLegalMove(m, tiles)) {
         movePiece(m);
-        // tiles[start.row][start.col]->hasMoved = true;
+        tiles[end.row][end.col]->hasMoved = true;
     } else {
         return false;
     }
@@ -251,4 +238,3 @@ bool Board::isCheck(Move m) {
     }
     return false;
 }
-
