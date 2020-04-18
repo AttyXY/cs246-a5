@@ -7,6 +7,7 @@
 class Display: public Observer<State> {
     public:
         std::vector<std::vector<char>> tiles;
+        virtual void reset() = 0;
 
     // public:
     //     void update(void);
