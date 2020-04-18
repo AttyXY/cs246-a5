@@ -26,7 +26,7 @@ istream &operator>>(istream &in, Coord &c) {
         throw invalid_argument("Invalid coordinate.");
     }
     try {
-        c.col = c.colToIdx.at(col);
+        c.col = c.colToIdx.at(tolower(col));
     } catch (const out_of_range &e) {
         throw invalid_argument("Invalid coordinate.");
     }

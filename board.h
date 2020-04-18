@@ -20,27 +20,24 @@ class Board : public Observer<State>, public Subject<State> {
     public:
         std::vector<std::vector<std::shared_ptr<Piece>>> tiles;
         std::vector<std::vector<char>> charTiles;
-        bool init(const std::vector<std::vector<char>> &setupTiles);
-        bool isLegalMove(Subject<State> &whoFrom);
-        // bool isCapture(Subject<State> &whoFrom);
         std::vector<std::shared_ptr<Piece>> whitePieces;
         std::vector<std::shared_ptr<Piece>> blackPieces;
         std::shared_ptr<Piece> wk;
         std::shared_ptr<Piece> bk;
-        ~Board();
+        bool legalLastMove = true;
 
-        // Subject-observer
-        void update(Subject<State> &whoFrom);
 
         // Basic move
+        Board();
+        void reset();
+        bool init(const std::vector<std::vector<char>> &setupTiles);
         void movePiece(const Move &m);
         void removePiece(const Coord &c);
         void addPiece(const Coord &start, const Coord &end);
-        // void undo();
-        // void redo();
+        bool isLegalMove(Subject<State> &whoFrom);
+        // bool isCapture(Subject<State> &whoFrom);
 
 
-       bool legalLastMove = true;
         // Special moves
         bool whiteCastled = false;
         bool blackCastled = false;
@@ -52,18 +49,24 @@ class Board : public Observer<State>, public Subject<State> {
 
         bool whiteInCheck = false; //white is dying
         bool blackInCheck = false; //black is dying
-        int movesSinceCaptureOrPawn = 0;
-        // bool isCheck();
+        bool isCheck();
         bool isCheckmate(Move m);
+
+        int movesSinceCaptureOrPawn = 0;
         bool isStalemate(Move m);
 
-        std::vector<Move> moves;
-        bool isThreefoldRepeat(Move m);
+        // std::vector<Move> moves;
+        // void undo();
+        // void redo()
+        // bool isThreefoldRepeat(Move m);
 
         // Endgame detection
         bool stalemated = false;
         bool checkmated = false;
 
+
+        // Subject-observer
+        void update(Subject<State> &whoFrom);
 };
 
 #endif

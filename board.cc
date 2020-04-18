@@ -1,14 +1,14 @@
 #include "board.h"
 using namespace std;
 
+Board::Board() {
+    reset();
+}
 
-Board::~Board() {}
+void Board::reset() {
+    vector<char> row(8, '-');
+	charTiles = vector<vector<char>>(8, row);
 
-bool Board::init(const vector<vector<char>> &setupTiles) {
-    // Copy setupTiles into charTiles
-    charTiles = setupTiles;
-
-    // Convert setupTiles into board
     for (size_t row = 0; row < charTiles.size(); ++row) {
         tiles.emplace_back(std::vector<std::shared_ptr<Piece>>());
         for (size_t col = 0; col < charTiles[row].size(); ++col) {
@@ -16,6 +16,15 @@ bool Board::init(const vector<vector<char>> &setupTiles) {
         }
     }
 
+}
+
+bool Board::init(const vector<vector<char>> &setupTiles) {
+    reset(); // start with clear, fully initialized vectors
+
+    // Copy setupTiles into charTiles
+    charTiles = setupTiles;
+
+    // Convert setupTiles into board
     for (int row = 0; row < (int)tiles.size(); ++row) {
         for (int col = 0; col < (int)tiles[row].size(); ++col) {
             switch(setupTiles[col][row]) {
@@ -108,9 +117,9 @@ bool Board::init(const vector<vector<char>> &setupTiles) {
             }
         }
     }
-    // if (isCheck()) {
-    //     return false;
-    // }
+    if (isCheck()) {
+        return false;
+    }
     return true;
 }
 
@@ -142,33 +151,34 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
     }
 
     // TODO: LEGAL MOVE CHECKS
-    // shared_ptr<Piece> temp = tiles[end.row][end.col];
-    // tiles[end.row][end.col] = tiles[start.row][start.col];
-    // tiles[start.row][start.col] = nullptr;
-    // if (isCheck()) {
-    //         if(s.colour == Colour::White) {
-    //             if (whiteInCheck) {
-    //                 //undo since it's a suicide move
-    //                 tiles[start.row][start.col] = tiles[end.row][end.col];
-    //                 tiles[end.row][end.col] = temp;
-    //                 return false;
-    //             } else if (blackInCheck) {
-    //                 //TODO: CHECK
-    //                 return true;
-    //             }
-    //         } else if (s.colour == Colour::Black) {
-    //             if (whiteInCheck) {
-    //                 //TODO: CHECK
-    //                 return true;
-    //             } else if (blackInCheck){
-    //                 tiles[start.row][start.col] = tiles[end.row][end.col];
-    //                 tiles[end.row][end.col] = temp;
-    //                 return false;
-    //             }
-    //         }
-    // }
-    // tiles[start.row][start.col] = tiles[end.row][end.col];
-    // tiles[end.row][end.col] = temp;
+    shared_ptr<Piece> temp = tiles[end.row][end.col];
+    tiles[end.row][end.col] = tiles[start.row][start.col];
+    tiles[start.row][start.col] = nullptr;
+    if (isCheck()) {
+            if(s.colour == Colour::White) {
+                if (whiteInCheck) {
+                    //undo since it's a suicide move
+                    tiles[start.row][start.col] = tiles[end.row][end.col];
+                    tiles[end.row][end.col] = temp;
+                    return false;
+                } else if (blackInCheck) {
+                    //TODO: CHECK
+                    return true;
+                }
+            } else if (s.colour == Colour::Black) {
+                if (whiteInCheck) {
+                    //TODO: CHECK
+                    return true;
+                } else if (blackInCheck){
+                    tiles[start.row][start.col] = tiles[end.row][end.col];
+                    tiles[end.row][end.col] = temp;
+                    return false;
+                }
+            }
+    }
+    tiles[start.row][start.col] = tiles[end.row][end.col];
+    tiles[end.row][end.col] = temp;
+
     // // TODO: stalemate
     // bool isStalemate(Move m) {
     //     // Insufficient pieces
@@ -231,20 +241,20 @@ void Board::addPiece(const Coord &start, const Coord &end) {
     }
 }
 
-// bool Board::isCheck() {
-//     for (int n = 0; n < (int)blackPieces.size(); n++) {
-//         Move newMove{blackPieces[n]->pos, wk->pos};
-//         if (blackPieces[n]->isLegalMove(newMove, tiles)) {
-//             whiteInCheck = true;
-//             return true;
-//         }
-//     }
-//     for (int n = 0; n < (int)whitePieces.size(); n++) {
-//         Move newMove{whitePieces[n]->pos, bk->pos};
-//         if (whitePieces[n]->isLegalMove(newMove, tiles)) {
-//             blackInCheck = true;
-//             return true;
-//         }
-//     }
-//     return false;
-// }
+bool Board::isCheck() {
+    for (int n = 0; n < (int)blackPieces.size(); n++) {
+        Move newMove{blackPieces[n]->pos, wk->pos};
+        if (blackPieces[n]->isLegalMove(newMove, tiles)) {
+            whiteInCheck = true;
+            return true;
+        }
+    }
+    for (int n = 0; n < (int)whitePieces.size(); n++) {
+        Move newMove{whitePieces[n]->pos, bk->pos};
+        if (whitePieces[n]->isLegalMove(newMove, tiles)) {
+            blackInCheck = true;
+            return true;
+        }
+    }
+    return false;
+}

@@ -23,6 +23,7 @@ void TextDisplay::printTiles() {
 }
 
 bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
+    reset(); // start with clear, fully initialized vector
     if (!custom) {
         for (int col = 0; col < 8; ++col) {
             for (int row = 0; row < 8; ++row) {
