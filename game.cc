@@ -43,6 +43,9 @@ void Game::runGame(void) {
     td->printTiles();
     string command;
     while (cin >> command) {
+        if (command == "quit") {
+            return;
+        }
         if (command == "move") {
             Coord start;
             Coord end;
@@ -57,23 +60,32 @@ void Game::runGame(void) {
 
             if (isWhiteTurn) {
                 p1->move(m);
+                isWhiteTurn = false;
             } else {
                 p2->move(m);
+                isWhiteTurn = true;
             }
 
             // Output board state
             if (b->whiteInCheck) {
                 cout << "White is in check." << endl;
                 if (b->checkmated) {
+                    ++p2->score;
                     cout << "Checkmate! Black wins!" << endl;
+                    return;
                 }
             } else if (b->blackInCheck) {
                 cout << "Black is in check." << endl;
                 if (b->checkmated) {
+                    ++p1->score;
                     cout << "Checkmate! White wins!" << endl;
+                    return;
                 }
             } else if (b->stalemated) {
+                p1->score = p1->score + 0.5;
+                p2->score = p2->score + 0.5;
                 cout << "Stalemate!" << endl;
+                return;
             } else if (!b->legalLastMove) {
                 cout << "Invalid move. Input another move." << endl;
             }
@@ -86,10 +98,7 @@ void Game::runGame(void) {
                 ++p1->score;
                 cout << "White wins!" << endl;
             }
-            // print score
-            cout << "Final Score:" << endl;
-            cout << "White: " << p1->score << endl;
-            cout << "Black: " << p2->score << endl;
+            return;
         }
     }
 }

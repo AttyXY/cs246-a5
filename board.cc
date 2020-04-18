@@ -4,7 +4,7 @@ using namespace std;
 
 Board::~Board() {}
 
-void Board::init(const vector<vector<char>> &setupTiles) {
+bool Board::init(const vector<vector<char>> &setupTiles) {
     // Copy setupTiles into charTiles
     charTiles = setupTiles;
 
@@ -108,6 +108,10 @@ void Board::init(const vector<vector<char>> &setupTiles) {
             }
         }
     }
+    if (isCheck()) {
+        return false;
+    }
+    return true;
 }
 
 
@@ -128,13 +132,12 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
     Coord end = m.end;
 
     // STANDARD CHECKS
-    if (tiles[end.row][end.col] != nullptr) {
-        if ((s.colour == tiles[end.row][end.col]->colour) || // Move onto own piece
-            (s.colour != tiles[start.row][start.col]->colour)) { // Move other player's piece
-            return false;
-        }
+    if (tiles[end.row][end.col] != nullptr &&
+        s.colour == tiles[end.row][end.col]->colour) { // Move onto own piece
+        return false;
     }
-    if (tiles[start.row][start.col] == nullptr) { // Empty tile
+    if (tiles[start.row][start.col] == nullptr ||  // Empty tile
+        (s.colour != tiles[start.row][start.col]->colour)) { // Move other player's piece) {
         return false;
     }
 
@@ -142,7 +145,7 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
     shared_ptr<Piece> temp = tiles[end.row][end.col];
     tiles[end.row][end.col] = tiles[start.row][start.col];
     tiles[start.row][start.col] = nullptr;
-    if (isCheck(m)) {
+    if (isCheck()) {
             if(s.colour == Colour::White) {
                 if (whiteInCheck) {
                     //undo since it's a suicide move
@@ -228,7 +231,7 @@ void Board::addPiece(const Coord &start, const Coord &end) {
     }
 }
 
-bool Board::isCheck(Move m) {
+bool Board::isCheck() {
     for (int n = 0; n < (int)blackPieces.size(); n++) {
         Move newMove{blackPieces[n]->pos, wk->pos};
         if (blackPieces[n]->isLegalMove(newMove, tiles)) {

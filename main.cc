@@ -19,25 +19,35 @@ int main(int argc, char *argv[]) {
     // SETUP BOARD
     string command;
     while (cin >> command) {
-        if (command != "game" && command != "setup") {
+        if (command == "quit") {
+            break;
+        }
+        else if (command != "game" && command != "setup") {
             cout << "Invalid command." << endl;
         }
         else if (command == "game") {
             if (!g->customSetup) {
                 g->td->setupTiles(g->isWhiteTurn, false);
+                g->b->init(g->td->tiles); // validity already checked
             }
-            g->b->init(g->td->tiles);
             g->b->attach(g->td.get());
             // g->b->attach(g->gd);
             g->runGame();
+            cout << "Final Score:" << endl;
+            cout << "White: " << g->p1->score << endl;
+            cout << "Black: " << g->p2->score << endl;
         }
-        else {
+        else if (command == "setup") {
             cout << "STARTING SETUP" << endl << endl;
-            if (g->td->setupTiles(g->isWhiteTurn, true)) {
+            g->td->reset(); // Make sure td is clear
+            if (g->td->setupTiles(g->isWhiteTurn, true) &&
+                g->b->init(g->td->tiles)) {
                 g->customSetup = true;
             } else {
                 cout << "Invalid setup." << endl << endl;
             }
         }
     }
+    cout << "THANKS FOR PLAYING CHESS!" << endl;
+
 }

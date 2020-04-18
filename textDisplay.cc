@@ -3,6 +3,10 @@ using namespace std;
 
 
 TextDisplay::TextDisplay() {
+    reset();
+}
+
+void TextDisplay::reset() {
     vector<char> row(8, '-');
 	tiles = vector<vector<char>>(8, row);
 }
@@ -17,9 +21,6 @@ void TextDisplay::printTiles() {
 	}
 	cout << "   abcdefgh" << endl << endl;
 }
-
-
-
 
 bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
     if (!custom) {
@@ -85,9 +86,9 @@ bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
                 }
             } else if (command == "done") {
                 // TODO: Check setup is valid
-                // if (!isValidSetup()) {
-                //     return false;
-                // }
+                if (!isValidSetup()) {
+                    return false;
+                }
                 return true;
             } else {
                 cout << "Invalid command." << endl;
@@ -98,25 +99,30 @@ bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
     return true;
 }
 
-// bool TextDisplay::isValidSetup() {
-    // bool oneWhiteKing = false;
-    // bool oneBlackKing = false;
-    // bool noPawnsLastRows = true;
-    // bool kingInCheck = false;
-// }
+bool TextDisplay::isValidSetup() {
+    int numWhiteKings = 0;
+    int numBlackKings = 0;
+    bool noPawnsLastRows = true;
+
+    for (int col = 0; col < 8; ++col) {
+        for (int row = 0; row < 8; ++row) {
+            if (tiles[row][col] == 'k') {
+                ++numBlackKings;
+            } else if (tiles[row][col] == 'K') {
+                ++numWhiteKings;
+            } else if (row == 0 || row == 7) {
+                if (toupper(tiles[row][col]) == 'P') {
+                    noPawnsLastRows = false;
+                }
+            }
+        }
+    }
+    return (numWhiteKings == 1 && numBlackKings == 1  && noPawnsLastRows);
+}
 
 void TextDisplay::update(Subject<State> &whoFrom) {
     State s = whoFrom.getState();
-    // for (int row = 8; row > 0; --row) {
-	// 	cout << row << "  "; // print rows in reverse
-	// 	for (int col = 0; col < 8; ++col) {
-	// 		cout << s.tiles[row - 1][col];
-	// 	}
-	// 	cout << endl;
-	// }
-	// cout << "   abcdefgh" << endl << endl;
 
     tiles = s.tiles;
     printTiles();
-    // cout << "From textDisplay: " << s.m.start << " " << s.m.end << endl;
 }

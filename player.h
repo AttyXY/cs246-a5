@@ -12,9 +12,9 @@
 class Player : public Subject<State> {
     public:
         Colour c;
-        int score = 0;
+        double score = 0;
 
-        Player(Colour c, int score);
+        Player(Colour c, double score);
         ~Player();
         virtual void move(Move m) = 0;
         //virtual void undo(void) = 0;
