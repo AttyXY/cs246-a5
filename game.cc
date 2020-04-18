@@ -60,10 +60,8 @@ void Game::runGame(void) {
 
             if (isWhiteTurn) {
                 p1->move(m);
-                isWhiteTurn = false;
             } else {
                 p2->move(m);
-                isWhiteTurn = true;
             }
 
             // Output board state
@@ -88,7 +86,10 @@ void Game::runGame(void) {
                 return;
             } else if (!b->legalLastMove) {
                 cout << "Invalid move. Input another move." << endl;
+            } else {
+                isWhiteTurn = !isWhiteTurn;
             }
+
         }
         else if (command == "resign") {
             if (isWhiteTurn) {

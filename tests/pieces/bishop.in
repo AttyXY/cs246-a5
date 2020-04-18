@@ -1,6 +1,9 @@
-setup
-+ k a1
-+ K h8
-done
-game human human
+game human human 
+move b2 b4
+move b7 b6
+move c1 b2
+move c8 b7
+move b2 g7
+move b7 e4
+quit
 quit
