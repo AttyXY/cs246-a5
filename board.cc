@@ -150,10 +150,15 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
     //  }
 
     // TODO: LEGAL MOVE CHECKS
-     if (isCheck(m)) {
+    shared_ptr<Piece> temp = tiles[end.row][end.col];
+    tiles[end.row][end.col] = tiles[start.row][start.col];
+    tiles[start.row][start.col] = nullptr;
+    if (isCheck(m)) {
             if(s.colour == Colour::White) {
                 if (whiteInCheck) {
-                    //undo();
+                    //undo since it's a suicide move
+                    tiles[start.row][start.col] = tiles[end.row][end.col];
+                    tiles[end.row][end.col] = temp;
                     return false;
                 } else if (blackInCheck) {
                     //TODO: CHECK
@@ -164,11 +169,14 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
                     //TODO: CHECK
                     return true;
                 } else if (blackInCheck){
-                    //undo();
+                    tiles[start.row][start.col] = tiles[end.row][end.col];
+                    tiles[end.row][end.col] = temp;
                     return false;
                 }
             }
-     }
+    }
+    tiles[start.row][start.col] = tiles[end.row][end.col];
+    tiles[end.row][end.col] = temp;
     // // TODO: stalemate
     // bool isStalemate(Move m) {
     //     // Insufficient pieces
@@ -234,7 +242,6 @@ void Board::addPiece(const Coord &start, const Coord &end) {
 }
 
 bool Board::isCheck(Move m) {
-    movePiece(m);
     for (int n = 0; n < (int)blackPieces.size(); n++) {
         Move newMove{blackPieces[n]->pos, wk->pos};
         if (blackPieces[n]->isLegalMove(newMove, tiles)) {
