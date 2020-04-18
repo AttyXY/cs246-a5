@@ -10,9 +10,9 @@ bool Queen::isLegalMove(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
 
     //Queen can move vertically
     if (m.start.getCol() == m.end.getCol()) {
-        if(m.start.getRow() > m.end.getRow()) {
+        if (m.start.getRow() > m.end.getRow()) {
             for(int n = 1; n < ver; n++) {
-                if(tiles[m.start.getCol()][m.start.getRow() - n] != nullptr) {
+                if(tiles[m.start.getRow() - n][m.start.getCol()] != nullptr) {
                     return false;
                 }
             }
@@ -20,7 +20,7 @@ bool Queen::isLegalMove(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
         }
         if (m.start.getRow() < m.end.getRow()) {
             for(int n = 1; n < ver; n++) {
-                if(tiles[m.start.getCol()][m.start.getRow() + n] != nullptr) {
+                if(tiles[m.start.getRow() + n][m.start.getCol()] != nullptr) {
                     return false;
                 }
             }
@@ -32,16 +32,16 @@ bool Queen::isLegalMove(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
     if (m.start.getRow() == m.end.getRow()) {
         if(m.start.getCol() > m.end.getCol()) {
             for(int n = 1; n < hor; n++) {
-                if(tiles[m.start.getCol() - n][m.start.getRow()] != nullptr) {
+                if(tiles[m.start.getRow()][m.start.getCol() - n] != nullptr) {
                     return false;
                 }
             }
             return true;
         }
 
-        if(m.start.getCol() < m.end.getCol()) {
+        if (m.start.getCol() < m.end.getCol()) {
             for(int n = 1; n < hor; n++) {
-                if(tiles[m.start.getCol() + n][m.start.getRow()] != nullptr) {
+                if(tiles[m.start.getRow()][m.start.getCol() + n] != nullptr) {
                     return false;
                 }
             }
@@ -50,11 +50,11 @@ bool Queen::isLegalMove(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
     }
 
     //Queen can move diagonally
-    if(hor == ver) {
+    if (hor == ver) {
         if(m.start.getCol() > m.end.getCol()) {
             if(m.start.getRow() > m.end.getRow()) {
                 for(int n = 1; n < hor; n++) {
-                    if(tiles[m.start.getCol() - n][m.start.getRow() - n] != nullptr) {
+                    if(tiles[m.start.getRow() - n][m.start.getCol() - n] != nullptr) {
                         return false;
                     }
                 }
@@ -62,7 +62,7 @@ bool Queen::isLegalMove(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
             }
             if(m.start.getRow() < m.end.getRow()) {
                 for(int n = 1; n < hor; n++) {
-                    if(tiles[m.start.getCol() - n][m.start.getRow() + n] != nullptr) {
+                    if(tiles[m.start.getRow() + n][m.start.getCol() - n] != nullptr) {
                         return false;
                     }
                 }
@@ -72,7 +72,7 @@ bool Queen::isLegalMove(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
         if(m.start.getCol() < m.end.getCol()) {
             if(m.start.getRow() > m.end.getRow()) {
                 for(int n = 1; n < hor; n++) {
-                    if(tiles[m.start.getCol() + n][m.start.getRow() - n] != nullptr) {
+                    if(tiles[m.start.getRow() - n][m.start.getCol() + n] != nullptr) {
                         return false;
                     }
                 }
@@ -80,7 +80,7 @@ bool Queen::isLegalMove(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
             }
             if(m.start.getRow() < m.end.getRow()) {
                 for(int n = 1; n < hor; n++) {
-                    if(tiles[m.start.getCol() + n][m.start.getRow() + n] != nullptr) {
+                    if(tiles[m.start.getRow() + n][m.start.getCol() + n] != nullptr) {
                         return false;
                     }
                 }
