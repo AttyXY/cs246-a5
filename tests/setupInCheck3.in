@@ -1,0 +1,11 @@
+setup
++ k a1
++ K h8
++ Q d1
+done
+setup
++ k c3
++ K f6
++ P d2
+done
+quit
