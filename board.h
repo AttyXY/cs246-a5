@@ -28,7 +28,6 @@ class Board : public Observer<State>, public Subject<State> {
 
 
         // Basic move
-        Board();
         void reset();
         bool init(const std::vector<std::vector<char>> &setupTiles);
         void movePiece(const Move &m);

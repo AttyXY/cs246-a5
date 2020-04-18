@@ -1,21 +1,19 @@
 #include "board.h"
 using namespace std;
 
-Board::Board() {
-    reset();
-}
 
 void Board::reset() {
     vector<char> row(8, '-');
 	charTiles = vector<vector<char>>(8, row);
 
+    vector<vector<shared_ptr<Piece>>> newTiles;
     for (size_t row = 0; row < charTiles.size(); ++row) {
-        tiles.emplace_back(std::vector<std::shared_ptr<Piece>>());
+        newTiles.emplace_back(std::vector<std::shared_ptr<Piece>>());
         for (size_t col = 0; col < charTiles[row].size(); ++col) {
-            tiles[row].emplace_back(nullptr);
+            newTiles[row].emplace_back(nullptr);
         }
     }
-
+    tiles = newTiles;
 }
 
 bool Board::init(const vector<vector<char>> &setupTiles) {
