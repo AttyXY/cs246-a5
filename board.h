@@ -51,6 +51,10 @@ class Board : public Observer<State>, public Subject<State> {
         bool isWhiteInCheck();
         bool isBlackInCheck();
         bool isCheck();
+
+        // template <typename Type> bool tempMove(Move m, bool(*func)(Type &t));
+        template <typename Function> bool tempMove(Move m, Function func);
+        bool isMoveIntoCheck(Subject<State> &whoFrom);
         bool isCheckmate(Move m);
 
         int movesSinceCaptureOrPawn = 0;

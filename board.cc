@@ -174,6 +174,39 @@ bool Board::isCheck() {
     return isWhiteInCheck() || isBlackInCheck();
 }
 
+
+// makes Move m, runs and returns result of func, then immediately undos Move m
+template <typename Function> bool Board::tempMove(Move m, Function func) {
+    Coord end = m.end;
+    Coord start = m.start;
+    // move
+    shared_ptr<Piece> temp = tiles[end.row][end.col];
+    tiles[end.row][end.col] = tiles[start.row][start.col];
+    tiles[start.row][start.col] = nullptr;
+    bool result = func();
+
+    // undo move
+    tiles[start.row][start.col] = tiles[end.row][end.col];
+    tiles[end.row][end.col] = temp;
+
+    return result;
+}
+
+// Returns true if King will still be in check after move
+bool Board::isMoveIntoCheck(Subject<State> &whoFrom) {
+    State s = whoFrom.getState();
+    auto f = [s]() {
+        if (s.colour == Colour::White) {
+            return isWhiteInCheck();
+        } else if (s.colour == Colour::Black) {
+            return isBlackInCheck();
+        }
+        return false;
+    }
+    return tempMove(f);
+}
+
+
 /* Move logic */
 void Board::update(Subject<State> &whoFrom) {
     State s = whoFrom.getState();
@@ -200,71 +233,181 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
         return false;
     }
 
-    // TODO: LEGAL MOVE CHECKS
-    shared_ptr<Piece> temp = tiles[end.row][end.col];
-    tiles[end.row][end.col] = tiles[start.row][start.col];
-    tiles[start.row][start.col] = nullptr;
-    if (isCheck()) {
-            if(s.colour == Colour::White) {
-                if (whiteInCheck) {
-                    //undo since it's a suicide move
-                    tiles[start.row][start.col] = tiles[end.row][end.col];
-                    tiles[end.row][end.col] = temp;
-                    return false;
-                } else if (blackInCheck) {
-                    //TODO: CHECK
-                    return true;
-                }
-            } else if (s.colour == Colour::Black) {
-                if (whiteInCheck) {
-                    //TODO: CHECK
-                    return true;
-                } else if (blackInCheck){
-                    tiles[start.row][start.col] = tiles[end.row][end.col];
-                    tiles[end.row][end.col] = temp;
-                    return false;
-                }
-            }
-    }
-    tiles[start.row][start.col] = tiles[end.row][end.col];
-    tiles[end.row][end.col] = temp;
+    // LEGAL MOVE CHECKS
+    // shared_ptr<Piece> temp = tiles[end.row][end.col];
+    // tiles[end.row][end.col] = tiles[start.row][start.col];
+    // tiles[start.row][start.col] = nullptr;
+    // if (isCheck()) {
+    //         if(s.colour == Colour::White) {
+    //             if (whiteInCheck) {
+    //                 //undo since it's a suicide move
+    //                 tiles[start.row][start.col] = tiles[end.row][end.col];
+    //                 tiles[end.row][end.col] = temp;
+    //                 return false;
+    //             } else if (blackInCheck) {
+    //                 //TODO: CHECK
+    //                 return true;
+    //             }
+    //         } else if (s.colour == Colour::Black) {
+    //             if (whiteInCheck) {
+    //                 //TODO: CHECK
+    //                 return true;
+    //             } else if (blackInCheck){
+    //                 tiles[start.row][start.col] = tiles[end.row][end.col];
+    //                 tiles[end.row][end.col] = temp;
+    //                 return false;
+    //             }
+    //         }
+    // }
+    // tiles[start.row][start.col] = tiles[end.row][end.col];
+    // tiles[end.row][end.col] = temp;
 
-    // // TODO: stalemate
-    // bool isStalemate(Move m) {
-    //     // Insufficient pieces
-    //     if (King and Bishop || King and Knight) {
-
+    // Still in check
+    if (isMoveIntoCheck(whoFrom)) {
+    //     if (isStalemate(whoFrom)) {
+            // Only possible right after setup, because stalemate is checked
+            // for at the end of every move, and ends game
+            // stalemated = true;
+            // return false;
+        // } else {
+            // Cannot be checkmate because checkmate immediately ends game, and
+            // and setups that begin with check are invalid.
+            return false;
     //     }
-    //     // No legal moves
-    //     for (auto &p: pieces) {if (p.legalMove(m))}
-    // }
-    // if (isStalemate(m)) {
-
-    // }
-    // TODO: threefold repetition
-    // TODO: fifty-move-rule
+    }
 
     // TODO: SPECIAL MOVE CHECKS
-    // TODO: castling
+    // castling
     // if (isCastling(m)) {
+        // cannot be checkmate or stalemate
     //     castle(m);
-    // }
-    // TODO: pawn promotion
-    // else if (isPawnPromotion(m)) {
 
     // }
-    // TODO: en passant
+    // pawn promotion
+    // else if (isPawnPromotion(m)) {
+        // promotePawn(whoFrom);
+        // checkEndGame(whoFrom);
+    // }
+    // en passant
     // else if (isEnPassant(m)) {
     //     enPassant(m);
+        // checkEndGame(whoFrom);
     // }
+
 
     // BASIC MOVE CHECKS
     if (tiles[start.row][start.col]->isLegalMove(m, tiles)) {
         movePiece(m);
         tiles[end.row][end.col]->hasMoved = true;
+        // checkEndGame(whoFrom);
     } else {
         return false;
     }
-
     return true;
 }
+
+
+// check board state once legal move has been made
+// void Board::checkEndGame(Subject<State> &whoFrom) {
+//     State s = whoFrom.getState();
+//     if (s.colour == Colour::White) {
+//         if (isCheck()) {
+//             whiteInCheck = true;
+//             // if (isCheckmate(whoFrom)) {
+//             //     checkmated = true;
+//             // }
+//         }
+//     } else if (s.colour == Colour::Black) {
+//         if (isCheck()) {
+//             blackInCheck = true;
+//             // if (isCheckmate(whoFrom)) {
+//             //     checkmated = true;
+//             // }
+//         }
+//     }
+    // TODO:
+    // if (isStalemate(whoFrom)) {
+    //     stalemated = true;
+    // }
+    // TODO: threefold repetition
+    // TODO: fifty-move-rule
+// }
+
+
+
+
+
+
+
+
+
+// bool Board::KingStuck(shared_ptr<King> &k,
+//                       vector<shared_ptr<Piece>> opponentPieces) {
+//     for (int i = -1; i < 2; ++i) {
+//         for (int j = -1; j < 2; ++ j) {
+//             if (i == 0 && j == 0) {
+//                 continue;
+//             }
+//             Coord end{i, j};
+//             Move m{k->pos, end};
+//             auto f = []() { return !isCheck(); }
+//             tempMove(m, f);
+//         }
+//     }
+//     return true;
+// }
+
+// bool Board::canBlockCheck(const Coord &kingPos, vector<shared_ptr<Piece>> &opponentPieces) {
+//     // can capture piece
+//     for (const auto &p: opponentPieces) {
+//         if (p->isLegalMove(kingPos)) {
+//             return true;
+//         }
+//     }
+//     // can block line of check
+//     // for (coord in line of check) {
+//         for (const auto &p: opponentPieces) {
+//             if (p->isLegalMove(coord)) {
+//                 return true;
+//             }
+//         }
+//     }
+//     return false;
+// }
+
+// bool Board::isCheckmate(Colour turn) {
+//     if (turn == Colour::White && KingStuck(wk, blackPieces) &&
+//         !canBlockCheck(wk, blackPieces)) {
+//         return true;
+//     } else if (turn == Colour::Black && blackKingStuck(bk, whitePieces) &&
+//         !canBlockCheck(bk, whitePieces)) {
+//         return true;
+//     }
+//     return false;
+// }
+
+
+// bool Board::insufficientMaterial(vector<shared_ptr<Piece>> &opponentPieces) {
+//     if (opponentPieces.size() == 1) { // Only king
+//         return true;
+//     } else if (opponentPieces.size() == 2) { // King and Bishop/Knight
+//         for (const auto &p: opponentPieces) {
+//             if (p->pt == PieceType::B || PieceType::N) {
+//                 return true;
+//             }
+//         }
+//     }
+//     return false;
+// }
+
+// bool Board::isStalemate() {
+//     if (insufficientMaterial()) {
+//         return true;
+//     }
+//     for (const auto &p: whitePieces) {
+//         if (p->noLegalMove()) {
+//             return true;
+//         }
+//     }
+//     return false;
+// }
