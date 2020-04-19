@@ -7,7 +7,7 @@
 #include "human.h"
 // #include "graphDisplay.h"
 
-/* Wrapper class for game logic */
+// Wrapper class for game logic
 class Game {
     public:
         std::unique_ptr<TextDisplay> td = std::make_unique<TextDisplay> ();

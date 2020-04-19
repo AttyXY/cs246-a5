@@ -22,6 +22,8 @@ void TextDisplay::printTiles() {
 	cout << "   abcdefgh" << endl << endl;
 }
 
+// Edits game->isWhiteTurn inplace. Reads setup if custom == true.
+// Returns true if display was valid, and false otherwise.
 bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
     reset(); // start with clear, fully initialized vector
     if (!custom) {
