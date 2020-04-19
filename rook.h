@@ -8,7 +8,7 @@ class Rook: public Piece {
      public:
         Rook(Colour colour, PieceType pt);
         bool isLegalMove(
-            Move m,
+            const Coord start, const Coord end,
             std::vector<std::vector<std::shared_ptr<Piece>>> &tiles
         ) override;
  };

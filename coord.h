@@ -29,8 +29,8 @@ class Coord {
         };
 
         Coord(int row = 0, int col = 0);
-        int getRow(void);
-        int getCol(void);
+        int getRow(void) const;
+        int getCol(void) const;
 
 };
 

@@ -152,13 +152,10 @@ void Board::movePiece(const Coord start, const Coord end) {
 }
 
 
-
-
-
+/* Check helpers */
 bool Board::isWhiteInCheck() {
     for (const auto &p: blackPieces) {
-        Move moveToKing{p->pos, wk->pos};
-        if (p->isLegalMove(moveToKing, tiles)) {
+        if (p->isLegalMove(p->pos, wk->pos, tiles)) {
             return true;
         }
     }
@@ -167,8 +164,7 @@ bool Board::isWhiteInCheck() {
 
 bool Board::isBlackInCheck() {
     for (const auto &p: whitePieces) {
-        Move newMove{p->pos, bk->pos};
-        if (p->isLegalMove(newMove, tiles)) {
+        if (p->isLegalMove(p->pos, bk->pos, tiles)) {
             return true;
         }
     }
@@ -179,12 +175,8 @@ bool Board::isCheck() {
     return isWhiteInCheck() || isBlackInCheck();
 }
 
-
 // Returns true if King will still be in check after move
-bool Board::isMoveIntoCheck(Subject<State> &whoFrom) {
-    State s = whoFrom.getState();
-    Coord start = s.m.start;
-    Coord end = s.m.end;
+bool Board::isMoveIntoCheck(const Colour turn, const Coord start, const Coord end) {
     bool result = false;
 
     // tempMove
@@ -192,9 +184,9 @@ bool Board::isMoveIntoCheck(Subject<State> &whoFrom) {
     movePiece(start, end);
 
     // check condition
-    if (s.colour == Colour::White) {
+    if (turn == Colour::White) {
         result = isWhiteInCheck();
-    } else if (s.colour == Colour::Black) {
+    } else if (turn == Colour::Black) {
         result = isBlackInCheck();
     }
     // undo tempMove
@@ -205,63 +197,156 @@ bool Board::isMoveIntoCheck(Subject<State> &whoFrom) {
 }
 
 
+/* Endgame detection helpers: Run after move has already been made */
+bool Board::isWhiteKingStuck() {
+    bool escapeExists = false;
+    for (int i = -1; i < 2; ++i) {
+        for (int j = -1; j < 2; ++j) {
+            if (i == 0 && j == 0) { continue; } // same position as before
+
+            Coord start = wk->pos;
+            Coord end{wk->pos.getRow() + i, wk->pos.getCol() + j};
+            if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
+                // tempMove
+                shared_ptr<Piece> temp = tiles[end.row][end.col];
+                movePiece(start, end);
+
+                // determine if move is escape
+                if (!isWhiteInCheck()) {
+                    escapeExists = true;
+                }
+
+                // undo tempMove
+                movePiece(end, start);
+                tiles[end.row][end.col] = temp;
+
+            }
+            if (escapeExists == true) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool Board::isBlackKingStuck() {
+    bool escapeExists = false;
+    for (int i = -1; i < 2; ++i) {
+        for (int j = -1; j < 2; ++j) {
+            if (i == 0 && j == 0) { continue; } // same position as before
+
+            Coord start = bk->pos;
+            Coord end{bk->pos.getRow() + i, bk->pos.getCol() + j};
+            if (bk->isLegalMove(bk->pos, end, tiles)) {
+                // tempMove
+                shared_ptr<Piece> temp = tiles[end.row][end.col];
+                movePiece(start, end);
+
+                // determine if move is escape
+                if (!isWhiteInCheck()) {
+                    escapeExists = true;
+                }
+
+                // undo tempMove
+                movePiece(end, start);
+                tiles[end.row][end.col] = temp;
+
+            }
+            if (escapeExists == true) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+// bool Board::canBlockCheck(const Coord &kingPos, vector<shared_ptr<Piece>> &opponentPieces) {
+//     // can capture piece
+//     for (const auto &p: opponentPieces) {
+//         if (p->isLegalMove(kingPos)) {
+//             return true;
+//         }
+//     }
+//     // can block line of check
+//     // for (coord in line of check) {
+//         for (const auto &p: opponentPieces) {
+//             if (p->isLegalMove(coord)) {
+//                 return true;
+//             }
+//         }
+//     }
+//     return false;
+// }
+
+
+
+/* Endgame detection: Run after move has already been made */
+bool Board::isCheckmate(const Colour turn) {
+    if (turn == Colour::White) {
+        return isBlackKingStuck();
+        // && !canBlockCheck(wk, blackPieces)) {
+    } else if (turn == Colour::Black) {
+        return isWhiteKingStuck();
+        // !canBlockCheck(bk, whitePieces)) {
+    }
+    return false;
+}
+
+// check board state once legal move has been made
+void Board::checkEndGame(const Colour turn) {
+    if (isBlackInCheck()) {
+        blackInCheck = true;
+        // if (isCheckmate(turn)) {
+        //     checkmated = true;
+        // }
+    } else if (isWhiteInCheck()) {
+        whiteInCheck = true;
+        // if (isCheckmate(turn)) {
+        //     checkmated = true;
+        // }
+    }
+    // TODO: stalemate
+    // if (isStalemate(whoFrom)) {
+    //     stalemated = true;
+    // }
+    // TODO: threefold repetition
+    // TODO: fifty-move-rule
+}
+
+
+
+
 /* Move logic */
 void Board::update(Subject<State> &whoFrom) {
     State s = whoFrom.getState();
-    legalLastMove = isLegalMove(whoFrom);
+    legalLastMove = isLegalMove(s.colour, s.m.start, s.m.end);
 
+    // update displays
     State newS{s.m, s.colour, charTiles};
     setState(newS);
     notify();
 }
 
-bool Board::isLegalMove(Subject<State> &whoFrom) {
-    State s = whoFrom.getState();
-    Move m = s.m;
-    Coord start = m.start;
-    Coord end = m.end;
-
+bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
     // STANDARD CHECKS
-    if (tiles[start.row][start.col] == nullptr ||  // Empty start tile
-        (s.colour != tiles[start.row][start.col]->colour)) { // Move other player's piece) {
+    // Off board
+    if (end.row < 0 || end.row > 7 || end.col < 0 || end.col > 7 ||
+        start.row < 0 || start.row > 7 || start.col < 0 || start.col > 7) {
         return false;
     }
+    // Empty tile || Move other player's piece
+    if (tiles[start.row][start.col] == nullptr ||
+        (turn != tiles[start.row][start.col]->colour)) {
+        return false;
+    }
+    // Move onto own piece
     if (tiles[end.row][end.col] != nullptr &&
-        s.colour == tiles[end.row][end.col]->colour) { // Move onto own piece
+        turn == tiles[end.row][end.col]->colour) {
         return false;
     }
-
-    // LEGAL MOVE CHECKS
-    // shared_ptr<Piece> temp = tiles[end.row][end.col];
-    // tiles[end.row][end.col] = tiles[start.row][start.col];
-    // tiles[start.row][start.col] = nullptr;
-    // if (isCheck()) {
-    //         if(s.colour == Colour::White) {
-    //             if (whiteInCheck) {
-    //                 //undo since it's a suicide move
-    //                 tiles[start.row][start.col] = tiles[end.row][end.col];
-    //                 tiles[end.row][end.col] = temp;
-    //                 return false;
-    //             } else if (blackInCheck) {
-    //                 //TODO: CHECK
-    //                 return true;
-    //             }
-    //         } else if (s.colour == Colour::Black) {
-    //             if (whiteInCheck) {
-    //                 //TODO: CHECK
-    //                 return true;
-    //             } else if (blackInCheck){
-    //                 tiles[start.row][start.col] = tiles[end.row][end.col];
-    //                 tiles[end.row][end.col] = temp;
-    //                 return false;
-    //             }
-    //         }
-    // }
-    // tiles[start.row][start.col] = tiles[end.row][end.col];
-    // tiles[end.row][end.col] = temp;
 
     // Still in check
-    if (isMoveIntoCheck(whoFrom)) {
+    if (isMoveIntoCheck(turn, start, end)) {
     //     if (isStalemate(whoFrom)) {
             // Only possible right after setup, because stalemate is checked
             // for at the end of every move, and ends game
@@ -294,10 +379,10 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
 
 
     // BASIC MOVE CHECKS
-    if (tiles[start.row][start.col]->isLegalMove(m, tiles)) {
+    if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
         movePiece(start, end);
         tiles[end.row][end.col]->hasMoved = true;
-        checkEndGame(whoFrom);
+        checkEndGame(turn);
     } else {
         return false;
     }
@@ -305,27 +390,6 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
 }
 
 
-// check board state once legal move has been made
-void Board::checkEndGame(Subject<State> &whoFrom) {
-    State s = whoFrom.getState();
-    if (isBlackInCheck()) {
-        blackInCheck = true;
-        // if (isCheckmate(whoFrom)) {
-        //     checkmated = true;
-        // }
-    } else if (isWhiteInCheck()) {
-        whiteInCheck = true;
-        // if (isCheckmate(whoFrom)) {
-        //     checkmated = true;
-        // }
-    }
-    // TODO: stalemate
-    // if (isStalemate(whoFrom)) {
-    //     stalemated = true;
-    // }
-    // TODO: threefold repetition
-    // TODO: fifty-move-rule
-}
 
 
 
@@ -335,50 +399,6 @@ void Board::checkEndGame(Subject<State> &whoFrom) {
 
 
 
-// bool Board::KingStuck(shared_ptr<King> &k,
-//                       vector<shared_ptr<Piece>> opponentPieces) {
-//     for (int i = -1; i < 2; ++i) {
-//         for (int j = -1; j < 2; ++ j) {
-//             if (i == 0 && j == 0) {
-//                 continue;
-//             }
-//             Coord end{i, j};
-//             Move m{k->pos, end};
-//             auto f = []() { return !isCheck(); }
-//             tempMove(m, f);
-//         }
-//     }
-//     return true;
-// }
-
-// bool Board::canBlockCheck(const Coord &kingPos, vector<shared_ptr<Piece>> &opponentPieces) {
-//     // can capture piece
-//     for (const auto &p: opponentPieces) {
-//         if (p->isLegalMove(kingPos)) {
-//             return true;
-//         }
-//     }
-//     // can block line of check
-//     // for (coord in line of check) {
-//         for (const auto &p: opponentPieces) {
-//             if (p->isLegalMove(coord)) {
-//                 return true;
-//             }
-//         }
-//     }
-//     return false;
-// }
-
-// bool Board::isCheckmate(Colour turn) {
-//     if (turn == Colour::White && KingStuck(wk, blackPieces) &&
-//         !canBlockCheck(wk, blackPieces)) {
-//         return true;
-//     } else if (turn == Colour::Black && blackKingStuck(bk, whitePieces) &&
-//         !canBlockCheck(bk, whitePieces)) {
-//         return true;
-//     }
-//     return false;
-// }
 
 
 // bool Board::insufficientMaterial(vector<shared_ptr<Piece>> &opponentPieces) {

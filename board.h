@@ -34,7 +34,14 @@ class Board : public Observer<State>, public Subject<State> {
         void addPiece(const Coord start, const Coord end);
         void removePiece(const Coord c);
         void movePiece(const Coord start, const Coord end);
-        bool isLegalMove(Subject<State> &whoFrom);
+
+        bool whiteInCheck = false; //white is dying
+        bool blackInCheck = false; //black is dying
+        bool isWhiteInCheck();
+        bool isBlackInCheck();
+        bool isCheck();
+        bool isMoveIntoCheck(const Colour turn, const Coord start, const Coord end);
+        bool isLegalMove(const Colour turn, const Coord start, const Coord end);
         // bool isCapture(Subject<State> &whoFrom);
 
 
@@ -47,16 +54,17 @@ class Board : public Observer<State>, public Subject<State> {
         bool isEnPassant(Move m);
         bool isPawnPromotion(Move m);
 
-        bool whiteInCheck = false; //white is dying
-        bool blackInCheck = false; //black is dying
-        bool isWhiteInCheck();
-        bool isBlackInCheck();
-        bool isCheck();
 
-        // template <typename Type> bool tempMove(Move m, bool(*func)(Type &t));
-        bool isMoveIntoCheck(Subject<State> &whoFrom);
-        void checkEndGame(Subject<State> &whoFrom);
-        bool isCheckmate(Move m);
+
+        // Endgame detection
+        bool stalemated = false;
+        bool checkmated = false;
+
+        bool isWhiteKingStuck();
+        bool isBlackKingStuck();
+        bool isCheckmate(const Colour turn);
+
+        void checkEndGame(const Colour turn);
 
         int movesSinceCaptureOrPawn = 0;
         bool isStalemate(Move m);
@@ -66,9 +74,9 @@ class Board : public Observer<State>, public Subject<State> {
         // void redo()
         // bool isThreefoldRepeat(Move m);
 
-        // Endgame detection
-        bool stalemated = false;
-        bool checkmated = false;
+
+
+
 
 
         // Subject-observer
