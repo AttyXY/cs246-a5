@@ -1,9 +1,9 @@
 setup
-+ k a1
-+ K e5
-+ R b2
++ K e1
++ k e5
++ r a2
 done
 game human human
-move b2 a2
+move a2 a1
 quit 
 quit
