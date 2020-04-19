@@ -3,10 +3,10 @@ using namespace std;
 
 Coord::Coord(int row, int col): row{row}, col{col} {}
 
-int Coord::getRow(void) {
+int Coord::getRow(void) const {
     return row;
 }
-int Coord::getCol(void) {
+int Coord::getCol(void) const {
     return col;
 }
 

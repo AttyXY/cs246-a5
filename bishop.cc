@@ -3,43 +3,43 @@ using namespace std;
 
 Bishop::Bishop(Colour colour, PieceType pt): Piece{colour, pt} {}
 
-bool Bishop::isLegalMove(Move m, vector<vector<shared_ptr<Piece>>> &tiles) {
+bool Bishop::isLegalMove(const Coord start, const Coord end, vector<vector<shared_ptr<Piece>>> &tiles) {
     //Constant
-    int ver = abs(m.start.getRow() - m.end.getRow());
-    int hor = abs(m.start.getCol() - m.end.getCol());
+    int ver = abs(start.getRow() - end.getRow());
+    int hor = abs(start.getCol() - end.getCol());
 
     //Bishop can move diagonally
     if (hor == ver) {
-        if(m.start.getCol() > m.end.getCol()) {
-            if(m.start.getRow() > m.end.getRow()) {
+        if(start.getCol() > end.getCol()) {
+            if(start.getRow() > end.getRow()) {
                 for(int n = 1; n < hor; n++) {
-                    if(tiles[m.start.getRow() - n][m.start.getCol() - n] != nullptr) {
+                    if(tiles[start.getRow() - n][start.getCol() - n] != nullptr) {
                         return false;
                     }
                 }
                 return true;
             }
-            if(m.start.getRow() < m.end.getRow()) {
+            if(start.getRow() < end.getRow()) {
                 for(int n = 1; n < hor; n++) {
-                    if(tiles[m.start.getRow() + n][m.start.getCol() - n] != nullptr) {
+                    if(tiles[start.getRow() + n][start.getCol() - n] != nullptr) {
                         return false;
                     }
                 }
                 return true;
             }
         }
-        if(m.start.getCol() < m.end.getCol()) {
-            if(m.start.getRow() > m.end.getRow()) {
+        if(start.getCol() < end.getCol()) {
+            if(start.getRow() > end.getRow()) {
                 for(int n = 1; n < hor; n++) {
-                    if(tiles[m.start.getRow() - n][m.start.getCol() + n] != nullptr) {
+                    if(tiles[start.getRow() - n][start.getCol() + n] != nullptr) {
                         return false;
                     }
                 }
                 return true;
             }
-            if(m.start.getRow() < m.end.getRow()) {
+            if(start.getRow() < end.getRow()) {
                 for(int n = 1; n < hor; n++) {
-                    if(tiles[m.start.getRow() + n][m.start.getCol() + n] != nullptr) {
+                    if(tiles[start.getRow() + n][start.getCol() + n] != nullptr) {
                         return false;
                     }
                 }

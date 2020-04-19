@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 #include "enums.h"
-#include "move.h"
+#include "coord.h"
 
 class Piece {
     public:
@@ -17,7 +17,8 @@ class Piece {
         Piece(Colour colour, PieceType pt);
         ~Piece();
 
-        virtual bool isLegalMove(Move m, std::vector<std::vector<std::shared_ptr<Piece>>> &tiles) = 0;
+        virtual bool isLegalMove(const Coord start, const Coord end,
+                                 std::vector<std::vector<std::shared_ptr<Piece>>> &tiles) = 0;
 };
 
 //std::ostream &operator<<(std::ostream &out, const Piece &p);
