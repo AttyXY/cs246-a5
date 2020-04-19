@@ -30,9 +30,10 @@ class Board : public Observer<State>, public Subject<State> {
         // Basic move
         void reset();
         bool init(const std::vector<std::vector<char>> &setupTiles);
-        void movePiece(const Move &m);
-        void removePiece(const Coord &c);
-        void addPiece(const Coord &start, const Coord &end);
+
+        void addPiece(const Coord start, const Coord end);
+        void removePiece(const Coord c);
+        void movePiece(const Coord start, const Coord end);
         bool isLegalMove(Subject<State> &whoFrom);
         // bool isCapture(Subject<State> &whoFrom);
 
@@ -53,8 +54,8 @@ class Board : public Observer<State>, public Subject<State> {
         bool isCheck();
 
         // template <typename Type> bool tempMove(Move m, bool(*func)(Type &t));
-        template <typename Function> bool tempMove(Move m, Function func);
         bool isMoveIntoCheck(Subject<State> &whoFrom);
+        void checkEndGame(Subject<State> &whoFrom);
         bool isCheckmate(Move m);
 
         int movesSinceCaptureOrPawn = 0;

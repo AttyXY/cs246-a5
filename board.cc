@@ -128,19 +128,10 @@ bool Board::init(const vector<vector<char>> &setupTiles) {
 
 
 /* Move helpers */
-void Board::movePiece(const Move &m) {
-    addPiece(m.start, m.end);
-    removePiece(m.start);
-}
-
-void Board::removePiece(const Coord &c) {
-    charTiles[c.row][c.col] = '-';
-    tiles[c.row][c.col] = nullptr;
-}
-
-void Board::addPiece(const Coord &start, const Coord &end) {
+void Board::addPiece(const Coord start, const Coord end) {
     charTiles[end.row][end.col] = charTiles[start.row][start.col];
     tiles[end.row][end.col] = tiles[start.row][start.col];
+    tiles[end.row][end.col]->pos = {end.row, end.col};
     if (tiles[end.row][end.col]->pt == PieceType::K) {
         if (tiles[end.row][end.col]->colour == Colour::White) {
             wk = tiles[end.row][end.col];
@@ -149,6 +140,20 @@ void Board::addPiece(const Coord &start, const Coord &end) {
         }
     }
 }
+
+void Board::removePiece(const Coord c) {
+    charTiles[c.row][c.col] = '-';
+    tiles[c.row][c.col] = nullptr;
+}
+
+void Board::movePiece(const Coord start, const Coord end) {
+    addPiece(start, end);
+    removePiece(start);
+}
+
+
+
+
 
 bool Board::isWhiteInCheck() {
     for (const auto &p: blackPieces) {
@@ -175,35 +180,28 @@ bool Board::isCheck() {
 }
 
 
-// makes Move m, runs and returns result of func, then immediately undos Move m
-template <typename Function> bool Board::tempMove(Move m, Function func) {
-    Coord end = m.end;
-    Coord start = m.start;
-    // move
-    shared_ptr<Piece> temp = tiles[end.row][end.col];
-    tiles[end.row][end.col] = tiles[start.row][start.col];
-    tiles[start.row][start.col] = nullptr;
-    bool result = func();
-
-    // undo move
-    tiles[start.row][start.col] = tiles[end.row][end.col];
-    tiles[end.row][end.col] = temp;
-
-    return result;
-}
-
 // Returns true if King will still be in check after move
 bool Board::isMoveIntoCheck(Subject<State> &whoFrom) {
     State s = whoFrom.getState();
-    auto f = [s]() {
-        if (s.colour == Colour::White) {
-            return isWhiteInCheck();
-        } else if (s.colour == Colour::Black) {
-            return isBlackInCheck();
-        }
-        return false;
+    Coord start = s.m.start;
+    Coord end = s.m.end;
+    bool result = false;
+
+    // tempMove
+    shared_ptr<Piece> temp = tiles[end.row][end.col];
+    movePiece(start, end);
+
+    // check condition
+    if (s.colour == Colour::White) {
+        result = isWhiteInCheck();
+    } else if (s.colour == Colour::Black) {
+        result = isBlackInCheck();
     }
-    return tempMove(f);
+    // undo tempMove
+    movePiece(end, start);
+    tiles[end.row][end.col] = temp;
+
+    return result;
 }
 
 
@@ -297,9 +295,9 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
 
     // BASIC MOVE CHECKS
     if (tiles[start.row][start.col]->isLegalMove(m, tiles)) {
-        movePiece(m);
+        movePiece(start, end);
         tiles[end.row][end.col]->hasMoved = true;
-        // checkEndGame(whoFrom);
+        checkEndGame(whoFrom);
     } else {
         return false;
     }
@@ -308,30 +306,26 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
 
 
 // check board state once legal move has been made
-// void Board::checkEndGame(Subject<State> &whoFrom) {
-//     State s = whoFrom.getState();
-//     if (s.colour == Colour::White) {
-//         if (isCheck()) {
-//             whiteInCheck = true;
-//             // if (isCheckmate(whoFrom)) {
-//             //     checkmated = true;
-//             // }
-//         }
-//     } else if (s.colour == Colour::Black) {
-//         if (isCheck()) {
-//             blackInCheck = true;
-//             // if (isCheckmate(whoFrom)) {
-//             //     checkmated = true;
-//             // }
-//         }
-//     }
-    // TODO:
+void Board::checkEndGame(Subject<State> &whoFrom) {
+    State s = whoFrom.getState();
+    if (isBlackInCheck()) {
+        blackInCheck = true;
+        // if (isCheckmate(whoFrom)) {
+        //     checkmated = true;
+        // }
+    } else if (isWhiteInCheck()) {
+        whiteInCheck = true;
+        // if (isCheckmate(whoFrom)) {
+        //     checkmated = true;
+        // }
+    }
+    // TODO: stalemate
     // if (isStalemate(whoFrom)) {
     //     stalemated = true;
     // }
     // TODO: threefold repetition
     // TODO: fifty-move-rule
-// }
+}
 
 
 

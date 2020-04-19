@@ -2,6 +2,7 @@ setup
 + K e1
 + k e5
 + r a2
+= black
 done
 game human human
 move a2 a1
