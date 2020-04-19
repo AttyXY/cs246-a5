@@ -1,0 +1,18 @@
+setup
++ k a1
++ K h8
++ p b2
++ B a8
+done
+game human human
+move a8 h1
+move a1 a2
+move h1 e4
+move a2 a3
+move e4 b1 
+move a3 a4
+move b1 h7 
+move a4 a3
+move h7 b1
+quit
+quit

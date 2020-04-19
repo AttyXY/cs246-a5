@@ -1,0 +1,10 @@
+setup
++ K c4
++ k f5 
++ R a1
++ b a8
+done
+game human human
+move a1 a8
+quit
+quit

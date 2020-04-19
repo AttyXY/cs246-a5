@@ -1,0 +1,25 @@
+setup
++ K c4
++ k f5 
++ Q a1
+done
+game human human
+move a1 a8
+move f5 f4
+move a8 h8
+move f4 f5
+move h8 h1
+move f5 f4
+move h1 a1
+move f4 f5
+move a1 h8
+move f5 e6
+move h8 a1
+move e6 f5
+move a1 a8
+move f5 e6
+move a8 h1
+move e6 f5
+move h1 a8
+quit
+quit

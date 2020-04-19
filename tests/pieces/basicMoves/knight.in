@@ -1,0 +1,24 @@
+setup
++ k a1
++ K h8
++ p b7
++ N f3
+done
+game human human
+move f3 g1
+move a1 a2
+move g1 f3 
+move a2 a1
+move f3 e1
+move a1 a2
+move e1 f3
+move a2 a1
+move f3 h2
+move a1 a2
+move h2 f3
+move a2 a1
+move f3 h4
+move a1 a2
+move h4 f3
+quit
+quit

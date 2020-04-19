@@ -2,6 +2,7 @@
 using namespace std;
 
 
+// Initializes tiles and charTiles with clear boards.
 void Board::reset() {
     vector<char> row(8, '-');
 	charTiles = vector<vector<char>>(8, row);
@@ -16,8 +17,10 @@ void Board::reset() {
     tiles = newTiles;
 }
 
+// Initializes tiles and charTiles with pieces, from td->tiles.
+// Returns false if setup results in check, and true otherwise.
 bool Board::init(const vector<vector<char>> &setupTiles) {
-    reset(); // start with clear, fully initialized vectors
+    reset();
 
     // Copy setupTiles into charTiles
     charTiles = setupTiles;
@@ -115,16 +118,59 @@ bool Board::init(const vector<vector<char>> &setupTiles) {
             }
         }
     }
-    if (isCheck()) {
-        return false;
-    }
+    // if (isCheck()) {
+    //     return false;
+    // }
     return true;
 }
 
 
+
+
+/* Move helpers */
+void Board::movePiece(const Move &m) {
+    addPiece(m.start, m.end);
+    removePiece(m.start);
+}
+
+void Board::removePiece(const Coord &c) {
+    charTiles[c.row][c.col] = '-';
+    tiles[c.row][c.col] = nullptr;
+}
+
+void Board::addPiece(const Coord &start, const Coord &end) {
+    charTiles[end.row][end.col] = charTiles[start.row][start.col];
+    tiles[end.row][end.col] = tiles[start.row][start.col];
+    if (tiles[end.row][end.col]->pt == PieceType::K) {
+        if (tiles[end.row][end.col]->colour == Colour::White) {
+            wk = tiles[end.row][end.col];
+        } else if (tiles[end.row][end.col]->colour == Colour::Black) {
+            bk = tiles[end.row][end.col];
+        }
+    }
+}
+
+bool Board::isCheck() {
+    for (int n = 0; n < (int)blackPieces.size(); n++) {
+        Move newMove{blackPieces[n]->pos, wk->pos};
+        if (blackPieces[n]->isLegalMove(newMove, tiles)) {
+            whiteInCheck = true;
+            return true;
+        }
+    }
+    for (int n = 0; n < (int)whitePieces.size(); n++) {
+        Move newMove{whitePieces[n]->pos, bk->pos};
+        if (whitePieces[n]->isLegalMove(newMove, tiles)) {
+            blackInCheck = true;
+            return true;
+        }
+    }
+    return false;
+}
+
+/* Move logic */
 void Board::update(Subject<State> &whoFrom) {
     State s = whoFrom.getState();
-    // cout << "From board: " << s.m.start << " " << s.m.end << endl;
     legalLastMove = isLegalMove(whoFrom);
 
     State newS{s.m, s.colour, charTiles};
@@ -215,44 +261,4 @@ bool Board::isLegalMove(Subject<State> &whoFrom) {
     }
 
     return true;
-}
-
-void Board::movePiece(const Move &m) {
-    addPiece(m.start, m.end);
-    removePiece(m.start);
-}
-
-void Board::removePiece(const Coord &c) {
-    charTiles[c.row][c.col] = '-';
-    tiles[c.row][c.col] = nullptr;
-}
-
-void Board::addPiece(const Coord &start, const Coord &end) {
-    charTiles[end.row][end.col] = charTiles[start.row][start.col];
-    tiles[end.row][end.col] = tiles[start.row][start.col];
-    if (tiles[end.row][end.col]->pt == PieceType::K) {
-        if (tiles[end.row][end.col]->colour == Colour::White) {
-            wk = tiles[end.row][end.col];
-        } else if (tiles[end.row][end.col]->colour == Colour::Black) {
-            bk = tiles[end.row][end.col];
-        }
-    }
-}
-
-bool Board::isCheck() {
-    for (int n = 0; n < (int)blackPieces.size(); n++) {
-        Move newMove{blackPieces[n]->pos, wk->pos};
-        if (blackPieces[n]->isLegalMove(newMove, tiles)) {
-            whiteInCheck = true;
-            return true;
-        }
-    }
-    for (int n = 0; n < (int)whitePieces.size(); n++) {
-        Move newMove{whitePieces[n]->pos, bk->pos};
-        if (whitePieces[n]->isLegalMove(newMove, tiles)) {
-            blackInCheck = true;
-            return true;
-        }
-    }
-    return false;
 }
