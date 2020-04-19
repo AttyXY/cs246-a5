@@ -237,13 +237,13 @@ bool Board::isBlackKingStuck() {
 
             Coord start = bk->pos;
             Coord end{bk->pos.getRow() + i, bk->pos.getCol() + j};
-            if (bk->isLegalMove(bk->pos, end, tiles)) {
+            if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
                 // tempMove
                 shared_ptr<Piece> temp = tiles[end.row][end.col];
                 movePiece(start, end);
 
                 // determine if move is escape
-                if (!isWhiteInCheck()) {
+                if (!isBlackInCheck()) {
                     escapeExists = true;
                 }
 
@@ -285,25 +285,24 @@ bool Board::isCheckmate(const Colour turn) {
     if (turn == Colour::White) {
         return isBlackKingStuck();
         // && !canBlockCheck(wk, blackPieces)) {
-    } else if (turn == Colour::Black) {
+    } else {
         return isWhiteKingStuck();
         // !canBlockCheck(bk, whitePieces)) {
     }
-    return false;
 }
 
 // check board state once legal move has been made
 void Board::checkEndGame(const Colour turn) {
     if (isBlackInCheck()) {
         blackInCheck = true;
-        // if (isCheckmate(turn)) {
-        //     checkmated = true;
-        // }
+        if (isCheckmate(turn)) {
+            checkmated = true;
+        }
     } else if (isWhiteInCheck()) {
         whiteInCheck = true;
-        // if (isCheckmate(turn)) {
-        //     checkmated = true;
-        // }
+        if (isCheckmate(turn)) {
+            checkmated = true;
+        }
     }
     // TODO: stalemate
     // if (isStalemate(whoFrom)) {
