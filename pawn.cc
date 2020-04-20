@@ -9,57 +9,50 @@ bool Pawn::isLegalMove(const Coord start, const Coord end,
     if (isBasicInvalidMove(start, end, tiles)) { return false; }
 
     if (colour == Colour::White) {
-        // Moving forward move
-        if (end.getCol() == start.getCol()) {
-            if (end.getRow() - start.getRow() == 1) {
+        // Move forward by 2
+        if ((end.getRow() - start.getRow() == 2) &&
+            (end.getCol() == start.getCol()) && !hasMoved) {
+            // Check for no pieces in front
+            if (tiles[start.getRow() + 1][start.getCol()]->pt == PieceType::X &&
+                tiles[start.getRow() + 2][start.getCol()]->pt == PieceType::X) {
                 return true;
             }
-            // Check if it can move forward by 2
-            if (!hasMoved) {
-                if (end.getRow() - start.getRow() == 2) {
-                    // Check for no pieces in front
-                    if (tiles[start.getRow() + 1][start.getCol()]->pt == PieceType::X &&
-                        tiles[start.getRow() + 2][start.getCol()]->pt == PieceType::X) {
-                        return true;
-                    }
+        }
+        // Move forward by 1
+        else if (end.getRow() - start.getRow() == 1) {
+            if (end.getCol() == start.getCol()) {
+                // Check for no pieces in front
+                if (tiles[end.getRow()][end.getCol()]->pt == PieceType::X) {
+                    return true;
                 }
-            }
-        } else {
-            // Check if it moves diagonally up by 1
-            if (end.getRow() - start.getRow() == 1) {
-                if (abs(end.getCol() - start.getCol()) == 1) {
-                    // Check if there is some black piece at the end
-                    if ((tiles[end.getRow()][end.getCol()]->pt != PieceType::X) &&
-                        (tiles[end.getRow()][end.getCol()]->colour == Colour::Black)) {
-                            return true;
-                        }
+            } else if (abs(end.getCol() - start.getCol()) == 1) {
+                // Check if there is some black piece at the end
+                if (tiles[end.getRow()][end.getCol()]->pt != PieceType::X) {
+                    return true;
                 }
             }
         }
     } else if (colour == Colour::Black) {
-        if (end.getCol() == start.getCol()) {
-            if (start.getRow() - end.getRow() == 1) {
+        // Move forward by 2
+        if ((end.getRow() - start.getRow() == -2) &&
+            (end.getCol() == start.getCol()) && !hasMoved) {
+            // Check for no pieces in front
+            if (tiles[start.getRow() - 1][start.getCol()]->pt == PieceType::X &&
+                tiles[start.getRow() - 2][start.getCol()]->pt == PieceType::X) {
                 return true;
             }
-            // Check if it can move forward by 2
-            if (!hasMoved) {
-                if (start.getRow() - end.getRow() == 2) {
-                    // Check for no pieces in front
-                    if (tiles[start.getRow() - 1][start.getCol()]->pt == PieceType::X &&
-                        tiles[start.getRow() - 2][start.getCol()]->pt == PieceType::X) {
-                        return true;
-                    }
+        }
+        // Move forward by 1
+        else if (end.getRow() - start.getRow() == -1) {
+            if (end.getCol() == start.getCol()) {
+                // Check for no pieces in front
+                if (tiles[end.getRow()][end.getCol()]->pt == PieceType::X) {
+                    return true;
                 }
-            }
-        } else {
-            // Check if it moves diagonally up by 1
-            if (end.getRow() - start.getRow() == -1) {
-                if (abs(end.getCol() - start.getCol()) == 1) {
-                    // Check if there is some black piece at the end
-                    if ((tiles[end.getRow()][end.getCol()]->pt != PieceType::X) &&
-                        (tiles[end.getRow()][end.getCol()]->colour == Colour::White)) {
-                            return true;
-                        }
+            } else if (abs(end.getCol() - start.getCol()) == 1) {
+                // Check if there is some piece at the end
+                if (tiles[end.getRow()][end.getCol()]->pt != PieceType::X) {
+                    return true;
                 }
             }
         }
@@ -69,4 +62,19 @@ bool Pawn::isLegalMove(const Coord start, const Coord end,
 
 void Pawn::getLineOfCheck(const Coord king, vector<Coord> &lineOfCheck) {
     return; // pawn has no line of check
+}
+
+bool Pawn::isStuck(vector<vector<shared_ptr<Piece>>> &tiles) {
+    Coord top{pos.getRow() + 1, pos.getCol()};
+    Coord topRight{pos.getRow() + 1, pos.getCol() + 1};
+    Coord topLeft{pos.getRow() + 1, pos.getCol() - 1};
+
+    if (isLegalMove(pos, top, tiles) && tiles[pos.getRow() + 1][pos.getCol()]->pt != PieceType::X) {
+        return false;
+    } else if (isLegalMove(pos, topRight, tiles) && tiles[pos.getRow() + 1][pos.getCol() + 1]->pt != PieceType::X) {
+        return false;
+    } else if (isLegalMove(pos, topLeft, tiles) && tiles[pos.getRow() + 1][pos.getCol() - 1]->pt != PieceType::X) {
+        return false;
+    }
+    return true;
 }
