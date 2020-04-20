@@ -24,6 +24,8 @@ class Board : public Observer<State>, public Subject<State> {
         std::vector<std::shared_ptr<Piece>> blackPieces;
         std::shared_ptr<Piece> wk;
         std::shared_ptr<Piece> bk;
+        std::shared_ptr<Piece> checker;
+        // std::vector<Coord> lineOfCheck;
         bool legalLastMove = true;
 
 
@@ -37,8 +39,8 @@ class Board : public Observer<State>, public Subject<State> {
 
         bool whiteInCheck = false; //white is dying
         bool blackInCheck = false; //black is dying
-        bool isWhiteInCheck();
-        bool isBlackInCheck();
+        bool isWhiteInCheck(bool setChecker = false);
+        bool isBlackInCheck(bool setChecker = false);
         bool isCheck();
         bool isMoveIntoCheck(const Colour turn, const Coord start, const Coord end);
         bool isLegalMove(const Colour turn, const Coord start, const Coord end);
@@ -62,6 +64,8 @@ class Board : public Observer<State>, public Subject<State> {
 
         bool isWhiteKingStuck();
         bool isBlackKingStuck();
+        bool canWhiteBlockCheck();
+        bool canBlackBlockCheck();
         bool isCheckmate(const Colour turn);
 
         void checkEndGame(const Colour turn);

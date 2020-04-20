@@ -1,0 +1,92 @@
+WELCOME TO CHESS! PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:
+- setup
+- game [player1] [player2]
+
+STARTING GAME!
+
+8  rnbqkbnr
+7  pppppppp
+6  --------
+5  --------
+4  --------
+3  --------
+2  PPPPPPPP
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppppppp
+6  --------
+5  --------
+4  ----P---
+3  --------
+2  PPPP-PPP
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppp-ppp
+6  --------
+5  ----p---
+4  ----P---
+3  --------
+2  PPPP-PPP
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppp-ppp
+6  --------
+5  ----p---
+4  --B-P---
+3  --------
+2  PPPP-PPP
+1  RNBQK-NR
+   abcdefgh
+
+8  rnbqkb-r
+7  pppp-ppp
+6  -----n--
+5  ----p---
+4  --B-P---
+3  --------
+2  PPPP-PPP
+1  RNBQK-NR
+   abcdefgh
+
+8  rnbqkb-r
+7  pppp-ppp
+6  -----n--
+5  ----p--Q
+4  --B-P---
+3  --------
+2  PPPP-PPP
+1  RNB-K-NR
+   abcdefgh
+
+8  r-bqkb-r
+7  pppp-ppp
+6  --n--n--
+5  ----p--Q
+4  --B-P---
+3  --------
+2  PPPP-PPP
+1  RNB-K-NR
+   abcdefgh
+
+8  r-bqkb-r
+7  pppp-Qpp
+6  --n--n--
+5  ----p---
+4  --B-P---
+3  --------
+2  PPPP-PPP
+1  RNB-K-NR
+   abcdefgh
+
+Black is in check.
+Checkmate! White wins!
+Final Score:
+White: 1
+Black: 0
+THANKS FOR PLAYING CHESS!
