@@ -19,6 +19,10 @@ class Piece {
 
         virtual bool isLegalMove(const Coord start, const Coord end,
                                  std::vector<std::vector<std::shared_ptr<Piece>>> &tiles) = 0;
+        bool isBasicInvalidMove(
+            const Coord start, const Coord end,
+            const std::vector<std::vector<std::shared_ptr<Piece>>> &tiles
+        );
 };
 
 //std::ostream &operator<<(std::ostream &out, const Piece &p);
