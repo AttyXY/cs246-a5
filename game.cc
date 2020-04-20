@@ -7,7 +7,7 @@ void Game::getPlayers(void) {
     bool validP2 = false;
     string player1;
     string player2;
-
+    
     while (!validP1) {
         cin >> player1;
         if (player1 == "computer") {
