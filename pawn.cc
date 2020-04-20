@@ -2,10 +2,12 @@
 #include "enums.h"
 using namespace std;
 
-Pawn::Pawn(Colour colour, PieceType pt) : Piece{colour, pt} {}
+Pawn::Pawn(Colour colour, PieceType pt, Coord pos) : Piece{colour, pt, pos} {}
 
 bool Pawn::isLegalMove(const Coord start, const Coord end,
-                        vector<vector<shared_ptr<Piece>>> &tiles) {
+                        const vector<vector<shared_ptr<Piece>>> &tiles) {
+    if (isBasicInvalidMove(start, end, tiles)) { return false; }
+
     if (colour == Colour::White) {
         // Moving forward move
         if (end.getCol() == start.getCol()) {

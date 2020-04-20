@@ -1,10 +1,12 @@
 #include "queen.h"
 using namespace std;
 
-Queen::Queen(Colour colour, PieceType pt): Piece{colour, pt} {}
+Queen::Queen(Colour colour, PieceType pt, Coord pos): Piece{colour, pt, pos} {}
 
 bool Queen::isLegalMove(const Coord start, const Coord end,
-                        vector<vector<shared_ptr<Piece>>> &tiles) {
+                        const vector<vector<shared_ptr<Piece>>> &tiles) {
+    if (isBasicInvalidMove(start, end, tiles)) { return false; }
+
     //Constant
     int ver = abs(start.getRow() - end.getRow());
     int hor = abs(start.getCol() - end.getCol());
