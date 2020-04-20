@@ -13,11 +13,6 @@ bool Piece::isBasicInvalidMove(const Coord start, const Coord end,
         start.row < 0 || start.row > 7 || start.col < 0 || start.col > 7) {
         return true;
     }
-    // Empty tile || Move other player's piece
-    if (tiles[start.row][start.col] == nullptr ||
-        colour != tiles[start.row][start.col]->colour) {
-        return true;
-    }
     // Move onto own piece
     if (tiles[end.row][end.col] != nullptr &&
         colour == tiles[end.row][end.col]->colour) {
