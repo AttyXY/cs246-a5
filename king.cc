@@ -15,3 +15,7 @@ bool King::isLegalMove(const Coord start, const Coord end,
 
     return false;
 }
+
+void King::getLineOfCheck(const Coord king, vector<Coord> &lineOfCheck) {
+    return; // King should never be checking another king
+}

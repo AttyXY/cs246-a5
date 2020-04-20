@@ -1,0 +1,4 @@
+setupCheck
+setupCheck2
+setupMoveIntoCheck
+setupMoveIntoCheck2

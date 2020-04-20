@@ -25,6 +25,9 @@ class Piece {
             const Coord start, const Coord end,
             const std::vector<std::vector<std::shared_ptr<Piece>>> &tiles
         );
+        virtual void getLineOfCheck(
+            const Coord king, std::vector<Coord> &lineOfCheck
+        ) = 0;
 };
 
 //std::ostream &operator<<(std::ostream &out, const Piece &p);

@@ -53,3 +53,37 @@ bool Rook::isLegalMove(const Coord start, const Coord end,
     }
     return false;
 }
+
+void Rook::getLineOfCheck(const Coord king, vector<Coord> &lineOfCheck) {
+    int ver = abs(pos.getRow() - king.getRow());
+    int hor = abs(pos.getCol() - king.getCol());
+
+    // Vertical
+    if (pos.getCol() == king.getCol()) {
+        if (pos.getRow() > king.getRow()) {
+            for (int n = 1; n < ver; n++) {
+                lineOfCheck.emplace_back(Coord(pos.getRow() - n, pos.getCol()));
+            }
+        }
+        if (pos.getRow() < king.getRow()) {
+            for (int n = 1; n < ver; n++) {
+                lineOfCheck.emplace_back(Coord(pos.getRow() + n, pos.getCol()));
+            }
+        }
+    }
+
+    // Horizontal
+    if (pos.getRow() == king.getRow()) {
+        if(pos.getCol() > king.getCol()) {
+            for(int n = 1; n < hor; n++) {
+                lineOfCheck.emplace_back(Coord(pos.getRow(), pos.getCol() - n));
+            }
+        }
+
+        if (pos.getCol() < king.getCol()) {
+            for(int n = 1; n < hor; n++) {
+                lineOfCheck.emplace_back(Coord(pos.getRow(), pos.getCol() + n));
+            }
+        }
+    }
+}
