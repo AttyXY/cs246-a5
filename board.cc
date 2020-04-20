@@ -148,9 +148,9 @@ void Board::addPiece(const Coord start, const Coord end) {
     tiles[end.row][end.col]->pos = {end.row, end.col};
     if (tiles[end.row][end.col]->pt == PieceType::K) {
         if (tiles[end.row][end.col]->colour == Colour::White) {
-            wk = tiles[end.row][end.col];
+            wk->pos = end;
         } else if (tiles[end.row][end.col]->colour == Colour::Black) {
-            bk = tiles[end.row][end.col];
+            bk->pos = end;
         }
     }
 }
@@ -367,11 +367,11 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
 
     // TODO: SPECIAL MOVE CHECKS
     // castling
-    // if (isCastling(m)) {
-        // cannot be checkmate or stalemate
-    //     castle(m);
+    if (isCastling(start, end)) {
+        castle(turn, start, end);
+        return true;
+    }
 
-    // }
     // pawn promotion
     // else if (isPawnPromotion(m)) {
         // promotePawn(whoFrom);
@@ -388,6 +388,13 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
     if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
         movePiece(start, end);
         tiles[end.row][end.col]->hasMoved = true;
+        if (tiles[end.row][end.col]->pt == PieceType::K) {
+            if (tiles[end.row][end.col]->colour == Colour::White) {
+                wk->hasMoved = true;
+            } else if (tiles[end.row][end.col]->colour == Colour::Black) {
+                bk->hasMoved = true;
+            }
+        }
         checkEndGame(turn);
     } else {
         return false;
@@ -395,7 +402,108 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
     return true;
 }
 
+bool Board::isCastling(Coord start, Coord end) {
+    if (((wk->pos.getCol() == start.getCol()) && (wk->pos.getRow() == start.getRow())) ||
+        ((bk->pos.getCol() == start.getCol()) && (bk->pos.getRow() == start.getRow()))) {
+            if ((start.getCol() - end.getCol()) == 2) {
+                return true;
+            }
+        }
+    return false;
+}
 
+void Board::castle(Colour turn, Coord start, Coord end) {
+   if(turn == Colour::White) {
+       //right hand castling
+       if(end.getCol() > start.getCol()) {
+           //right bottom corner piece is Rook and not moved
+           if ((tiles[0][7]->pt == PieceType::R) && !(tiles[0][7]->hasMoved)) {
+               //has white king moved?
+               if (!(wk->hasMoved)) {
+                   //is there any tiles in between?
+                   if ((tiles[0][6]->pt == PieceType::X) && 
+                        (tiles[0][5]->pt == PieceType::X)) {
+                        // is it safe for white king to move there?
+                       if (!tempMove(start, tiles[0][6]->pos, &Board::isWhiteInCheck) &&
+                            !tempMove(start, tiles[0][5]->pos, &Board::isWhiteInCheck) &&
+                            !isWhiteInCheck()) {
+                                movePiece(start, end);
+                                wk->pos = end;
+                                tiles[0][5] = tiles[0][7];
+                                charTiles[0][7] = '-';
+                                tiles[0][7] = make_shared<Empty>(
+                                    Colour::NoColour, PieceType::X, Coord(0,7)
+                                );
+                                return;
+                       }
+                   }
+               }
+           }
+       } else {
+           if ((tiles[0][0]->pt == PieceType::R) && !(tiles[0][0]->hasMoved)) {
+               if (!(wk->hasMoved)) {
+                   if ((tiles[0][2]->pt == PieceType::X) && 
+                        (tiles[0][3]->pt == PieceType::X)) {
+                       if (!tempMove(start, tiles[0][2]->pos, &Board::isWhiteInCheck) &&
+                            !tempMove(start, tiles[0][3]->pos, &Board::isWhiteInCheck) &&
+                            !isWhiteInCheck()) {
+                                movePiece(start, end);
+                                wk->pos = end;
+                                tiles[0][3] = tiles[0][0];
+                                charTiles[0][0] = '-';
+                                tiles[0][0] = make_shared<Empty>(
+                                    Colour::NoColour, PieceType::X, Coord(0,0)
+                                );
+                                return;
+                       }
+                   }
+               }
+           }
+       }
+   } else {
+        if(end.getCol() > start.getCol()) {
+           if ((tiles[7][7]->pt == PieceType::R) && !(tiles[7][7]->hasMoved)) {
+               if (!(bk->hasMoved)) {
+                   if ((tiles[7][6]->pt == PieceType::X) && 
+                        (tiles[7][5]->pt == PieceType::X)) {
+                       if (!tempMove(start, tiles[7][6]->pos, &Board::isBlackInCheck) &&
+                            !tempMove(start, tiles[7][5]->pos, &Board::isBlackInCheck) &&
+                            !isBlackInCheck()) {
+                                movePiece(start, end);
+                                bk->pos = end;
+                                tiles[7][5] = tiles[7][7];
+                                charTiles[7][7] = '-';
+                                tiles[7][7] = make_shared<Empty>(
+                                    Colour::NoColour, PieceType::X, Coord(7,7)
+                                );
+                                return;
+                       }
+                   }
+               }
+           }
+       } else {
+           if ((tiles[7][0]->pt == PieceType::R) && !(tiles[7][0]->hasMoved)) {
+               if (!(bk->hasMoved)) {
+                   if ((tiles[7][2]->pt == PieceType::X) && 
+                        (tiles[7][3]->pt == PieceType::X)) {
+                       if (!tempMove(start, tiles[7][2]->pos, &Board::isBlackInCheck) &&
+                            !tempMove(start, tiles[7][3]->pos, &Board::isBlackInCheck) &&
+                            !isBlackInCheck()) {
+                                movePiece(start, end);
+                                bk->pos = end;
+                                tiles[7][3] = tiles[7][0];
+                                charTiles[7][0] = '-';
+                                tiles[7][0] = make_shared<Empty>(
+                                    Colour::NoColour, PieceType::X, Coord(7,0)
+                                );
+                                return;
+                       }
+                   }
+               }
+           }
+       }
+   }
+}
 
 
 
