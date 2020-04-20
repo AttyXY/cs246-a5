@@ -43,6 +43,12 @@ int main(int argc, char *argv[]) {
             if (g->td->setupTiles(g->isWhiteTurn, true) &&
                 g->b->init(g->td->tiles)) {
                 g->customSetup = true;
+                // TODO: set stalemate flag before first move
+                // if (g->isWhiteTurn) {
+                //     g->b->checkEndGame(Colour::White);
+                // } else {
+                //     g->b->checkEndGame(Colour::Black);
+                // }
             } else {
                 cout << "Invalid setup." << endl << endl;
             }

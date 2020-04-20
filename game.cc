@@ -47,6 +47,9 @@ void Game::runGame(void) {
             return;
         }
         if (command == "move") {
+
+
+            // Get move and make move
             Coord start;
             Coord end;
             Move m;
@@ -92,7 +95,6 @@ void Game::runGame(void) {
             } else {
                 isWhiteTurn = !isWhiteTurn;
             }
-
         }
         else if (command == "resign") {
             if (isWhiteTurn) {
