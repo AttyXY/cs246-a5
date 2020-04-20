@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "game.h"
+#include "enums.h"
 using namespace std;
 
 

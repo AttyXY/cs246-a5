@@ -15,7 +15,7 @@ bool Rook::isLegalMove(const Coord start, const Coord end,
     if (start.getCol() == end.getCol()) {
         if (start.getRow() > end.getRow()) {
             for(int n = 1; n < ver; n++) {
-                if(tiles[start.getRow() - n][start.getCol()] != nullptr) {
+                if(tiles[start.getRow() - n][start.getCol()]->pt != PieceType::X) {
                     return false;
                 }
             }
@@ -23,7 +23,7 @@ bool Rook::isLegalMove(const Coord start, const Coord end,
         }
         if (start.getRow() < end.getRow()) {
             for(int n = 1; n < ver; n++) {
-                if(tiles[start.getRow() + n][start.getCol()] != nullptr) {
+                if(tiles[start.getRow() + n][start.getCol()]->pt != PieceType::X) {
                     return false;
                 }
             }
@@ -35,7 +35,7 @@ bool Rook::isLegalMove(const Coord start, const Coord end,
     if (start.getRow() == end.getRow()) {
         if(start.getCol() > end.getCol()) {
             for(int n = 1; n < hor; n++) {
-                if(tiles[start.getRow()][start.getCol() - n] != nullptr) {
+                if(tiles[start.getRow()][start.getCol() - n]->pt != PieceType::X) {
                     return false;
                 }
             }
@@ -44,7 +44,7 @@ bool Rook::isLegalMove(const Coord start, const Coord end,
 
         if (start.getCol() < end.getCol()) {
             for(int n = 1; n < hor; n++) {
-                if(tiles[start.getRow()][start.getCol() + n] != nullptr) {
+                if(tiles[start.getRow()][start.getCol() + n]->pt != PieceType::X) {
                     return false;
                 }
             }

@@ -9,6 +9,7 @@
 #include "move.h"
 
 #include "piece.h"
+#include "empty.h"
 #include "king.h"
 #include "queen.h"
 #include "rook.h"

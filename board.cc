@@ -8,10 +8,13 @@ void Board::reset() {
 	charTiles = vector<vector<char>>(8, row);
 
     vector<vector<shared_ptr<Piece>>> newTiles;
-    for (size_t row = 0; row < charTiles.size(); ++row) {
-        newTiles.emplace_back(std::vector<std::shared_ptr<Piece>>());
-        for (size_t col = 0; col < charTiles[row].size(); ++col) {
-            newTiles[row].emplace_back(nullptr);
+    for (int row = 0; row < (int)charTiles.size(); ++row) {
+        newTiles.emplace_back(vector<shared_ptr<Piece>>());
+        for (int col = 0; col < (int)charTiles[row].size(); ++col) {
+            // Fill all tiles with empty pieces
+            newTiles[row].emplace_back(make_shared<Empty>(
+                Colour::NoColour, PieceType::X, Coord(col, row)
+            ));
         }
     }
     tiles = newTiles;
@@ -154,7 +157,9 @@ void Board::addPiece(const Coord start, const Coord end) {
 
 void Board::removePiece(const Coord c) {
     charTiles[c.row][c.col] = '-';
-    tiles[c.row][c.col] = nullptr;
+    tiles[c.row][c.col] = make_shared<Empty>(
+        Colour::NoColour, PieceType::X, Coord(c.row, c.col)
+    );
 }
 
 void Board::movePiece(const Coord start, const Coord end) {
@@ -255,7 +260,7 @@ bool Board::isBlackKingStuck() {
     return true;
 }
 
-
+// Piece and checker MUST BE INSTANTIATED PIECES
 bool Board::canWhiteBlockCheck() {
     for (const auto &p: whitePieces) {
         // can capture piece
@@ -276,6 +281,7 @@ bool Board::canWhiteBlockCheck() {
     return false;
 }
 
+// Piece and checker MUST BE INSTANTIATED PIECES
 bool Board::canBlackBlockCheck() {
     for (const auto &p: blackPieces) {
         // can capture piece
@@ -308,16 +314,10 @@ bool Board::isCheckmate(const Colour turn) {
 
 // check board state once legal move has been made
 void Board::checkEndGame(const Colour turn) {
-    if (isBlackInCheck(true)) {
-        blackInCheck = true;
-        if (isCheckmate(turn)) {
-            checkmated = true;
-        }
-    } else if (isWhiteInCheck(true)) {
-        whiteInCheck = true;
-        if (isCheckmate(turn)) {
-            checkmated = true;
-        }
+    blackInCheck = isBlackInCheck(true);
+    whiteInCheck = isWhiteInCheck(true);
+    if (blackInCheck || whiteInCheck) {
+        checkmated = isCheckmate(turn);
     }
     // TODO: stalemate
     // if (isStalemate(whoFrom)) {
@@ -349,12 +349,12 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
         return false;
     }
     // Empty tile || Move other player's piece
-    if (tiles[start.row][start.col] == nullptr ||
+    if (tiles[start.row][start.col]->pt == PieceType::X ||
         (turn != tiles[start.row][start.col]->colour)) {
         return false;
     }
     // Move onto own piece
-    if (tiles[end.row][end.col] != nullptr &&
+    if (tiles[end.row][end.col]->pt != PieceType::X &&
         turn == tiles[end.row][end.col]->colour) {
         return false;
     }

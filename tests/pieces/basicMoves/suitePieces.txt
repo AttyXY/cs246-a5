@@ -1,0 +1,7 @@
+invalids
+king
+queen
+rook
+bishop
+knight
+pawn
