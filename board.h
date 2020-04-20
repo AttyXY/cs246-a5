@@ -65,6 +65,7 @@ class Board : public Observer<State>, public Subject<State> {
         // Endgame detection
         bool stalemated = false;
         bool checkmated = false;
+        void checkEndGame(const Colour turn);
 
         bool isWhiteKingStuck();
         bool isBlackKingStuck();
@@ -72,19 +73,15 @@ class Board : public Observer<State>, public Subject<State> {
         bool canBlackBlockCheck();
         bool isCheckmate(const Colour turn);
 
-        void checkEndGame(const Colour turn);
-
-        int movesSinceCaptureOrPawn = 0;
-        bool isStalemate(Move m);
-
+        bool whiteInsufficientMaterial();
+        bool blackInsufficientMaterial();
+        bool insufficientMaterial();
+        bool isStalemate(const Colour turn);
+        // int movesSinceCaptureOrPawn = 0;
         // std::vector<Move> moves;
         // void undo();
         // void redo()
         // bool isThreefoldRepeat(Move m);
-
-
-
-
 
 
         // Subject-observer

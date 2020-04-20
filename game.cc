@@ -41,12 +41,28 @@ void Game::runGame(void) {
 
     cout << "STARTING GAME!" << endl << endl;
     td->printTiles();
+
+    // make sure board is not already in stalemate before making first move
+    if (isWhiteTurn) {
+        b->checkEndGame(Colour::White);
+    } else {
+        b->checkEndGame(Colour::Black);
+    }
+    if (b->stalemated) {
+        p1->score = p1->score + 0.5;
+        p2->score = p2->score + 0.5;
+        cout << "Stalemate!" << endl;
+        return;
+    }
+
+    // Parse commands
     string command;
     while (cin >> command) {
         if (command == "quit") {
             return;
         }
         if (command == "move") {
+            // Get move and make move
             Coord start;
             Coord end;
             Move m;
@@ -92,7 +108,6 @@ void Game::runGame(void) {
             } else {
                 isWhiteTurn = !isWhiteTurn;
             }
-
         }
         else if (command == "resign") {
             if (isWhiteTurn) {

@@ -316,17 +316,69 @@ bool Board::isCheckmate(const Colour turn) {
     }
 }
 
+
+bool Board::whiteInsufficientMaterial() {
+    if ((int)whitePieces.size() == 1) { // Only king
+        return true;
+    } else if ((int)whitePieces.size() == 2) { // King and Bishop/Knight
+        for (const auto &p: whitePieces) {
+            if (p->pt == PieceType::B || p->pt == PieceType::N) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Board::blackInsufficientMaterial() {
+    if ((int)blackPieces.size() == 1) { // Only king
+        return true;
+    } else if ((int)blackPieces.size() == 2) { // King and Bishop/Knight
+        for (const auto &p: blackPieces) {
+            if (p->pt == PieceType::B || p->pt == PieceType::N) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Board::insufficientMaterial() {
+    return whiteInsufficientMaterial() && blackInsufficientMaterial();
+}
+
+bool Board::isStalemate(const Colour turn) {
+    if (!insufficientMaterial()) {
+        // if (turn == Colour::White) {
+        //     for (const auto &p: blackPieces) {
+        //         if (!p->isStuck(tiles)) {
+                    return false;
+        //         }
+        //     }
+        // } else if (turn == Colour::Black) {
+        //     for (const auto &p: whitePieces) {
+        //         if (!p->isStuck(tiles)) {
+        //             return false;
+        //         }
+        //     }
+        // }
+    }
+    return true;
+}
+
 // check board state once legal move has been made
 void Board::checkEndGame(const Colour turn) {
     blackInCheck = isBlackInCheck(true);
     whiteInCheck = isWhiteInCheck(true);
+
+    // checkmate
     if (blackInCheck || whiteInCheck) {
         checkmated = isCheckmate(turn);
     }
-    // TODO: stalemate
-    // if (isStalemate(whoFrom)) {
-    //     stalemated = true;
-    // }
+    // stalemate
+    if (isStalemate(turn)) {
+        stalemated = true;
+    }
     // TODO: threefold repetition
     // TODO: fifty-move-rule
 }
@@ -402,6 +454,8 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
     return true;
 }
 
+
+/* Special moves */
 bool Board::isCastling(Coord start, Coord end) {
     if (((wk->pos.getCol() == start.getCol()) && (wk->pos.getRow() == start.getRow())) ||
         ((bk->pos.getCol() == start.getCol()) && (bk->pos.getRow() == start.getRow()))) {
@@ -421,7 +475,7 @@ void Board::castle(Colour turn, Coord start, Coord end) {
                //has white king moved?
                if (!(wk->hasMoved)) {
                    //is there any tiles in between?
-                   if ((tiles[0][6]->pt == PieceType::X) && 
+                   if ((tiles[0][6]->pt == PieceType::X) &&
                         (tiles[0][5]->pt == PieceType::X)) {
                         // is it safe for white king to move there?
                        if (!tempMove(start, tiles[0][6]->pos, &Board::isWhiteInCheck) &&
@@ -446,7 +500,7 @@ void Board::castle(Colour turn, Coord start, Coord end) {
        } else {
            if ((tiles[0][0]->pt == PieceType::R) && !(tiles[0][0]->hasMoved)) {
                if (!(wk->hasMoved)) {
-                   if ((tiles[0][2]->pt == PieceType::X) && 
+                   if ((tiles[0][2]->pt == PieceType::X) &&
                         (tiles[0][3]->pt == PieceType::X) &&
                         (tiles[0][1]->pt == PieceType::X)) {
                        if (!tempMove(start, tiles[0][2]->pos, &Board::isWhiteInCheck) &&
@@ -473,7 +527,7 @@ void Board::castle(Colour turn, Coord start, Coord end) {
         if(end.getCol() > start.getCol()) {
            if ((tiles[7][7]->pt == PieceType::R) && !(tiles[7][7]->hasMoved)) {
                if (!(bk->hasMoved)) {
-                   if ((tiles[7][6]->pt == PieceType::X) && 
+                   if ((tiles[7][6]->pt == PieceType::X) &&
                         (tiles[7][5]->pt == PieceType::X)) {
                        if (!tempMove(start, tiles[7][6]->pos, &Board::isBlackInCheck) &&
                             !tempMove(start, tiles[7][5]->pos, &Board::isBlackInCheck) &&
@@ -497,7 +551,7 @@ void Board::castle(Colour turn, Coord start, Coord end) {
        } else {
            if ((tiles[7][0]->pt == PieceType::R) && !(tiles[7][0]->hasMoved)) {
                if (!(bk->hasMoved)) {
-                   if ((tiles[7][2]->pt == PieceType::X) && 
+                   if ((tiles[7][2]->pt == PieceType::X) &&
                         (tiles[7][3]->pt == PieceType::X) &&
                         (tiles[7][1]->pt == PieceType::X)) {
                        if (!tempMove(start, tiles[7][2]->pos, &Board::isBlackInCheck) &&
@@ -522,38 +576,3 @@ void Board::castle(Colour turn, Coord start, Coord end) {
        }
    }
 }
-
-
-
-
-
-
-
-
-
-
-
-// bool Board::insufficientMaterial(vector<shared_ptr<Piece>> &opponentPieces) {
-//     if (opponentPieces.size() == 1) { // Only king
-//         return true;
-//     } else if (opponentPieces.size() == 2) { // King and Bishop/Knight
-//         for (const auto &p: opponentPieces) {
-//             if (p->pt == PieceType::B || PieceType::N) {
-//                 return true;
-//             }
-//         }
-//     }
-//     return false;
-// }
-
-// bool Board::isStalemate() {
-//     if (insufficientMaterial()) {
-//         return true;
-//     }
-//     for (const auto &p: whitePieces) {
-//         if (p->noLegalMove()) {
-//             return true;
-//         }
-//     }
-//     return false;
-// }
