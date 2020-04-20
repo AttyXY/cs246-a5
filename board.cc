@@ -162,6 +162,23 @@ void Board::movePiece(const Coord start, const Coord end) {
     removePiece(start);
 }
 
+// makes and undos Move m, getting and returning result of callback in-between
+bool Board::tempMove(Coord start, Coord end, bool (Board::*callback)(bool)) {
+    // tempMove
+    shared_ptr<Piece> tempPiece = tiles[end.row][end.col];
+    char tempChar = charTiles[end.row][end.col];
+    movePiece(start, end);
+
+    // get result
+    bool result = (this->*callback)(false);
+
+    // undo tempMove
+    movePiece(end, start);
+    tiles[end.row][end.col] = tempPiece;
+    charTiles[end.row][end.col] = tempChar;
+
+    return result;
+}
 
 /* Check helpers */
 bool Board::isWhiteInCheck(bool setChecker) {
@@ -192,21 +209,12 @@ bool Board::isCheck() {
 bool Board::isMoveIntoCheck(const Colour turn, const Coord start, const Coord end) {
     bool result = false;
 
-    // tempMove
-    shared_ptr<Piece> temp = tiles[end.row][end.col];
-    char tempChar = charTiles[end.row][end.col];
-    movePiece(start, end);
-
     // check condition
     if (turn == Colour::White) {
-        result = isWhiteInCheck();
+        result = tempMove(start, end, &Board::isWhiteInCheck);
     } else if (turn == Colour::Black) {
-        result = isBlackInCheck();
+        result = tempMove(start, end, &Board::isBlackInCheck);
     }
-    // undo tempMove
-    movePiece(end, start);
-    tiles[end.row][end.col] = temp;
-    charTiles[end.row][end.col] = tempChar;
 
     return result;
 }
@@ -214,7 +222,6 @@ bool Board::isMoveIntoCheck(const Colour turn, const Coord start, const Coord en
 
 /* Endgame detection helpers: Run after move has already been made */
 bool Board::isWhiteKingStuck() {
-    bool escapeExists = false;
     for (int i = -1; i < 2; ++i) {
         for (int j = -1; j < 2; ++j) {
             if (i == 0 && j == 0) { continue; } // same position as before
@@ -222,23 +229,9 @@ bool Board::isWhiteKingStuck() {
             Coord start = wk->pos;
             Coord end{wk->pos.getRow() + i, wk->pos.getCol() + j};
             if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
-                // tempMove
-                shared_ptr<Piece> temp = tiles[end.row][end.col];
-                char tempChar = charTiles[end.row][end.col];
-                movePiece(start, end);
-
-                // determine if move is escape
-                if (!isWhiteInCheck()) {
-                    escapeExists = true;
+                if (!tempMove(start, end, &Board::isWhiteInCheck)) {
+                    return false; // escape exists
                 }
-
-                // undo tempMove
-                movePiece(end, start);
-                tiles[end.row][end.col] = temp;
-                charTiles[end.row][end.col] = tempChar;
-            }
-            if (escapeExists == true) {
-                return false;
             }
         }
     }
@@ -246,7 +239,6 @@ bool Board::isWhiteKingStuck() {
 }
 
 bool Board::isBlackKingStuck() {
-    bool escapeExists = false;
     for (int i = -1; i < 2; ++i) {
         for (int j = -1; j < 2; ++j) {
             if (i == 0 && j == 0) { continue; } // same position as before
@@ -254,23 +246,9 @@ bool Board::isBlackKingStuck() {
             Coord start = bk->pos;
             Coord end{bk->pos.getRow() + i, bk->pos.getCol() + j};
             if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
-                // tempMove
-                shared_ptr<Piece> temp = tiles[end.row][end.col];
-                char tempChar = charTiles[end.row][end.col];
-                movePiece(start, end);
-
-                // determine if move is escape
-                if (!isBlackInCheck()) {
-                    escapeExists = true;
+                if (!tempMove(start, end, &Board::isBlackInCheck)) {
+                    return false; // escape exists
                 }
-
-                // undo tempMove
-                movePiece(end, start);
-                tiles[end.row][end.col] = temp;
-                charTiles[end.row][end.col] = tempChar;
-            }
-            if (escapeExists == true) {
-                return false;
             }
         }
     }
@@ -284,22 +262,7 @@ bool Board::canWhiteBlockCheck() {
         if (p->isLegalMove(p->pos, checker->pos, tiles)) {
             Coord start = p->pos;
             Coord end = checker->pos;
-            bool canCapture = true;
-            // tempMove
-            shared_ptr<Piece> temp = tiles[end.row][end.col];
-            char tempChar = charTiles[end.row][end.col];
-            movePiece(start, end);
-
-            // determine if still in check after capture
-            if (isWhiteInCheck()) {
-                canCapture = false;
-            }
-
-            // undo tempMove
-            movePiece(end, start);
-            tiles[end.row][end.col] = temp;
-            charTiles[end.row][end.col] = tempChar;
-            if (canCapture) { return true; }
+            return !tempMove(start, end, &Board::isWhiteInCheck);
         }
 
         // can block line of check
@@ -319,22 +282,7 @@ bool Board::canBlackBlockCheck() {
         if (p->isLegalMove(p->pos, checker->pos, tiles)) {
             Coord start = p->pos;
             Coord end = checker->pos;
-            bool canCapture = true;
-            // tempMove
-            shared_ptr<Piece> temp = tiles[end.row][end.col];
-            char tempChar = charTiles[end.row][end.col];
-            movePiece(start, end);
-
-            // determine if still in check after capture
-            if (isBlackInCheck()) {
-                canCapture = false;
-            }
-
-            // undo tempMove
-            movePiece(end, start);
-            tiles[end.row][end.col] = temp;
-            charTiles[end.row][end.col] = tempChar;
-            if (canCapture) { return true; }
+            return !tempMove(start, end, &Board::isBlackInCheck);
         }
 
         // can block line of check
