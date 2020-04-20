@@ -342,24 +342,7 @@ void Board::update(Subject<State> &whoFrom) {
 }
 
 bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
-    // STANDARD CHECKS
-    // Off board
-    if (end.row < 0 || end.row > 7 || end.col < 0 || end.col > 7 ||
-        start.row < 0 || start.row > 7 || start.col < 0 || start.col > 7) {
-        return false;
-    }
-    // Empty tile || Move other player's piece
-    if (tiles[start.row][start.col]->pt == PieceType::X ||
-        (turn != tiles[start.row][start.col]->colour)) {
-        return false;
-    }
-    // Move onto own piece
-    if (tiles[end.row][end.col]->pt != PieceType::X &&
-        turn == tiles[end.row][end.col]->colour) {
-        return false;
-    }
-
-    // Still in check
+    // IN CHECK AFTER MOVE?
     if (isMoveIntoCheck(turn, start, end)) {
     //     if (isStalemate(whoFrom)) {
             // Only possible right after setup, because stalemate is checked
