@@ -7,7 +7,7 @@ OBJECTS = ${SOURCES:.cc=.o}
 DEPENDS = ${OBJECTS:.o=.d}
 
 ${EXEC}: ${OBJECTS}
-	${CXX} ${OBJECTS} -o ${EXEC}
+	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC} -lX11
 
 -include ${DEPENDS}
 

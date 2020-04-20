@@ -3,18 +3,18 @@
 #include <iostream>
 #include <vector>
 #include "window.h"
+#include "display.h"
+#include "subject.h"
+#include "state.h"
 
-class GraphDisplay {
+class GraphDisplay:public BoardDisplay {
+        Xwindow xw;
     public:
-        vector<vector<char>> pieces;
-        XWindow xw;
-        void update(void);
-
         GraphDisplay();
-        ~GraphDisplay();
+        // bool setupTiles(bool &isWhiteTurn, bool custom = false);
+        bool setupTiles(const std::vector<std::vector<char>> &setupTiles);
+        void update(Subject<State> &whoFrom);
+        void reset() override;
 };
-
-std::ostream &operator<<(std::ostream &out, const GraphDisplay &d);
-std::istream &operator>>(std::istream &in, GraphDisplay &d);
 
 #endif

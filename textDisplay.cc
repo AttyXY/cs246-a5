@@ -129,3 +129,4 @@ void TextDisplay::update(Subject<State> &whoFrom) {
     tiles = s.tiles;
     printTiles();
 }
+ 

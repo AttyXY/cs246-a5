@@ -5,9 +5,9 @@
 #include "subject.h"
 #include "state.h"
 #include "coord.h"
-#include "utils.h"
+#include "utils.h" 
 
-class TextDisplay: public Display {
+class TextDisplay: public BoardDisplay {
     public:
         TextDisplay();
         bool setupTiles(bool &isWhiteTurn, bool custom = false);
@@ -18,4 +18,4 @@ class TextDisplay: public Display {
         void update(Subject<State> &whoFrom); // This updates the textDisplay with the grid it receives
 };
 
-#endif
+#endif 

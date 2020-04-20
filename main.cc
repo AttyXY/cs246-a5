@@ -2,11 +2,11 @@
 #include <string>
 #include "game.h"
 using namespace std;
-
+ 
 
 int main(int argc, char *argv[]) {
 	// TODO: PARSE FLAGS
-
+ 
 	// TODO: PARSE SETUP
     cout << "WELCOME TO CHESS! ";
     cout << "PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:" << endl;
@@ -28,10 +28,11 @@ int main(int argc, char *argv[]) {
         else if (command == "game") {
             if (!g->customSetup) {
                 g->td->setupTiles(g->isWhiteTurn, false);
+                g->gd->setupTiles(g->td->tiles);
                 g->b->init(g->td->tiles); // default setup is always valid
             }
             g->b->attach(g->td.get());
-            // g->b->attach(g->gd);
+            g->b->attach(g->gd.get());
             g->runGame();
             cout << "Final Score:" << endl;
             cout << "White: " << g->p1->score << endl;
@@ -41,6 +42,7 @@ int main(int argc, char *argv[]) {
             cout << "STARTING SETUP" << endl << endl;
             if (g->td->setupTiles(g->isWhiteTurn, true) &&
                 g->b->init(g->td->tiles)) {
+                // g->gd->setupTiles(g->td->tiles);
                 g->customSetup = true;
             } else {
                 cout << "Invalid setup." << endl << endl;
