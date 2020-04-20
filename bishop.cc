@@ -80,3 +80,21 @@ void Bishop::getLineOfCheck(const Coord king, vector<Coord> &lineOfCheck) {
         }
     }
 }
+
+bool Bishop::isStuck(vector<vector<shared_ptr<Piece>>> &tiles) {
+    Coord topRight{pos.getRow() + 1, pos.getCol() + 1};
+    Coord topLeft{pos.getRow() + 1, pos.getCol() - 1};
+    Coord bottomRight{pos.getRow() - 1, pos.getCol() + 1};
+    Coord bottomLeft{pos.getRow() - 1, pos.getCol() - 1};
+
+    if (isLegalMove(pos, topRight, tiles) && tiles[pos.getRow() + 1][pos.getCol() + 1]->pt != PieceType::X) {
+        return false;
+    } else if (isLegalMove(pos, topLeft, tiles) && tiles[pos.getRow() + 1][pos.getCol() - 1]->pt != PieceType::X) {
+        return false;
+    } else if (isLegalMove(pos, bottomRight, tiles) && tiles[pos.getRow() - 1][pos.getCol() + 1]->pt != PieceType::X) {
+        return false;
+    } else if (isLegalMove(pos, bottomLeft, tiles) && tiles[pos.getRow() - 1][pos.getCol() - 1]->pt != PieceType::X) {
+        return false;
+    }
+    return true;
+}

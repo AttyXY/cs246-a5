@@ -19,3 +19,7 @@ bool King::isLegalMove(const Coord start, const Coord end,
 void King::getLineOfCheck(const Coord king, vector<Coord> &lineOfCheck) {
     return; // King should never be checking another king
 }
+
+bool King::isStuck(vector<vector<shared_ptr<Piece>>> &tiles) {
+    return false; // implemented in Board, to use Board::isKingInCheck();
+}

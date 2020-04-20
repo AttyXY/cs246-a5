@@ -16,6 +16,9 @@ class Empty: public Piece {
         void getLineOfCheck(
             const Coord king, std::vector<Coord> &lineOfCheck
         ) override;
+        bool isStuck(
+            std::vector<std::vector<std::shared_ptr<Piece>>> &tiles
+        ) override;
  };
 
  #endif

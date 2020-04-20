@@ -28,6 +28,9 @@ class Piece {
         virtual void getLineOfCheck(
             const Coord king, std::vector<Coord> &lineOfCheck
         ) = 0;
+        virtual bool isStuck(
+            std::vector<std::vector<std::shared_ptr<Piece>>> &tiles
+        ) = 0;
 };
 
 //std::ostream &operator<<(std::ostream &out, const Piece &p);

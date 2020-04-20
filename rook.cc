@@ -87,3 +87,21 @@ void Rook::getLineOfCheck(const Coord king, vector<Coord> &lineOfCheck) {
         }
     }
 }
+
+bool Rook::isStuck(vector<vector<shared_ptr<Piece>>> &tiles) {
+    Coord top{pos.getRow() + 1, pos.getCol()};
+    Coord bottom{pos.getRow() - 1, pos.getCol()};
+    Coord left{pos.getRow(), pos.getCol() - 1};
+    Coord right{pos.getRow(), pos.getCol() + 1};
+
+    if (isLegalMove(pos, top, tiles) && tiles[pos.getRow() + 1][pos.getCol()]->pt != PieceType::X) {
+        return false;
+    } else if (isLegalMove(pos, bottom, tiles) && tiles[pos.getRow() - 1][pos.getCol()]->pt != PieceType::X) {
+        return false;
+    } else if (isLegalMove(pos, left, tiles) && tiles[pos.getRow()][pos.getCol() - 1]->pt != PieceType::X) {
+        return false;
+    } else if (isLegalMove(pos, right, tiles) && tiles[pos.getRow()][pos.getCol() + 1]->pt != PieceType::X) {
+        return false;
+    }
+    return true;
+}
