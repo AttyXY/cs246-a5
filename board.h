@@ -2,6 +2,7 @@
 #define BOARD_H
 #include <iostream>
 #include <vector>
+#include <functional>
 #include "observer.h"
 #include "subject.h"
 #include "state.h"
@@ -36,6 +37,7 @@ class Board : public Observer<State>, public Subject<State> {
         void addPiece(const Coord start, const Coord end);
         void removePiece(const Coord c);
         void movePiece(const Coord start, const Coord end);
+        bool tempMove(Coord start, Coord end, bool (Board::*callback)(bool));
 
         bool whiteInCheck = false; //white is dying
         bool blackInCheck = false; //black is dying
