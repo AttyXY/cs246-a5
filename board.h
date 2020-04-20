@@ -27,7 +27,7 @@ class Board : public Observer<State>, public Subject<State> {
         std::shared_ptr<Piece> wk;
         std::shared_ptr<Piece> bk;
         std::shared_ptr<Piece> checker;
-        // std::vector<Coord> lineOfCheck;
+        std::vector<Coord> lineOfCheck;
         bool legalLastMove = true;
 
 

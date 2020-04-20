@@ -13,6 +13,9 @@ class Empty: public Piece {
             const Coord start, const Coord end,
             const std::vector<std::vector<std::shared_ptr<Piece>>> &tiles
         ) override;
+        void getLineOfCheck(
+            const Coord king, std::vector<Coord> &lineOfCheck
+        ) override;
  };
 
  #endif

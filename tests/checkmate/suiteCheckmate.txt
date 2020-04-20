@@ -7,3 +7,7 @@ blockCheckByCaptureWhite
 blockCheckByCaptureBlack
 blockCheckByCaptureWhite2
 blockCheckByCaptureBlack2
+blockCheckByMoveWhite
+blockCheckByMoveBlack
+blockCheckByMoveWhite2
+blockCheckByMoveBlack2

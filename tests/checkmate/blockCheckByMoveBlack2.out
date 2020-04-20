@@ -1,0 +1,162 @@
+WELCOME TO CHESS! PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:
+- setup
+- game [player1] [player2]
+
+STARTING SETUP
+
+8  --------
+7  --------
+6  --------
+5  --------
+4  --------
+3  --------
+2  --------
+1  ----k---
+   abcdefgh
+
+8  --------
+7  --------
+6  --------
+5  ----K---
+4  --------
+3  --------
+2  --------
+1  ----k---
+   abcdefgh
+
+8  --------
+7  --------
+6  --------
+5  ----K---
+4  --------
+3  --------
+2  R-------
+1  ----k---
+   abcdefgh
+
+8  --------
+7  --------
+6  --------
+5  ----K---
+4  --------
+3  -R------
+2  R-------
+1  ----k---
+   abcdefgh
+
+8  --------
+7  --------
+6  --------
+5  ----K--b
+4  --------
+3  -R------
+2  R-------
+1  ----k---
+   abcdefgh
+
+STARTING GAME!
+
+8  --------
+7  --------
+6  --------
+5  ----K--b
+4  --------
+3  -R------
+2  R-------
+1  ----k---
+   abcdefgh
+
+8  --------
+7  --------
+6  --------
+5  ----K--b
+4  --------
+3  --------
+2  R-------
+1  -R--k---
+   abcdefgh
+
+Black is in check.
+8  --------
+7  --------
+6  --------
+5  ----K---
+4  --------
+3  --------
+2  R-------
+1  -R-bk---
+   abcdefgh
+
+8  --------
+7  --------
+6  --------
+5  ----K---
+4  --------
+3  --------
+2  R-------
+1  ---Rk---
+   abcdefgh
+
+Black is in check.
+8  --------
+7  --------
+6  --------
+5  ----K---
+4  --------
+3  --------
+2  R-------
+1  ---Rk---
+   abcdefgh
+
+Black is in check.
+Invalid move. Input another move.
+8  --------
+7  --------
+6  --------
+5  ----K---
+4  --------
+3  --------
+2  R-------
+1  ---Rk---
+   abcdefgh
+
+Black is in check.
+Invalid move. Input another move.
+8  --------
+7  --------
+6  --------
+5  ----K---
+4  --------
+3  --------
+2  R-------
+1  ---Rk---
+   abcdefgh
+
+Black is in check.
+Invalid move. Input another move.
+8  --------
+7  --------
+6  --------
+5  ----K---
+4  --------
+3  --------
+2  R-------
+1  ---Rk---
+   abcdefgh
+
+Black is in check.
+Invalid move. Input another move.
+8  --------
+7  --------
+6  --------
+5  ----K---
+4  --------
+3  --------
+2  R-------
+1  ---k----
+   abcdefgh
+
+Final Score:
+White: 0
+Black: 0
+THANKS FOR PLAYING CHESS!

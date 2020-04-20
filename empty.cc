@@ -7,3 +7,7 @@ bool Empty::isLegalMove(const Coord start, const Coord end,
                         const vector<vector<shared_ptr<Piece>>> &tiles) {
     return false;
 }
+
+void Empty::getLineOfCheck(const Coord king, vector<Coord> &lineOfCheck) {
+    return; // empty has no line of check
+}
