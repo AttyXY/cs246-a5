@@ -405,7 +405,7 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
 bool Board::isCastling(Coord start, Coord end) {
     if (((wk->pos.getCol() == start.getCol()) && (wk->pos.getRow() == start.getRow())) ||
         ((bk->pos.getCol() == start.getCol()) && (bk->pos.getRow() == start.getRow()))) {
-            if ((start.getCol() - end.getCol()) == 2) {
+            if (abs(start.getCol() - end.getCol()) == 2) {
                 return true;
             }
         }
@@ -428,8 +428,12 @@ void Board::castle(Colour turn, Coord start, Coord end) {
                             !tempMove(start, tiles[0][5]->pos, &Board::isWhiteInCheck) &&
                             !isWhiteInCheck()) {
                                 movePiece(start, end);
-                                wk->pos = end;
+                                tiles[end.row][end.col]->hasMoved = true;
+                                wk = tiles[end.row][end.col];
+                                charTiles[0][5] = charTiles[0][7];
                                 tiles[0][5] = tiles[0][7];
+                                tiles[0][5]->pos = {0,5};
+                                tiles[0][5]->hasMoved = true;
                                 charTiles[0][7] = '-';
                                 tiles[0][7] = make_shared<Empty>(
                                     Colour::NoColour, PieceType::X, Coord(0,7)
@@ -443,14 +447,19 @@ void Board::castle(Colour turn, Coord start, Coord end) {
            if ((tiles[0][0]->pt == PieceType::R) && !(tiles[0][0]->hasMoved)) {
                if (!(wk->hasMoved)) {
                    if ((tiles[0][2]->pt == PieceType::X) && 
-                        (tiles[0][3]->pt == PieceType::X)) {
+                        (tiles[0][3]->pt == PieceType::X) &&
+                        (tiles[0][1]->pt == PieceType::X)) {
                        if (!tempMove(start, tiles[0][2]->pos, &Board::isWhiteInCheck) &&
                             !tempMove(start, tiles[0][3]->pos, &Board::isWhiteInCheck) &&
                             !isWhiteInCheck()) {
                                 movePiece(start, end);
-                                wk->pos = end;
-                                tiles[0][3] = tiles[0][0];
+                                tiles[end.row][end.col]->hasMoved = true;
+                                wk = tiles[end.row][end.col];
+                                charTiles[0][3] = charTiles[0][0];
                                 charTiles[0][0] = '-';
+                                tiles[0][3] = tiles[0][0];
+                                tiles[0][3]->pos = {0,3};
+                                tiles[0][3]->hasMoved = true;
                                 tiles[0][0] = make_shared<Empty>(
                                     Colour::NoColour, PieceType::X, Coord(0,0)
                                 );
@@ -470,9 +479,13 @@ void Board::castle(Colour turn, Coord start, Coord end) {
                             !tempMove(start, tiles[7][5]->pos, &Board::isBlackInCheck) &&
                             !isBlackInCheck()) {
                                 movePiece(start, end);
-                                bk->pos = end;
-                                tiles[7][5] = tiles[7][7];
+                                tiles[end.row][end.col]->hasMoved = true;
+                                bk = tiles[end.row][end.col];
+                                charTiles[7][5] = charTiles[7][7];
                                 charTiles[7][7] = '-';
+                                tiles[7][5] = tiles[7][7];
+                                tiles[7][5]->pos = {7,5};
+                                tiles[7][5]->hasMoved = true;
                                 tiles[7][7] = make_shared<Empty>(
                                     Colour::NoColour, PieceType::X, Coord(7,7)
                                 );
@@ -485,14 +498,19 @@ void Board::castle(Colour turn, Coord start, Coord end) {
            if ((tiles[7][0]->pt == PieceType::R) && !(tiles[7][0]->hasMoved)) {
                if (!(bk->hasMoved)) {
                    if ((tiles[7][2]->pt == PieceType::X) && 
-                        (tiles[7][3]->pt == PieceType::X)) {
+                        (tiles[7][3]->pt == PieceType::X) &&
+                        (tiles[7][1]->pt == PieceType::X)) {
                        if (!tempMove(start, tiles[7][2]->pos, &Board::isBlackInCheck) &&
                             !tempMove(start, tiles[7][3]->pos, &Board::isBlackInCheck) &&
                             !isBlackInCheck()) {
                                 movePiece(start, end);
-                                bk->pos = end;
-                                tiles[7][3] = tiles[7][0];
+                                tiles[end.row][end.col]->hasMoved = true;
+                                bk = tiles[end.row][end.col];
+                                charTiles[7][3] = charTiles[7][0];
                                 charTiles[7][0] = '-';
+                                tiles[7][3] = tiles[7][0];
+                                tiles[7][3]->pos = {7,3};
+                                tiles[7][3]->hasMoved = true;
                                 tiles[7][0] = make_shared<Empty>(
                                     Colour::NoColour, PieceType::X, Coord(7,0)
                                 );
