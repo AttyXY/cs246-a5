@@ -84,7 +84,10 @@ void Game::runGame(void) {
                 p2->score = p2->score + 0.5;
                 cout << "Stalemate!" << endl;
                 return;
-            } else if (!b->legalLastMove) {
+            }
+
+            // Prompt to reenter move if last one was invalid
+            if (!b->legalLastMove) {
                 cout << "Invalid move. Input another move." << endl;
             } else {
                 isWhiteTurn = !isWhiteTurn;
