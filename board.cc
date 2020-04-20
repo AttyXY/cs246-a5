@@ -342,6 +342,11 @@ void Board::update(Subject<State> &whoFrom) {
 }
 
 bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
+    // Move other player's piece
+    if (turn != tiles[start.row][start.col]->colour) {
+        return false;
+    }
+
     // IN CHECK AFTER MOVE?
     if (isMoveIntoCheck(turn, start, end)) {
     //     if (isStalemate(whoFrom)) {
