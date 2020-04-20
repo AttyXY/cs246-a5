@@ -16,7 +16,7 @@ bool Bishop::isLegalMove(const Coord start, const Coord end,
         if(start.getCol() > end.getCol()) {
             if(start.getRow() > end.getRow()) {
                 for(int n = 1; n < hor; n++) {
-                    if(tiles[start.getRow() - n][start.getCol() - n] != nullptr) {
+                    if(tiles[start.getRow() - n][start.getCol() - n]->pt != PieceType::X) {
                         return false;
                     }
                 }
@@ -24,7 +24,7 @@ bool Bishop::isLegalMove(const Coord start, const Coord end,
             }
             if(start.getRow() < end.getRow()) {
                 for(int n = 1; n < hor; n++) {
-                    if(tiles[start.getRow() + n][start.getCol() - n] != nullptr) {
+                    if(tiles[start.getRow() + n][start.getCol() - n]->pt != PieceType::X) {
                         return false;
                     }
                 }
@@ -34,7 +34,7 @@ bool Bishop::isLegalMove(const Coord start, const Coord end,
         if(start.getCol() < end.getCol()) {
             if(start.getRow() > end.getRow()) {
                 for(int n = 1; n < hor; n++) {
-                    if(tiles[start.getRow() - n][start.getCol() + n] != nullptr) {
+                    if(tiles[start.getRow() - n][start.getCol() + n]->pt != PieceType::X) {
                         return false;
                     }
                 }
@@ -42,7 +42,7 @@ bool Bishop::isLegalMove(const Coord start, const Coord end,
             }
             if(start.getRow() < end.getRow()) {
                 for(int n = 1; n < hor; n++) {
-                    if(tiles[start.getRow() + n][start.getCol() + n] != nullptr) {
+                    if(tiles[start.getRow() + n][start.getCol() + n]->pt != PieceType::X) {
                         return false;
                     }
                 }

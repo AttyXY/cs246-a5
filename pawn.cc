@@ -18,8 +18,8 @@ bool Pawn::isLegalMove(const Coord start, const Coord end,
             if (!hasMoved) {
                 if (end.getRow() - start.getRow() == 2) {
                     // Check for no pieces in front
-                    if (tiles[start.getRow() + 1][start.getCol()] == nullptr &&
-                        tiles[start.getRow() + 2][start.getCol()] == nullptr) {
+                    if (tiles[start.getRow() + 1][start.getCol()]->pt == PieceType::X &&
+                        tiles[start.getRow() + 2][start.getCol()]->pt == PieceType::X) {
                         return true;
                     }
                 }
@@ -29,7 +29,7 @@ bool Pawn::isLegalMove(const Coord start, const Coord end,
             if (end.getRow() - start.getRow() == 1) {
                 if (abs(end.getCol() - start.getCol()) == 1) {
                     // Check if there is some black piece at the end
-                    if ((tiles[end.getRow()][end.getCol()] != nullptr) &&
+                    if ((tiles[end.getRow()][end.getCol()]->pt != PieceType::X) &&
                         (tiles[end.getRow()][end.getCol()]->colour == Colour::Black)) {
                             return true;
                         }
@@ -45,8 +45,8 @@ bool Pawn::isLegalMove(const Coord start, const Coord end,
             if (!hasMoved) {
                 if (start.getRow() - end.getRow() == 2) {
                     // Check for no pieces in front
-                    if (tiles[start.getRow() - 1][start.getCol()] == nullptr &&
-                        tiles[start.getRow() - 2][start.getCol()] == nullptr) {
+                    if (tiles[start.getRow() - 1][start.getCol()]->pt == PieceType::X &&
+                        tiles[start.getRow() - 2][start.getCol()]->pt == PieceType::X) {
                         return true;
                     }
                 }
@@ -56,7 +56,7 @@ bool Pawn::isLegalMove(const Coord start, const Coord end,
             if (end.getRow() - start.getRow() == -1) {
                 if (abs(end.getCol() - start.getCol()) == 1) {
                     // Check if there is some black piece at the end
-                    if ((tiles[end.getRow()][end.getCol()] != nullptr) &&
+                    if ((tiles[end.getRow()][end.getCol()]->pt != PieceType::X) &&
                         (tiles[end.getRow()][end.getCol()]->colour == Colour::White)) {
                             return true;
                         }
