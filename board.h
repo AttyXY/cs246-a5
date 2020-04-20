@@ -52,7 +52,8 @@ class Board : public Observer<State>, public Subject<State> {
         // Special moves
         bool whiteCastled = false;
         bool blackCastled = false;
-        bool isCastling(Move m);
+        bool isCastling(Coord start, Coord end);
+        void castle(Colour turn, Coord start, Coord end);
 
         bool isEnPassanable = false;
         bool isEnPassant(Move m);
