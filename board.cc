@@ -184,7 +184,11 @@ bool Board::tempMove(Coord start, Coord end, bool (Board::*callback)(bool)) {
 bool Board::isWhiteInCheck(bool setChecker) {
     for (const auto &p: blackPieces) {
         if (p->isLegalMove(p->pos, wk->pos, tiles)) {
-            if (setChecker) { checker = p; }
+            if (setChecker) {
+                checker = p;
+                lineOfCheck = vector<Coord>(); // clear line of check
+                p->getLineOfCheck(wk->pos, lineOfCheck);
+            }
             return true;
         }
     }
@@ -194,7 +198,11 @@ bool Board::isWhiteInCheck(bool setChecker) {
 bool Board::isBlackInCheck(bool setChecker) {
     for (const auto &p: whitePieces) {
         if (p->isLegalMove(p->pos, bk->pos, tiles)) {
-            if (setChecker) { checker = p; }
+            if (setChecker) {
+                checker = p;
+                lineOfCheck = vector<Coord>(); // clear line of check
+                p->getLineOfCheck(wk->pos, lineOfCheck);
+            }
             return true;
         }
     }
@@ -266,12 +274,12 @@ bool Board::canWhiteBlockCheck() {
         }
 
         // can block line of check
-        // if (p->pt == PieceType::K) { continue; }
-        // for (const auto &coord: lineOfCheck) {
-        //     if (p->isLegalMove(p->pos, coord, tiles)) {
-        //     return true;
-        //     }
-        // }
+        if (p->pt == PieceType::K) { continue; }
+        for (const auto &coord: lineOfCheck) {
+            if (p->isLegalMove(p->pos, coord, tiles)) {
+                return true;
+            }
+        }
     }
     return false;
 }
