@@ -52,3 +52,31 @@ bool Bishop::isLegalMove(const Coord start, const Coord end,
     }
     return false;
 }
+
+void Bishop::getLineOfCheck(const Coord king, vector<Coord> &lineOfCheck) {
+    int spacesMoved = abs(pos.getRow() - king.getRow()); // assume ver == her
+    if (pos.getCol() > king.getCol()) {
+        if (pos.getRow() > king.getRow()) {
+            for (int n = 1; n < spacesMoved; n++) {
+                lineOfCheck.emplace_back(Coord(pos.getRow()- n, pos.getCol() - n));
+            }
+        }
+        if (pos.getRow() < king.getRow()) {
+            for (int n = 1; n < spacesMoved; n++) {
+                lineOfCheck.emplace_back(Coord(pos.getRow()+ n, pos.getCol() - n));
+            }
+        }
+    }
+    if (pos.getCol() < king.getCol()) {
+        if (pos.getRow() > king.getRow()) {
+            for (int n = 1; n < spacesMoved; n++) {
+                lineOfCheck.emplace_back(Coord(pos.getRow()- n, pos.getCol() + n));
+            }
+        }
+        if (pos.getRow() < king.getRow()) {
+            for(int n = 1; n < spacesMoved; n++) {
+                lineOfCheck.emplace_back(Coord(pos.getRow()+ n, pos.getCol() + n));
+            }
+        }
+    }
+}

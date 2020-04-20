@@ -66,3 +66,7 @@ bool Pawn::isLegalMove(const Coord start, const Coord end,
     }
     return false;
 }
+
+void Pawn::getLineOfCheck(const Coord king, vector<Coord> &lineOfCheck) {
+    return; // pawn has no line of check
+}

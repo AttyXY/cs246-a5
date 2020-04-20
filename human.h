@@ -8,7 +8,7 @@ class Human : public Player {
         Human(Colour c, int score = 0);
         ~Human();
 
-        void move(Move m) override;
+        void move(Coord start, Coord end) override;
         //void undo(void);
         //void redo(void);
 };

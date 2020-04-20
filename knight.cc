@@ -16,3 +16,7 @@ bool Knight::isLegalMove(const Coord start, const Coord end,
     }
     return false;
 }
+
+void Knight::getLineOfCheck(const Coord king, vector<Coord> &lineOfCheck) {
+    return; // knight has no line of check
+}

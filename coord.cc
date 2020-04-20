@@ -1,7 +1,9 @@
 #include "coord.h"
 using namespace std;
 
+
 Coord::Coord(int row, int col): row{row}, col{col} {}
+Coord::~Coord() {}
 
 int Coord::getRow(void) const {
     return row;

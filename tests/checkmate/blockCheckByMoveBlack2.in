@@ -1,0 +1,16 @@
+setup
++ k e1
++ K e5
++ R a2
++ R b3
++ b h5
+done
+game human human
+move b3 b1
+move h5 d1
+move b1 d1
+move e1 f1
+move e1 d2
+move e1 e2
+move e1 f2
+move e1 d1

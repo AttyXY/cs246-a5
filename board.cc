@@ -201,7 +201,7 @@ bool Board::isBlackInCheck(bool setChecker) {
             if (setChecker) {
                 checker = p;
                 lineOfCheck = vector<Coord>(); // clear line of check
-                p->getLineOfCheck(wk->pos, lineOfCheck);
+                p->getLineOfCheck(bk->pos, lineOfCheck);
             }
             return true;
         }
@@ -215,16 +215,12 @@ bool Board::isCheck() {
 
 // Returns true if King will still be in check after move
 bool Board::isMoveIntoCheck(const Colour turn, const Coord start, const Coord end) {
-    bool result = false;
-
-    // check condition
     if (turn == Colour::White) {
-        result = tempMove(start, end, &Board::isWhiteInCheck);
+        return tempMove(start, end, &Board::isWhiteInCheck);
     } else if (turn == Colour::Black) {
-        result = tempMove(start, end, &Board::isBlackInCheck);
+        return tempMove(start, end, &Board::isBlackInCheck);
     }
-
-    return result;
+    return false; // WTF
 }
 
 
@@ -294,12 +290,12 @@ bool Board::canBlackBlockCheck() {
         }
 
         // can block line of check
-        // if (p->pt == PieceType::K) { continue; }
-        // for (const auto &coord: lineOfCheck) {
-        //     if (p->isLegalMove(p->pos, coord, tiles)) {
-        //     return true;
-        //     }
-        // }
+        if (p->pt == PieceType::K) { continue; }
+        for (const auto &coord: lineOfCheck) {
+            if (p->isLegalMove(p->pos, coord, tiles)) {
+                return true;
+            }
+        }
     }
     return false;
 }
@@ -316,16 +312,10 @@ bool Board::isCheckmate(const Colour turn) {
 
 // check board state once legal move has been made
 void Board::checkEndGame(const Colour turn) {
-    if (isBlackInCheck(true)) {
-        blackInCheck = true;
-        if (isCheckmate(turn)) {
-            checkmated = true;
-        }
-    } else if (isWhiteInCheck(true)) {
-        whiteInCheck = true;
-        if (isCheckmate(turn)) {
-            checkmated = true;
-        }
+    blackInCheck = isBlackInCheck(true);
+    whiteInCheck = isWhiteInCheck(true);
+    if (isCheckmate(turn)) {
+        checkmated = true;
     }
     // TODO: stalemate
     // if (isStalemate(whoFrom)) {
@@ -341,33 +331,16 @@ void Board::checkEndGame(const Colour turn) {
 /* Move logic */
 void Board::update(Subject<State> &whoFrom) {
     State s = whoFrom.getState();
-    legalLastMove = isLegalMove(s.colour, s.m.start, s.m.end);
+    legalLastMove = isLegalMove(s.colour, s.start, s.end);
 
     // update displays
-    State newS{s.m, s.colour, charTiles};
+    State newS{s.start, s.end, s.colour, charTiles};
     setState(newS);
     notify();
 }
 
 bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
-    // STANDARD CHECKS
-    // Off board
-    if (end.row < 0 || end.row > 7 || end.col < 0 || end.col > 7 ||
-        start.row < 0 || start.row > 7 || start.col < 0 || start.col > 7) {
-        return false;
-    }
-    // Empty tile || Move other player's piece
-    if (tiles[start.row][start.col] == nullptr ||
-        (turn != tiles[start.row][start.col]->colour)) {
-        return false;
-    }
-    // Move onto own piece
-    if (tiles[end.row][end.col] != nullptr &&
-        turn == tiles[end.row][end.col]->colour) {
-        return false;
-    }
-
-    // Still in check
+    // IN CHECK AFTER MOVE?
     if (isMoveIntoCheck(turn, start, end)) {
     //     if (isStalemate(whoFrom)) {
             // Only possible right after setup, because stalemate is checked
