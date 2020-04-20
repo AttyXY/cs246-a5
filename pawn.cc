@@ -17,8 +17,9 @@ bool Pawn::isLegalMove(const Coord start, const Coord end,
             // Check if it can move forward by 2
             if (!hasMoved) {
                 if (end.getRow() - start.getRow() == 2) {
-                    // Check if there is any piece is between start and end
-                    if (tiles[start.getRow() + 1][start.getCol()] == nullptr) {
+                    // Check for no pieces in front
+                    if (tiles[start.getRow() + 1][start.getCol()] == nullptr &&
+                        tiles[start.getRow() + 2][start.getCol()] == nullptr) {
                         return true;
                     }
                 }
@@ -43,8 +44,9 @@ bool Pawn::isLegalMove(const Coord start, const Coord end,
             // Check if it can move forward by 2
             if (!hasMoved) {
                 if (start.getRow() - end.getRow() == 2) {
-                    // Check if there is any piece is between start and end
-                    if (tiles[start.getRow() - 1][start.getCol()] == nullptr) {
+                    // Check for no pieces in front
+                    if (tiles[start.getRow() - 1][start.getCol()] == nullptr &&
+                        tiles[start.getRow() - 2][start.getCol()] == nullptr) {
                         return true;
                     }
                 }

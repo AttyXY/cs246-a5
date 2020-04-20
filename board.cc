@@ -164,18 +164,20 @@ void Board::movePiece(const Coord start, const Coord end) {
 
 
 /* Check helpers */
-bool Board::isWhiteInCheck() {
+bool Board::isWhiteInCheck(bool setChecker) {
     for (const auto &p: blackPieces) {
         if (p->isLegalMove(p->pos, wk->pos, tiles)) {
+            if (setChecker) { checker = p; }
             return true;
         }
     }
     return false;
 }
 
-bool Board::isBlackInCheck() {
+bool Board::isBlackInCheck(bool setChecker) {
     for (const auto &p: whitePieces) {
         if (p->isLegalMove(p->pos, bk->pos, tiles)) {
+            if (setChecker) { checker = p; }
             return true;
         }
     }
@@ -275,45 +277,95 @@ bool Board::isBlackKingStuck() {
     return true;
 }
 
-// bool Board::canBlockCheck(const Coord &kingPos, vector<shared_ptr<Piece>> &opponentPieces) {
-//     // can capture piece
-//     for (const auto &p: opponentPieces) {
-//         if (p->isLegalMove(kingPos)) {
-//             return true;
-//         }
-//     }
-//     // can block line of check
-//     // for (coord in line of check) {
-//         for (const auto &p: opponentPieces) {
-//             if (p->isLegalMove(coord)) {
-//                 return true;
-//             }
-//         }
-//     }
-//     return false;
-// }
 
+bool Board::canWhiteBlockCheck() {
+    for (const auto &p: whitePieces) {
+        // can capture piece
+        if (p->isLegalMove(p->pos, checker->pos, tiles)) {
+            Coord start = p->pos;
+            Coord end = checker->pos;
+            bool canCapture = true;
+            // tempMove
+            shared_ptr<Piece> temp = tiles[end.row][end.col];
+            char tempChar = charTiles[end.row][end.col];
+            movePiece(start, end);
+
+            // determine if still in check after capture
+            if (isWhiteInCheck()) {
+                canCapture = false;
+            }
+
+            // undo tempMove
+            movePiece(end, start);
+            tiles[end.row][end.col] = temp;
+            charTiles[end.row][end.col] = tempChar;
+            if (canCapture) { return true; }
+        }
+
+        // can block line of check
+        // if (p->pt == PieceType::K) { continue; }
+        // for (const auto &coord: lineOfCheck) {
+        //     if (p->isLegalMove(p->pos, coord, tiles)) {
+        //     return true;
+        //     }
+        // }
+    }
+    return false;
+}
+
+bool Board::canBlackBlockCheck() {
+    for (const auto &p: blackPieces) {
+        // can capture piece
+        if (p->isLegalMove(p->pos, checker->pos, tiles)) {
+            Coord start = p->pos;
+            Coord end = checker->pos;
+            bool canCapture = true;
+            // tempMove
+            shared_ptr<Piece> temp = tiles[end.row][end.col];
+            char tempChar = charTiles[end.row][end.col];
+            movePiece(start, end);
+
+            // determine if still in check after capture
+            if (isBlackInCheck()) {
+                canCapture = false;
+            }
+
+            // undo tempMove
+            movePiece(end, start);
+            tiles[end.row][end.col] = temp;
+            charTiles[end.row][end.col] = tempChar;
+            if (canCapture) { return true; }
+        }
+
+        // can block line of check
+        // if (p->pt == PieceType::K) { continue; }
+        // for (const auto &coord: lineOfCheck) {
+        //     if (p->isLegalMove(p->pos, coord, tiles)) {
+        //     return true;
+        //     }
+        // }
+    }
+    return false;
+}
 
 
 /* Endgame detection: Run after move has already been made */
 bool Board::isCheckmate(const Colour turn) {
     if (turn == Colour::White) {
-        return isBlackKingStuck();
-        // && !canBlockCheck(wk, blackPieces)) {
+        return isBlackKingStuck() && !canBlackBlockCheck();
     } else {
-        return isWhiteKingStuck();
-        // !canBlockCheck(bk, whitePieces)) {
+        return isWhiteKingStuck() && !canWhiteBlockCheck();
     }
 }
 
 // check board state once legal move has been made
 void Board::checkEndGame(const Colour turn) {
-    if (isBlackInCheck()) {
+    if (isBlackInCheck(true)) {
         blackInCheck = true;
         if (isCheckmate(turn)) {
             checkmated = true;
         }
-    } else if (isWhiteInCheck()) {
+    } else if (isWhiteInCheck(true)) {
         whiteInCheck = true;
         if (isCheckmate(turn)) {
             checkmated = true;
