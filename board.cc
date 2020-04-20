@@ -192,6 +192,7 @@ bool Board::isMoveIntoCheck(const Colour turn, const Coord start, const Coord en
 
     // tempMove
     shared_ptr<Piece> temp = tiles[end.row][end.col];
+    char tempChar = charTiles[end.row][end.col];
     movePiece(start, end);
 
     // check condition
@@ -203,6 +204,7 @@ bool Board::isMoveIntoCheck(const Colour turn, const Coord start, const Coord en
     // undo tempMove
     movePiece(end, start);
     tiles[end.row][end.col] = temp;
+    charTiles[end.row][end.col] = tempChar;
 
     return result;
 }
@@ -220,6 +222,7 @@ bool Board::isWhiteKingStuck() {
             if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
                 // tempMove
                 shared_ptr<Piece> temp = tiles[end.row][end.col];
+                char tempChar = charTiles[end.row][end.col];
                 movePiece(start, end);
 
                 // determine if move is escape
@@ -230,7 +233,7 @@ bool Board::isWhiteKingStuck() {
                 // undo tempMove
                 movePiece(end, start);
                 tiles[end.row][end.col] = temp;
-
+                charTiles[end.row][end.col] = tempChar;
             }
             if (escapeExists == true) {
                 return false;
@@ -251,6 +254,7 @@ bool Board::isBlackKingStuck() {
             if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
                 // tempMove
                 shared_ptr<Piece> temp = tiles[end.row][end.col];
+                char tempChar = charTiles[end.row][end.col];
                 movePiece(start, end);
 
                 // determine if move is escape
@@ -261,7 +265,7 @@ bool Board::isBlackKingStuck() {
                 // undo tempMove
                 movePiece(end, start);
                 tiles[end.row][end.col] = temp;
-
+                charTiles[end.row][end.col] = tempChar;
             }
             if (escapeExists == true) {
                 return false;
