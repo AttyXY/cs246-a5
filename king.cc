@@ -1,10 +1,10 @@
 #include "king.h"
 using namespace std;
 
-King::King(Colour colour, PieceType pt): Piece{colour, pt} {}
+King::King(Colour colour, PieceType pt, Coord pos): Piece{colour, pt, pos} {}
 
 bool King::isLegalMove(const Coord start, const Coord end,
-                        vector<vector<shared_ptr<Piece>>> &tiles) {
+                        const vector<vector<shared_ptr<Piece>>> &tiles) {
     if (isBasicInvalidMove(start, end, tiles)) { return false; }
 
     //King cannot move more than 1 tiles

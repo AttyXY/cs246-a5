@@ -14,11 +14,13 @@ class Piece {
         bool hasMoved = false;
         bool isEnPassanable = false;
 
-        Piece(Colour colour, PieceType pt);
+        Piece(Colour colour, PieceType pt, Coord pos);
         ~Piece();
 
-        virtual bool isLegalMove(const Coord start, const Coord end,
-                                 std::vector<std::vector<std::shared_ptr<Piece>>> &tiles) = 0;
+        virtual bool isLegalMove(
+            const Coord start, const Coord end,
+            const std::vector<std::vector<std::shared_ptr<Piece>>> &tiles
+        ) = 0;
         bool isBasicInvalidMove(
             const Coord start, const Coord end,
             const std::vector<std::vector<std::shared_ptr<Piece>>> &tiles

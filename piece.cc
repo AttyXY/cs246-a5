@@ -1,7 +1,8 @@
 #include "piece.h"
 using namespace std;
 
-Piece::Piece(Colour colour, PieceType pt): colour{colour}, pt{pt} {}
+Piece::Piece(Colour colour, PieceType pt, Coord pos):
+    colour{colour}, pt{pt}, pos{pos} {}
 Piece::~Piece() {}
 
 

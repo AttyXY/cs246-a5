@@ -1,9 +1,10 @@
 #include "rook.h"
 using namespace std;
 
-Rook::Rook(Colour colour, PieceType pt): Piece{colour, pt} {}
+Rook::Rook(Colour colour, PieceType pt, Coord pos): Piece{colour, pt, pos} {}
 
-bool Rook::isLegalMove(const Coord start, const Coord end, vector<vector<shared_ptr<Piece>>> &tiles) {
+bool Rook::isLegalMove(const Coord start, const Coord end,
+                        const vector<vector<shared_ptr<Piece>>> &tiles) {
     if (isBasicInvalidMove(start, end, tiles)) { return false; }
 
     //Constant

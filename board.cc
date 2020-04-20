@@ -30,89 +30,100 @@ bool Board::init(const vector<vector<char>> &setupTiles) {
         for (int row = 0; row < (int)tiles[col].size(); ++row) {
             switch(setupTiles[row][col]) {
                 case 'k': {
-                    tiles[row][col] =
-                        std::make_shared<King>(Colour::Black, PieceType::K);
+                    tiles[row][col] = make_shared<King>(
+                            Colour::Black, PieceType::K, Coord(row, col)
+                    );
                     blackPieces.emplace_back(tiles[row][col]);
                     bk = tiles[row][col];
-                    tiles[row][col]->pos = {row, col};
                     break;
                 }
                 case 'K': {
                     tiles[row][col] =
-                        std::make_shared<King>(Colour::White, PieceType::K);
+                        make_shared<King>(
+                            Colour::White, PieceType::K, Coord(row, col)
+                    );
                     whitePieces.emplace_back(tiles[row][col]);
                     wk = tiles[row][col];
-                    tiles[row][col]->pos = {row, col};
                     break;
                 }
                 case 'q': {
                     tiles[row][col] =
-                        std::make_shared<Queen>(Colour::Black, PieceType::Q);
+                        make_shared<Queen>(
+                            Colour::Black, PieceType::Q, Coord(row, col)
+                    );
                     blackPieces.emplace_back(tiles[row][col]);
-                    tiles[row][col]->pos = {row, col};
                     break;
                 }
                 case 'Q': {
                     tiles[row][col] =
-                        std::make_shared<Queen>(Colour::White, PieceType::Q);
+                        make_shared<Queen>(
+                            Colour::White, PieceType::Q, Coord(row, col)
+                    );
                     whitePieces.emplace_back(tiles[row][col]);
-                    tiles[row][col]->pos = {row, col};
                     break;
                 }
                 case 'r': {
                     tiles[row][col] =
-                        std::make_shared<Rook>(Colour::Black, PieceType::R);
+                        make_shared<Rook>(
+                            Colour::Black, PieceType::R, Coord(row, col)
+                    );
                     blackPieces.emplace_back(tiles[row][col]);
-                    tiles[row][col]->pos = {row, col};
                     break;
                 }
                 case 'R': {
                     tiles[row][col] =
-                        std::make_shared<Rook>(Colour::White, PieceType::R);
+                        make_shared<Rook>(
+                            Colour::White, PieceType::R, Coord(row, col)
+                    );
                     whitePieces.emplace_back(tiles[row][col]);
-                    tiles[row][col]->pos = {row, col};
                     break;
                 }
                 case 'n': {
                     tiles[row][col] =
-                        std::make_shared<Knight>(Colour::Black, PieceType::N);
+                        make_shared<Knight>(
+                            Colour::Black, PieceType::N, Coord(row, col)
+                    );
                     blackPieces.emplace_back(tiles[row][col]);
-                    tiles[row][col]->pos = {row, col};
                     break;
                 }
                 case 'N': {
                     tiles[row][col] =
-                        std::make_shared<Knight>(Colour::White, PieceType::N);
+                        make_shared<Knight>(
+                            Colour::White, PieceType::N, Coord(row, col)
+                    );
                     whitePieces.emplace_back(tiles[row][col]);
-                    tiles[row][col]->pos = {row, col};
                     break;
                 }
                 case 'b': {
                     tiles[row][col] =
-                        std::make_shared<Bishop>(Colour::Black, PieceType::B);
+                        make_shared<Bishop>(
+                            Colour::Black, PieceType::B, Coord(row, col)
+                    );
                     blackPieces.emplace_back(tiles[row][col]);
-                    tiles[row][col]->pos = {row, col};
                     break;
                 }
                 case 'B': {
                     tiles[row][col] =
-                        std::make_shared<Bishop>(Colour::White, PieceType::B);
+                        make_shared<Bishop>(
+                            Colour::White, PieceType::B, Coord(row, col)
+                    );
                     whitePieces.emplace_back(tiles[row][col]);
-                    tiles[row][col]->pos = {row, col};
                     break;
                 }
                 case 'p': {
                     tiles[row][col] =
-                        std::make_shared<Pawn>(Colour::Black, PieceType::P);
+                        make_shared<Pawn>(
+                            Colour::Black, PieceType::P, Coord(row, col)
+                    );
                     blackPieces.emplace_back(tiles[row][col]);
-                    tiles[row][col]->pos = {row, col};
                     break;
                 }
                 case 'P': {
                     tiles[row][col] =
-                        std::make_shared<Pawn>(Colour::White, PieceType::P);
+                        make_shared<Pawn>(
+                            Colour::White, PieceType::P, Coord(row, col)
+                    );
                     whitePieces.emplace_back(tiles[row][col]);
-                    tiles[row][col]->pos = {row, col};
                     break;
                 }
             }
