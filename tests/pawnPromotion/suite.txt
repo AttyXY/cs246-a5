@@ -1,0 +1,4 @@
+setupPawnPromotion
+pawn_promotion
+invalidPawnPromotion
+invalidPawnPromotion2

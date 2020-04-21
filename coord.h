@@ -36,5 +36,7 @@ class Coord {
 
 std::ostream &operator<<(std::ostream &out, const Coord &c);
 std::istream &operator>>(std::istream &in, Coord &c);
+bool operator==(const Coord &left, const Coord &right);
+bool operator!=(const Coord &left, const Coord &right);
 
 #endif

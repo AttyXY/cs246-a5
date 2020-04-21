@@ -33,3 +33,11 @@ istream &operator>>(istream &in, Coord &c) {
 
     return in;
 }
+
+bool operator==(const Coord &left, const Coord &right) {
+    return (left.getCol() == right.getCol() &&
+           left.getRow() == right.getRow());
+}
+bool operator!=(const Coord &left, const Coord &right) {
+    return !(left == right);
+}

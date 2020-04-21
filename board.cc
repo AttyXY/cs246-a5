@@ -20,6 +20,109 @@ void Board::reset() {
     tiles = newTiles;
 }
 
+void Board::addCharPiece(const char piece, const int row, const int col) {
+    charTiles[row][col] = piece;
+    switch (piece) {
+        case 'k': {
+            tiles[row][col] = make_shared<King>(
+                    Colour::Black, PieceType::K, Coord(row, col)
+            );
+            blackPieces.emplace_back(tiles[row][col]);
+            bk = tiles[row][col];
+            break;
+        }
+        case 'K': {
+            tiles[row][col] =
+                make_shared<King>(
+                    Colour::White, PieceType::K, Coord(row, col)
+            );
+            whitePieces.emplace_back(tiles[row][col]);
+            wk = tiles[row][col];
+            break;
+        }
+        case 'q': {
+            tiles[row][col] =
+                make_shared<Queen>(
+                    Colour::Black, PieceType::Q, Coord(row, col)
+            );
+            blackPieces.emplace_back(tiles[row][col]);
+            break;
+        }
+        case 'Q': {
+            tiles[row][col] =
+                make_shared<Queen>(
+                    Colour::White, PieceType::Q, Coord(row, col)
+            );
+            whitePieces.emplace_back(tiles[row][col]);
+            break;
+        }
+        case 'r': {
+            tiles[row][col] =
+                make_shared<Rook>(
+                    Colour::Black, PieceType::R, Coord(row, col)
+            );
+            blackPieces.emplace_back(tiles[row][col]);
+            break;
+        }
+        case 'R': {
+            tiles[row][col] =
+                make_shared<Rook>(
+                    Colour::White, PieceType::R, Coord(row, col)
+            );
+            whitePieces.emplace_back(tiles[row][col]);
+            break;
+        }
+        case 'n': {
+            tiles[row][col] =
+                make_shared<Knight>(
+                    Colour::Black, PieceType::N, Coord(row, col)
+            );
+            blackPieces.emplace_back(tiles[row][col]);
+            break;
+        }
+        case 'N': {
+            tiles[row][col] =
+                make_shared<Knight>(
+                    Colour::White, PieceType::N, Coord(row, col)
+            );
+            whitePieces.emplace_back(tiles[row][col]);
+            break;
+        }
+        case 'b': {
+            tiles[row][col] =
+                make_shared<Bishop>(
+                    Colour::Black, PieceType::B, Coord(row, col)
+            );
+            blackPieces.emplace_back(tiles[row][col]);
+            break;
+        }
+        case 'B': {
+            tiles[row][col] =
+                make_shared<Bishop>(
+                    Colour::White, PieceType::B, Coord(row, col)
+            );
+            whitePieces.emplace_back(tiles[row][col]);
+            break;
+        }
+        case 'p': {
+            tiles[row][col] =
+                make_shared<Pawn>(
+                    Colour::Black, PieceType::P, Coord(row, col)
+            );
+            blackPieces.emplace_back(tiles[row][col]);
+            break;
+        }
+        case 'P': {
+            tiles[row][col] =
+                make_shared<Pawn>(
+                    Colour::White, PieceType::P, Coord(row, col)
+            );
+            whitePieces.emplace_back(tiles[row][col]);
+            break;
+        }
+    }
+}
+
 // Initializes tiles and charTiles with pieces, from td->tiles.
 // Returns false if setup results in check, and true otherwise.
 bool Board::init(const vector<vector<char>> &setupTiles) {
@@ -31,105 +134,7 @@ bool Board::init(const vector<vector<char>> &setupTiles) {
     // Convert setupTiles into board
     for (int col = 0; col < (int)tiles.size(); ++col) {
         for (int row = 0; row < (int)tiles[col].size(); ++row) {
-            switch(setupTiles[row][col]) {
-                case 'k': {
-                    tiles[row][col] = make_shared<King>(
-                            Colour::Black, PieceType::K, Coord(row, col)
-                    );
-                    blackPieces.emplace_back(tiles[row][col]);
-                    bk = tiles[row][col];
-                    break;
-                }
-                case 'K': {
-                    tiles[row][col] =
-                        make_shared<King>(
-                            Colour::White, PieceType::K, Coord(row, col)
-                    );
-                    whitePieces.emplace_back(tiles[row][col]);
-                    wk = tiles[row][col];
-                    break;
-                }
-                case 'q': {
-                    tiles[row][col] =
-                        make_shared<Queen>(
-                            Colour::Black, PieceType::Q, Coord(row, col)
-                    );
-                    blackPieces.emplace_back(tiles[row][col]);
-                    break;
-                }
-                case 'Q': {
-                    tiles[row][col] =
-                        make_shared<Queen>(
-                            Colour::White, PieceType::Q, Coord(row, col)
-                    );
-                    whitePieces.emplace_back(tiles[row][col]);
-                    break;
-                }
-                case 'r': {
-                    tiles[row][col] =
-                        make_shared<Rook>(
-                            Colour::Black, PieceType::R, Coord(row, col)
-                    );
-                    blackPieces.emplace_back(tiles[row][col]);
-                    break;
-                }
-                case 'R': {
-                    tiles[row][col] =
-                        make_shared<Rook>(
-                            Colour::White, PieceType::R, Coord(row, col)
-                    );
-                    whitePieces.emplace_back(tiles[row][col]);
-                    break;
-                }
-                case 'n': {
-                    tiles[row][col] =
-                        make_shared<Knight>(
-                            Colour::Black, PieceType::N, Coord(row, col)
-                    );
-                    blackPieces.emplace_back(tiles[row][col]);
-                    break;
-                }
-                case 'N': {
-                    tiles[row][col] =
-                        make_shared<Knight>(
-                            Colour::White, PieceType::N, Coord(row, col)
-                    );
-                    whitePieces.emplace_back(tiles[row][col]);
-                    break;
-                }
-                case 'b': {
-                    tiles[row][col] =
-                        make_shared<Bishop>(
-                            Colour::Black, PieceType::B, Coord(row, col)
-                    );
-                    blackPieces.emplace_back(tiles[row][col]);
-                    break;
-                }
-                case 'B': {
-                    tiles[row][col] =
-                        make_shared<Bishop>(
-                            Colour::White, PieceType::B, Coord(row, col)
-                    );
-                    whitePieces.emplace_back(tiles[row][col]);
-                    break;
-                }
-                case 'p': {
-                    tiles[row][col] =
-                        make_shared<Pawn>(
-                            Colour::Black, PieceType::P, Coord(row, col)
-                    );
-                    blackPieces.emplace_back(tiles[row][col]);
-                    break;
-                }
-                case 'P': {
-                    tiles[row][col] =
-                        make_shared<Pawn>(
-                            Colour::White, PieceType::P, Coord(row, col)
-                    );
-                    whitePieces.emplace_back(tiles[row][col]);
-                    break;
-                }
-            }
+            addCharPiece(setupTiles[row][col], row, col);
         }
     }
     if (isCheck()) {
@@ -162,9 +167,12 @@ void Board::removePiece(const Coord c) {
     );
 }
 
-void Board::movePiece(const Coord start, const Coord end) {
+void Board::movePiece(const Coord start, const Coord end, bool tempMove) {
     addPiece(start, end);
     removePiece(start);
+    if (!tempMove) {
+        tiles[end.row][end.col]->hasMoved = true;
+    }
 }
 
 // makes and undos Move m, getting and returning result of callback in-between
@@ -172,13 +180,13 @@ bool Board::tempMove(Coord start, Coord end, bool (Board::*callback)(bool)) {
     // tempMove
     shared_ptr<Piece> tempPiece = tiles[end.row][end.col];
     char tempChar = charTiles[end.row][end.col];
-    movePiece(start, end);
+    movePiece(start, end, true);
 
     // get result
     bool result = (this->*callback)(false);
 
     // undo tempMove
-    movePiece(end, start);
+    movePiece(end, start, true);
     tiles[end.row][end.col] = tempPiece;
     charTiles[end.row][end.col] = tempChar;
 
@@ -398,7 +406,7 @@ void Board::checkEndGame(const Colour turn) {
 /* Move logic */
 void Board::update(Subject<State> &whoFrom) {
     State s = whoFrom.getState();
-    legalLastMove = isLegalMove(s.colour, s.m.start, s.m.end);
+    legalLastMove = isLegalMove(s.colour, s.m.start, s.m.end, s.m.promoteTo);
 
     // update displays
     State newS{s.m, s.colour, charTiles};
@@ -406,14 +414,15 @@ void Board::update(Subject<State> &whoFrom) {
     notify();
 }
 
-bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
+bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end,
+                        const char promoteTo) {
     // Move other player's piece
     if (turn != tiles[start.row][start.col]->colour) {
         return false;
     }
 
     // IN CHECK AFTER MOVE?
-    if (isMoveIntoCheck(turn, start, end)) {
+    else if (isMoveIntoCheck(turn, start, end)) {
         // Only possible right after setup, because stalemate is checked
         // for at the end of every move, and ends game
         // stalemated = true;
@@ -424,22 +433,21 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
     }
 
     // TODO: SPECIAL MOVE CHECKS
-    // castling
-    if (isCastling(start, end)) {
+    else if (isCastling(start, end)) {
         bool isLegal = castle(turn, start, end);
         checkEndGame(turn);
         if (isLegal) { resetEnPassant(end); }
         return isLegal;
     }
 
-    // pawn promotion
-    // else if (isPawnPromotion(start, end, promote)) {
-        // promotePawn(whoFrom);
-        // If and only if pawn is promoted, pls call resetEnPassant(end);
-        // checkEndGame(turn);
-    // }
+    else if (isPawnPromotion(turn, start, end)) {
+        if (promoteTo == 'X') { return false; }
+        promotePawn(start, end, promoteTo);
+        resetEnPassant(end);
+        checkEndGame(turn);
+        return true;
+    }
 
-    // en passant
     else if (isEnPassant(turn, start, end)) {
          bool isLegal = enPassant(turn, start, end);
     //make sure to check if isEnPassanable change everytime it moves forward 2 steps
@@ -452,19 +460,6 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
     // BASIC MOVE CHECKS
     else if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
         movePiece(start, end);
-        if ((tiles[end.row][end.col]->pt == PieceType::P) &&
-            (tiles[end.row][end.col]->hasMoved == false) &&
-            (abs(end.row - start.row) == 2)) {
-                tiles[end.row][end.col]->isEnPassanable = true;
-        }
-        tiles[end.row][end.col]->hasMoved = true;
-        if (tiles[end.row][end.col]->pt == PieceType::K) {
-            if (tiles[end.row][end.col]->colour == Colour::White) {
-                wk->hasMoved = true;
-            } else if (tiles[end.row][end.col]->colour == Colour::Black) {
-                bk->hasMoved = true;
-            }
-        }
         checkEndGame(turn);
         resetEnPassant(end);
         return true;
@@ -503,7 +498,6 @@ bool Board::isEnPassant(Colour turn, Coord start, Coord end) {
 
 bool Board::enPassant(Colour turn, Coord start, Coord end) {
     movePiece(start, end);
-    tiles[end.row][end.col]->hasMoved = true;
     if (turn == Colour::Black) {
         charTiles[end.row + 1][end.col] = '-';
         tiles[end.row + 1][end.col] = make_shared<Empty>(
@@ -521,13 +515,14 @@ bool Board::enPassant(Colour turn, Coord start, Coord end) {
 }
 
 void Board::resetEnPassant(Coord end) {
-    for(int m = 0; m < 8; m++) {
-        for(int n = 0; n < 8; n++) {
-            if(tiles[m][n]->pt == PieceType::P) {
-                if ((m != end.row) && (n != end.col)) {
-                    tiles[m][n]->isEnPassanable = false;
-                }
-            }
+    for (auto &p: whitePieces) {
+        if (p->pt == PieceType::P && p->pos != end)  {
+            p->isEnPassanable = false;
+        }
+    }
+    for (auto &p: blackPieces) {
+        if (p->pt == PieceType::P && p->pos != end)  {
+            p->isEnPassanable = false;
         }
     }
 }
@@ -558,7 +553,6 @@ bool Board::castle(Colour turn, Coord start, Coord end) {
                             !tempMove(start, tiles[0][5]->pos, &Board::isWhiteInCheck) &&
                             !isWhiteInCheck()) {
                                 movePiece(start, end);
-                                tiles[end.row][end.col]->hasMoved = true;
                                 wk = tiles[end.row][end.col];
                                 charTiles[0][5] = charTiles[0][7];
                                 tiles[0][5] = tiles[0][7];
@@ -583,7 +577,6 @@ bool Board::castle(Colour turn, Coord start, Coord end) {
                             !tempMove(start, tiles[0][3]->pos, &Board::isWhiteInCheck) &&
                             !isWhiteInCheck()) {
                                 movePiece(start, end);
-                                tiles[end.row][end.col]->hasMoved = true;
                                 wk = tiles[end.row][end.col];
                                 charTiles[0][3] = charTiles[0][0];
                                 charTiles[0][0] = '-';
@@ -652,4 +645,20 @@ bool Board::castle(Colour turn, Coord start, Coord end) {
        }
    }
    return false;
+}
+
+bool Board::isPawnPromotion(const Colour turn, const Coord start, const Coord end) {
+    shared_ptr<Piece> startPiece = tiles[start.getRow()][start.getCol()];
+    if (startPiece->pt == PieceType::P) {
+        if ((turn == Colour::White && end.getRow() == 7) ||
+            (turn == Colour::Black && end.getRow() == 0)) {
+            return startPiece->isLegalMove(start, end, tiles);
+        }
+    }
+    return false;
+}
+
+void Board::promotePawn(const Coord start, const Coord end, const char promoteTo) {
+    removePiece(start);
+    addCharPiece(promoteTo, end.row, end.col);
 }

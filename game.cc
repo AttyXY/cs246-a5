@@ -69,12 +69,24 @@ void Game::runGame(void) {
             Move m;
             Coord start;
             Coord end;
+            char promoteTo;
             try {
                 ss >> start;
                 ss >> end;
                 m.start = start; m.end = end;
-                if (ss >> m.promoteTo) {
-                    charToPiece.at(m.promoteTo); // validate piece
+                if (ss >> promoteTo) {
+                    charToPiece.at(toupper(promoteTo)); // validate piece
+                    if (toupper(promoteTo) == 'X' ||
+                        toupper(promoteTo) == 'P' ||
+                        toupper(promoteTo) == 'K') {
+                        throw out_of_range("");
+                    } else {
+                        if (isWhiteTurn) {
+                            m.promoteTo = toupper(promoteTo);
+                        } else {
+                            m.promoteTo = tolower(promoteTo);
+                        }
+                    }
                 }
             } catch (const std::invalid_argument &e) {
                 cerr << e.what() << endl;

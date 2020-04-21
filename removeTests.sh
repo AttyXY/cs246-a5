@@ -4,3 +4,4 @@ rm tests/checkmate/main
 rm tests/stalemate/main
 rm tests/castling/main
 rm tests/enPassant/main
+rm tests/pawnPromotion/main
