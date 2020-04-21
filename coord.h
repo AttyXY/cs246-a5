@@ -4,9 +4,11 @@
 #include <map>
 
 class Coord {
-    public:
+    protected:
         int row;
         int col;
+
+    public:
         std::map<char, int> colToIdx = {
             {'a', 0},
             {'b', 1},
@@ -31,11 +33,10 @@ class Coord {
         Coord(int row = 0, int col = 0);
         int getRow(void) const;
         int getCol(void) const;
-
+        friend std::istream &operator>>(std::istream &in, Coord &c);
 };
 
 std::ostream &operator<<(std::ostream &out, const Coord &c);
-std::istream &operator>>(std::istream &in, Coord &c);
 bool operator==(const Coord &left, const Coord &right);
 bool operator!=(const Coord &left, const Coord &right);
 

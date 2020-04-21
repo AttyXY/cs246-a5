@@ -69,12 +69,12 @@ bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
         while (cin >> command) {
             if (command == "+") {
                 if (isValidPiece(piece) && IsValidInput(coord)) {
-                    tiles[coord.row][coord.col] = piece;
+                    tiles[coord.getRow()][coord.getCol()] = piece;
                     printTiles();
                 }
             } else if (command == "-") {
                 if (isValidPiece(piece) && IsValidInput(coord)) {
-                    tiles[coord.row][coord.col] = '-';
+                    tiles[coord.getRow()][coord.getCol()] = '-';
                     printTiles();
                 }
             } else if (command == "=") {

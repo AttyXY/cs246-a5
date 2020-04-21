@@ -9,18 +9,18 @@ Piece::~Piece() {}
 bool Piece::isBasicInvalidMove(const Coord start, const Coord end,
                         const vector<vector<shared_ptr<Piece>>> &tiles) {
     // Off board
-    if (end.row < 0 || end.row > 7 || end.col < 0 || end.col > 7 ||
-        start.row < 0 || start.row > 7 || start.col < 0 || start.col > 7) {
+    if (end.getRow() < 0 || end.getRow() > 7 || end.getCol() < 0 || end.getCol() > 7 ||
+        start.getRow() < 0 || start.getRow() > 7 || start.getCol() < 0 || start.getCol() > 7) {
         return true;
     }
     // Empty tile || Move other player's piece
-    if (tiles[start.row][start.col]->pt == PieceType::X ||
-        colour != tiles[start.row][start.col]->colour) {
+    if (tiles[start.getRow()][start.getCol()]->pt == PieceType::X ||
+        colour != tiles[start.getRow()][start.getCol()]->colour) {
         return true;
     }
     // Move onto own piece
-    if (tiles[end.row][end.col]->pt != PieceType::X &&
-        colour == tiles[end.row][end.col]->colour) {
+    if (tiles[end.getRow()][end.getCol()]->pt != PieceType::X &&
+        colour == tiles[end.getRow()][end.getCol()]->colour) {
         return true;
     }
     return false;
