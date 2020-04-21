@@ -5,9 +5,9 @@
 
 class Computer : public Player {
     public:
-        int level;
+        int level = 1;
 
-        Computer(Colour c, int score, int level);
+        Computer(int level, Colour c, int score = 0);
         ~Computer();
         void move(Move m);
 };
