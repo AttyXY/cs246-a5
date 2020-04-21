@@ -31,21 +31,21 @@ bool Knight::isStuck(vector<vector<shared_ptr<Piece>>> &tiles) {
     Coord bottomLeft1{pos.getRow() - 2, pos.getCol() - 1};
     Coord bottomLeft2{pos.getRow() - 1, pos.getCol() - 2};
 
-    if (isLegalMove(pos, topRight1, tiles) && tiles[pos.getRow() + 2][pos.getCol() + 1]->pt != PieceType::X) {
+    if (isLegalMove(pos, topRight1, tiles)) {
         return false;
-    } else if (isLegalMove(pos, topRight2, tiles) && tiles[pos.getRow() + 1][pos.getCol() + 2]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, topRight2, tiles)) {
         return false;
-    } else if (isLegalMove(pos, topLeft1, tiles) && tiles[pos.getRow() + 2][pos.getCol() - 1]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, topLeft1, tiles)) {
         return false;
-    } else if (isLegalMove(pos, topLeft2, tiles) && tiles[pos.getRow() + 1][pos.getCol() - 2]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, topLeft2, tiles)) {
         return false;
-    } else if (isLegalMove(pos, bottomRight1, tiles) && tiles[pos.getRow() - 2][pos.getCol() + 1]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, bottomRight1, tiles)) {
         return false;
-    } else if (isLegalMove(pos, bottomRight2, tiles) && tiles[pos.getRow() - 1][pos.getCol() + 2]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, bottomRight2, tiles)) {
         return false;
-    } else if (isLegalMove(pos, bottomLeft1, tiles) && tiles[pos.getRow() - 2][pos.getCol() - 1]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, bottomLeft1, tiles)) {
         return false;
-    } else if (isLegalMove(pos, bottomLeft2, tiles) && tiles[pos.getRow() - 1][pos.getCol() - 2]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, bottomLeft2, tiles)) {
         return false;
     }
     return true;

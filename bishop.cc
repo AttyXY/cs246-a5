@@ -87,13 +87,13 @@ bool Bishop::isStuck(vector<vector<shared_ptr<Piece>>> &tiles) {
     Coord bottomRight{pos.getRow() - 1, pos.getCol() + 1};
     Coord bottomLeft{pos.getRow() - 1, pos.getCol() - 1};
 
-    if (isLegalMove(pos, topRight, tiles) && tiles[pos.getRow() + 1][pos.getCol() + 1]->pt != PieceType::X) {
+    if (isLegalMove(pos, topRight, tiles)) {
         return false;
-    } else if (isLegalMove(pos, topLeft, tiles) && tiles[pos.getRow() + 1][pos.getCol() - 1]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, topLeft, tiles)) {
         return false;
-    } else if (isLegalMove(pos, bottomRight, tiles) && tiles[pos.getRow() - 1][pos.getCol() + 1]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, bottomRight, tiles)) {
         return false;
-    } else if (isLegalMove(pos, bottomLeft, tiles) && tiles[pos.getRow() - 1][pos.getCol() - 1]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, bottomLeft, tiles)) {
         return false;
     }
     return true;
