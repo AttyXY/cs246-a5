@@ -4,7 +4,7 @@
 #include "observer.h"
 #include "state.h"
 
-class Display: public Observer<State> {
+class BoardDisplay: public Observer<State> {
     public:
         std::vector<std::vector<char>> tiles;
         virtual void reset() = 0;
