@@ -450,7 +450,7 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
 
 
     // BASIC MOVE CHECKS
-    if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
+    else if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
         movePiece(start, end);
         if ((tiles[end.row][end.col]->pt == PieceType::P) &&
             (tiles[end.row][end.col]->hasMoved == false) &&
@@ -467,10 +467,10 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
         }
         checkEndGame(turn);
         resetEnPassant(end);
+        return true;
     } else {
         return false;
     }
-    return true;
 }
 
 
