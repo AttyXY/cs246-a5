@@ -1,0 +1,4 @@
+insufficientMaterial
+insufficientMaterial2
+insufficientMaterial3
+insufficientMaterial4
