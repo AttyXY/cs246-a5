@@ -1,0 +1,111 @@
+WELCOME TO CHESS! PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:
+- setup
+- game [player1] [player2]
+
+STARTING GAME!
+
+8  rnbqkbnr
+7  pppppppp
+6  --------
+5  --------
+4  --------
+3  --------
+2  PPPPPPPP
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppppppp
+6  --------
+5  --------
+4  ------P-
+3  --------
+2  PPPPPP-P
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  ppppppp-
+6  --------
+5  -------p
+4  ------P-
+3  --------
+2  PPPPPP-P
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  ppppppp-
+6  --------
+5  -------P
+4  --------
+3  --------
+2  PPPPPP-P
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppppp--
+6  ------p-
+5  -------P
+4  --------
+3  --------
+2  PPPPPP-P
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppppp--
+6  ------pP
+5  --------
+4  --------
+3  --------
+2  PPPPPP-P
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppppp--
+6  -------P
+5  ------p-
+4  --------
+3  --------
+2  PPPPPP-P
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppppp-P
+6  --------
+5  ------p-
+4  --------
+3  --------
+2  PPPPPP-P
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppppp-P
+6  --------
+5  --------
+4  ------p-
+3  --------
+2  PPPPPP-P
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppppp-P
+6  --------
+5  --------
+4  ------p-
+3  --------
+2  PPPPPP-P
+1  RNBQKBNR
+   abcdefgh
+
+Invalid move. Input another move.
+Final Score:
+White: 0
+Black: 0
+THANKS FOR PLAYING CHESS!

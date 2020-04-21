@@ -11,15 +11,15 @@ int Coord::getCol(void) const {
 }
 
 ostream &operator<<(ostream &out, const Coord &c) {
-    cout << c.idxToCol.at(c.col) << c.row + 1;
+    out << c.idxToCol.at(c.col) << c.row + 1;
     return out;
 }
 
 istream &operator>>(istream &in, Coord &c) {
     char col;
     int row;
-    cin >> col;
-    cin >> row;
+    in >> col;
+    in >> row;
 
     c.row = row - 1;
     if (c.row < 0 || c.row > 7) {
@@ -32,4 +32,12 @@ istream &operator>>(istream &in, Coord &c) {
     }
 
     return in;
+}
+
+bool operator==(const Coord &left, const Coord &right) {
+    return (left.getCol() == right.getCol() &&
+           left.getRow() == right.getRow());
+}
+bool operator!=(const Coord &left, const Coord &right) {
+    return !(left == right);
 }

@@ -1,0 +1,11 @@
+setup
++ k h1
++ K a8
++ p a2
+= black
+done
+game human human
+move a2 a1 p    
+move a2 a1 k
+move a2 a1 x
+move a2 a1 R

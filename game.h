@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 #include <memory>
+#include <sstream>
+#include <cctype>
 #include "textDisplay.h"
 #include "board.h"
 #include "player.h"

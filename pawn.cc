@@ -15,6 +15,7 @@ bool Pawn::isLegalMove(const Coord start, const Coord end,
             // Check for no pieces in front
             if (tiles[start.getRow() + 1][start.getCol()]->pt == PieceType::X &&
                 tiles[start.getRow() + 2][start.getCol()]->pt == PieceType::X) {
+                isEnPassanable = true;
                 return true;
             }
         }
@@ -39,6 +40,7 @@ bool Pawn::isLegalMove(const Coord start, const Coord end,
             // Check for no pieces in front
             if (tiles[start.getRow() - 1][start.getCol()]->pt == PieceType::X &&
                 tiles[start.getRow() - 2][start.getCol()]->pt == PieceType::X) {
+                isEnPassanable = true;
                 return true;
             }
         }

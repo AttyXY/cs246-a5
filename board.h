@@ -25,7 +25,7 @@ class Board : public Observer<State>, public Subject<State> {
         std::vector<std::shared_ptr<Piece>> whitePieces;
         std::vector<std::shared_ptr<Piece>> blackPieces;
         std::shared_ptr<Piece> wk;
-        std::shared_ptr<Piece> bk; 
+        std::shared_ptr<Piece> bk;
         std::shared_ptr<Piece> checker;
         std::vector<Coord> lineOfCheck;
         bool legalLastMove = true;
@@ -34,10 +34,11 @@ class Board : public Observer<State>, public Subject<State> {
         // Basic move
         void reset();
         bool init(const std::vector<std::vector<char>> &setupTiles);
+        void addCharPiece(const char piece, const int row, const int col);
 
         void addPiece(const Coord start, const Coord end);
         void removePiece(const Coord c);
-        void movePiece(const Coord start, const Coord end);
+        void movePiece(const Coord start, const Coord end, bool tempMove = false);
         bool tempMove(Coord start, Coord end, bool (Board::*callback)(bool));
 
         bool whiteInCheck = false; //white is dying
@@ -46,7 +47,8 @@ class Board : public Observer<State>, public Subject<State> {
         bool isBlackInCheck(bool setChecker = false);
         bool isCheck();
         bool isMoveIntoCheck(const Colour turn, const Coord start, const Coord end);
-        bool isLegalMove(const Colour turn, const Coord start, const Coord end);
+        bool isLegalMove(const Colour turn, const Coord start, const Coord end,
+                         const char promoteTo);
         // bool isCapture(Subject<State> &whoFrom);
 
 
@@ -58,7 +60,8 @@ class Board : public Observer<State>, public Subject<State> {
         bool isEnPassant(Colour turn, Coord start, Coord end);
         bool enPassant(Colour turn, Coord start, Coord end);
         void resetEnPassant(Coord end);
-        bool isPawnPromotion(Move m);
+        bool isPawnPromotion(const Colour turn, const Coord start, const Coord end);
+        void promotePawn(const Coord start, const Coord end, const char promoteTo);
 
 
 

@@ -1,0 +1,65 @@
+WELCOME TO CHESS! PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:
+- setup
+- game [player1] [player2]
+
+STARTING SETUP
+
+8  --------
+7  --------
+6  --------
+5  --------
+4  --------
+3  --------
+2  --------
+1  K-------
+   abcdefgh
+
+8  -------k
+7  --------
+6  --------
+5  --------
+4  --------
+3  --------
+2  --------
+1  K-------
+   abcdefgh
+
+8  -------k
+7  P-------
+6  --------
+5  --------
+4  --------
+3  --------
+2  --------
+1  K-------
+   abcdefgh
+
+STARTING GAME!
+
+8  -------k
+7  P-------
+6  --------
+5  --------
+4  --------
+3  --------
+2  --------
+1  K-------
+   abcdefgh
+
+Invalid pawn promotion type.
+Invalid pawn promotion type.
+Invalid pawn promotion type.
+8  B------k
+7  --------
+6  --------
+5  --------
+4  --------
+3  --------
+2  --------
+1  K-------
+   abcdefgh
+
+Final Score:
+White: 0
+Black: 0
+THANKS FOR PLAYING CHESS!

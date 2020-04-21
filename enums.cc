@@ -7,21 +7,22 @@ map<Colour, string> colourToStr = {
     {Colour::White, "White"}
 };
 
-map<PieceType, char> pieceToStr = {
-    { P,'P'},
-    { B,'B'},
-    { N,'N'},
-    { R,'R'},
-    { Q,'Q'},
-    { K,'K'},
-    { X,'X'}
+map<char, PieceType> charToPiece = {
+    { 'P', PieceType::P },
+    { 'B', PieceType::B },
+    { 'N', PieceType::N },
+    { 'R', PieceType::R },
+    { 'Q', PieceType::Q },
+    { 'K', PieceType::K },
+    { 'X', PieceType::X }
 };
-// map<PieceType, char> pieceToStr = {
-//     { PieceType::NoPiece, '-'},
-//     { PieceType::Pawn,'P'},
-//     { PieceType::Bishop,'B'},
-//     { PieceType::Knight,'N'},
-//     { PieceType::Rook,'R'},
-//     { PieceType::Queen,'Q'},
-//     { PieceType::King,'K'}
-// };
+
+map<string, PieceType> strToPiece = {
+    { "P", PieceType::P },
+    { "B", PieceType::B },
+    { "N", PieceType::K },
+    { "R", PieceType::R },
+    { "Q", PieceType::Q },
+    { "K", PieceType::K },
+    { "X", PieceType::X }
+};

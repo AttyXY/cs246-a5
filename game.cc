@@ -56,24 +56,47 @@ void Game::runGame(void) {
     }
 
     // Parse commands
-    string command;
-    while (cin >> command) {
+    string line;
+    while (getline(cin, line)) {
+        istringstream ss{line};
+        string command;
+        ss >> command;
         if (command == "quit") {
             return;
         }
-        if (command == "move") {
-            // Get move and make move
+        else if (command == "move") {
+            // Get move
+            Move m;
             Coord start;
             Coord end;
-            Move m;
-            // TODO: Pawn promotion
-            // char promotedPiece;
-            if (IsValidInput(start) && IsValidInput(end)) {
+            char promoteTo;
+            try {
+                ss >> start;
+                ss >> end;
                 m.start = start; m.end = end;
-            } else {
-                continue; // TODO: prints program for some reason?
+                if (ss >> promoteTo) {
+                    charToPiece.at(toupper(promoteTo)); // validate piece
+                    if (toupper(promoteTo) == 'X' ||
+                        toupper(promoteTo) == 'P' ||
+                        toupper(promoteTo) == 'K') {
+                        throw out_of_range("");
+                    } else {
+                        if (isWhiteTurn) {
+                            m.promoteTo = toupper(promoteTo);
+                        } else {
+                            m.promoteTo = tolower(promoteTo);
+                        }
+                    }
+                }
+            } catch (const std::invalid_argument &e) {
+                cerr << e.what() << endl;
+                continue;
+            } catch (const out_of_range &e) {
+                cout << "Invalid pawn promotion type." << endl;
+                continue;
             }
 
+            // Make move
             if (isWhiteTurn) {
                 p1->move(m);
             } else {
