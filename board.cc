@@ -414,33 +414,32 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
 
     // IN CHECK AFTER MOVE?
     if (isMoveIntoCheck(turn, start, end)) {
-    //     if (isStalemate(whoFrom)) {
-            // Only possible right after setup, because stalemate is checked
-            // for at the end of every move, and ends game
-            // stalemated = true;
-            // return false;
-        // } else {
-            // Cannot be checkmate because checkmate immediately ends game, and
-            // and setups that begin with check are invalid.
-            return false;
-    //     }
+        // Only possible right after setup, because stalemate is checked
+        // for at the end of every move, and ends game
+        // stalemated = true;
+        // Cannot be checkmate because checkmate immediately ends game, and
+        // and setups that begin with check are invalid.
+        stalemated = isStalemate(turn);
+        return false;
     }
 
     // TODO: SPECIAL MOVE CHECKS
     // castling
     if (isCastling(start, end)) {
-        return castle(turn, start, end);
+        bool isLegal = castle(turn, start, end);
+        checkEndGame(turn);
+        return isLegal;
     }
 
     // pawn promotion
-    // else if (isPawnPromotion(m)) {
+    // else if (isPawnPromotion(start, end, promote)) {
         // promotePawn(whoFrom);
-        // checkEndGame(whoFrom);
+        // checkEndGame(turn);
     // }
     // en passant
     // else if (isEnPassant(m)) {
     //     enPassant(m);
-        // checkEndGame(whoFrom);
+        // checkEndGame(turn);
     // }
 
 
