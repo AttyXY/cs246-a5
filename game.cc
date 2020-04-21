@@ -56,24 +56,34 @@ void Game::runGame(void) {
     }
 
     // Parse commands
-    string command;
-    while (cin >> command) {
+    string line;
+    while (getline(cin, line)) {
+        istringstream ss{line};
+        string command;
+        ss >> command;
         if (command == "quit") {
             return;
         }
-        if (command == "move") {
-            // Get move and make move
+        else if (command == "move") {
+            // get input
+            Move m;
             Coord start;
             Coord end;
-            Move m;
-            // TODO: Pawn promotion
-            // char promotedPiece;
-            if (IsValidInput(start) && IsValidInput(end)) {
+            char promoteTo;
+
+            try {
+                ss >> start;
+                ss >> end;
                 m.start = start; m.end = end;
-            } else {
-                continue; // TODO: prints program for some reason?
+            } catch (const std::invalid_argument &e) {
+                std::cerr << e.what() << std::endl;
+                continue;
+            }
+            if (ss >> promoteTo) {
+                m.promoteTo = charToPiece.at(promoteTo);
             }
 
+            // make move
             if (isWhiteTurn) {
                 p1->move(m);
             } else {
