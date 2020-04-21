@@ -1,0 +1,7 @@
+castleLeftSide
+castleRightSide
+setupCastleKingside
+castling
+castling_thru_check
+castling_into_check
+castling_after_move
