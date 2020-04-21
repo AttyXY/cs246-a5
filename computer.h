@@ -1,19 +1,15 @@
 #ifndef COMPUTER_H
 #define COMPUTER_H
-#include <iostream>
-#include "enums.h"
-#include "move.h"
+#include "player.h"
 
 
-class Computer {
+class Computer : public Player {
     public:
         int level;
 
         Computer(Colour c, int score, int level);
         ~Computer();
-        bool move(Move m);
-        //void undo(void);
-        //void redo(void);
+        void move(Move m) override;
 };
 
 #endif

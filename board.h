@@ -76,6 +76,11 @@ class Board : public Observer<State>, public Subject<State> {
     // void redo()
     // bool isThreefoldRepeat(Move m);
 
+    // Computer moves
+    void computerL1Move(const Colour turn);
+    void computerL2Move(const Colour turn);
+    void computerL3Move(const Colour turn);
+
     public:
         bool whiteInCheck = false; //white is dying
         bool blackInCheck = false; //black is dying

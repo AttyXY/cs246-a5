@@ -8,12 +8,14 @@ struct State {
     Move m;
     Colour colour;
     std::vector<std::vector<char>> tiles;
+    MoveType mt;
 
-    State(Move m = Move{},
+    State(Move m = Move(),
           Colour colour = Colour::NoColour,
           const std::vector<std::vector<char>> &tiles =
-            std::vector<std::vector<char>>()
-    ) : m{m}, colour{colour}, tiles{tiles} {}
+            std::vector<std::vector<char>>(),
+          MoveType mt = MoveType::Human
+    ) : m{m}, colour{colour}, tiles{tiles}, mt{mt} {}
 };
 
 #endif

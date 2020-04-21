@@ -13,6 +13,7 @@ class Player : public Subject<State> {
     public:
         Colour c;
         double score = 0;
+        MoveType mt = MoveType::Human;
 
         Player(Colour c, double score);
         ~Player();

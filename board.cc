@@ -662,3 +662,52 @@ void Board::promotePawn(const Coord start, const Coord end, const char promoteTo
     removePiece(start);
     addCharPiece(promoteTo, end.getRow(), end.getCol());
 }
+
+void Board::computerL1Move(const Colour turn) {
+    if (turn == Colour::White) {
+        for (auto &wp: whitePieces) {
+            for (int col = 0; col < (int)tiles.size(); ++col) {
+                for (int row = 0; row < (int)tiles[col].size(); ++row) {
+                    Coord end{row, col};
+                    // Always want promotion to queen if possible
+                    if (isLegalMove(turn, wp->pos, end, 'Q')) {
+                        return;
+                    }
+                }
+            }
+        }
+    } else {
+        for (auto &bp: blackPieces) {
+           for (int col = 0; col < (int)tiles.size(); ++col) {
+                for (int row = 0; row < (int)tiles[col].size(); ++row) {
+                    Coord end{row, col};
+                    if (isLegalMove(turn, bp->pos, end, 'q')) {
+                        return;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Board::computerL2Move(Colour turn) {
+    // Prefer capture
+    for (auto &bp: blackPieces) {
+        for (auto &wp: whitePieces) {
+            if (turn == Colour::White) {
+                if (isLegalMove(turn, bp->pos, wp->pos, 'Q')) {
+                    return;
+                }
+            } else {
+                if (isLegalMove(turn, wp->pos, bp->pos, 'q')) {
+                    return;
+                }
+            }
+        }
+    }
+    // Prefer checking
+    computerL1Move(turn);
+}
+
+// void Board::computerL3Move(Colour turn) {
+// }
