@@ -1,7 +1,7 @@
-rm tests/pieces/basicMoves/main
-rm tests/check/main
-rm tests/checkmate/main
-rm tests/stalemate/main
-rm tests/castling/main
-rm tests/enPassant/main
-rm tests/pawnPromotion/main
+rm tests/pieces/basicMoves/chess
+rm tests/check/chess
+rm tests/checkmate/chess
+rm tests/stalemate/chess
+rm tests/castling/chess
+rm tests/enPassant/chess
+rm tests/pawnPromotion/chess

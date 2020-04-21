@@ -23,7 +23,7 @@ template <typename Type> bool isValidPiece(Type &p) {
     return false;
 }
 
-template <typename Type> bool IsValidInput(Type &t) {
+template <typename Type> bool isValidInput(Type &t) {
     try {
         std::cin >> t;
         return true;

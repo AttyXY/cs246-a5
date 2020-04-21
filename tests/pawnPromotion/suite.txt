@@ -1,4 +1,6 @@
-setupPawnPromotion
+setupPawnPromotionWhite
+setupPawnPromotionBlack
 pawn_promotion
 invalidPawnPromotion
-invalidPawnPromotion2
+invalidPawnPromotionWhite
+invalidPawnPromotionBlack

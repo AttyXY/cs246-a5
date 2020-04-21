@@ -1,6 +1,6 @@
 #include "graphDisplay.h"
 
-GraphDisplay::GraphDisplay(){ 
+GraphDisplay::GraphDisplay(){
   char colIndex[] = "abcdefgh";
   for (int row = 0; row < 8; row++) {
     xw.drawString(25, 75 + 50 * row, std::to_string(8-row), Xwindow::Black);
@@ -58,26 +58,6 @@ bool GraphDisplay::setupTiles(bool &isWhiteTurn, bool custom){
     return true;
 }
 
-bool GraphDisplay::isValidSetup() {
-    int numWhiteKings = 0;
-    int numBlackKings = 0;
-    bool noPawnsLastRows = true;
-
-    for (int col = 0; col < 8; ++col) {
-        for (int row = 0; row < 8; ++row) {
-            if (tiles[row][col] == 'k') {
-                ++numBlackKings;
-            } else if (tiles[row][col] == 'K') {
-                ++numWhiteKings;
-            } else if (row == 0 || row == 7) {
-                if (toupper(tiles[row][col]) == 'P') {
-                    noPawnsLastRows = false;
-                }
-            }
-        }
-    }
-    return (numWhiteKings == 1 && numBlackKings == 1  && noPawnsLastRows);
-}
 
 void GraphDisplay::updateTiles(const std::vector<std::vector<char>> &setupTiles){
     tiles = setupTiles;

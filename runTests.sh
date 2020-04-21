@@ -1,7 +1,7 @@
-cp main tests/pieces/basicMoves
-cp main tests/check
-cp main tests/checkmate
-cp main tests/stalemate
-cp main tests/castling
-cp main tests/enPassant
-cp main tests/pawnPromotion
+cp chess tests/pieces/basicMoves
+cp chess tests/check
+cp chess tests/checkmate
+cp chess tests/stalemate
+cp chess tests/castling
+cp chess tests/enPassant
+cp chess tests/pawnPromotion
