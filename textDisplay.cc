@@ -70,6 +70,7 @@ bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
             if (command == "+") {
                 if (isValidPiece(piece) && IsValidInput(coord)) {
                     tiles[coord.row][coord.col] = piece;
+                    std::cout << "reach here"<< std::endl;
                     printTiles();
                 }
             } else if (command == "-") {
@@ -89,9 +90,9 @@ bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
                 }
             } else if (command == "done") {
                 // TODO: Check setup is valid
-                if (!isValidSetup()) {
-                    return false;
-                }
+                // if (!isValidSetup()) {
+                //     return false;
+                // }
                 return true;
             } else {
                 cout << "Invalid command." << endl;

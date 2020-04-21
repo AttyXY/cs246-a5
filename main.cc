@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
         else if (command == "game") {
             if (!g->customSetup) {
                 g->td->setupTiles(g->isWhiteTurn, false);
-                g->gd->setupTiles(g->td->tiles);
+                g->gd->setupTiles(g->isWhiteTurn, false);
                 g->b->init(g->td->tiles); // default setup is always valid
             }
             g->b->attach(g->td.get());
@@ -40,9 +40,10 @@ int main(int argc, char *argv[]) {
         }
         else if (command == "setup") {
             cout << "STARTING SETUP" << endl << endl;
-            if (g->td->setupTiles(g->isWhiteTurn, true) &&
+            if (g->td->setupTiles(g->isWhiteTurn, true) &&    
                 g->b->init(g->td->tiles)) {
                 // g->gd->setupTiles(g->td->tiles);
+                g->gd->updateTiles(g->td->tiles);
                 g->customSetup = true;
             } else {
                 cout << "Invalid setup." << endl << endl;

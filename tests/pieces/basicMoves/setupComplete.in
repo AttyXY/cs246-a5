@@ -13,7 +13,7 @@ setup
 + p d7
 + p e7
 + p f7
-+ p g7
++ p g6
 + p h7
 + R a1
 + R h1
@@ -22,7 +22,7 @@ setup
 + B c1
 + B f1
 + Q d1
-+ K e8
++ K e1
 + r a8
 + r h8
 + n b8
@@ -30,6 +30,6 @@ setup
 + b c8
 + b f8
 + q d8
-+ k e1
++ k e8
 done
 
