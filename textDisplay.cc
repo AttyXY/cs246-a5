@@ -70,7 +70,6 @@ bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
             if (command == "+") {
                 if (isValidPiece(piece) && IsValidInput(coord)) {
                     tiles[coord.row][coord.col] = piece;
-                    std::cout << "reach here"<< std::endl;
                     printTiles();
                 }
             } else if (command == "-") {
@@ -130,4 +129,3 @@ void TextDisplay::update(Subject<State> &whoFrom) {
     tiles = s.tiles;
     printTiles();
 }
- 
