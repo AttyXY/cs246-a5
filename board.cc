@@ -398,7 +398,7 @@ void Board::checkEndGame(const Colour turn) {
 /* Move logic */
 void Board::update(Subject<State> &whoFrom) {
     State s = whoFrom.getState();
-    legalLastMove = isLegalMove(s.colour, s.m.start, s.m.end);
+    legalLastMove = isLegalMove(s.colour, s.m.start, s.m.end, s.m.promoteTo);
 
     // update displays
     State newS{s.m, s.colour, charTiles};
@@ -406,7 +406,8 @@ void Board::update(Subject<State> &whoFrom) {
     notify();
 }
 
-bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
+bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end,
+                        const PieceType promoteTo) {
     // Move other player's piece
     if (turn != tiles[start.row][start.col]->colour) {
         return false;
@@ -584,3 +585,8 @@ bool Board::castle(Colour turn, Coord start, Coord end) {
    }
    return false;
 }
+
+
+// bool Board::isPawnPromotion(Coord start, Coord end) {
+
+        // promotePawn(whoFrom);

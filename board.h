@@ -46,7 +46,8 @@ class Board : public Observer<State>, public Subject<State> {
         bool isBlackInCheck(bool setChecker = false);
         bool isCheck();
         bool isMoveIntoCheck(const Colour turn, const Coord start, const Coord end);
-        bool isLegalMove(const Colour turn, const Coord start, const Coord end);
+        bool isLegalMove(const Colour turn, const Coord start, const Coord end,
+                         const PieceType promoteTo);
         // bool isCapture(Subject<State> &whoFrom);
 
 

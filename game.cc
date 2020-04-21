@@ -71,16 +71,20 @@ void Game::runGame(void) {
             Coord end;
             char promoteTo;
 
+            // TODO: Reintegrate with utils.h
             try {
                 ss >> start;
                 ss >> end;
                 m.start = start; m.end = end;
+                if (ss >> promoteTo) {
+                    m.promoteTo = charToPiece.at(promoteTo);
+                }
             } catch (const std::invalid_argument &e) {
                 std::cerr << e.what() << std::endl;
                 continue;
-            }
-            if (ss >> promoteTo) {
-                m.promoteTo = charToPiece.at(promoteTo);
+            } catch (const std::out_of_range &e) {
+                cout << "Invalid pawn promotion type." << endl;
+                continue;
             }
 
             // make move
