@@ -44,9 +44,9 @@ void Game::runGame(void) {
 
     // make sure board is not already in stalemate before making first move
     if (isWhiteTurn) {
-        b->checkEndGame(Colour::White);
+        b->stalemated = b->isStalemate(Colour::Black);
     } else {
-        b->checkEndGame(Colour::Black);
+        b->stalemated = b->isStalemate(Colour::White);
     }
     if (b->stalemated) {
         p1->score = p1->score + 0.5;

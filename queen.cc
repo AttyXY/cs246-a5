@@ -185,5 +185,5 @@ bool Queen::isStuck(vector<vector<shared_ptr<Piece>>> &tiles) {
     } else if (isLegalMove(pos, bottomLeft, tiles) && tiles[pos.getRow() - 1][pos.getCol() - 1]->pt != PieceType::X) {
         return false;
     }
-    return false;
+    return true;
 }

@@ -352,17 +352,25 @@ bool Board::isStalemate(const Colour turn) {
         if (turn == Colour::White) {
             for (const auto &p: blackPieces) {
                 if (p->pt == PieceType::K) {
-                    if (!isWhiteKingStuck()) { return false; }
+                    if (!isBlackKingStuck()) {
+                        return false;
+                    }
                 } else {
-                    if (!p->isStuck(tiles)) { return false; }
+                    if (!p->isStuck(tiles)) {
+                        return false;
+                    }
                 }
             }
         } else if (turn == Colour::Black) {
             for (const auto &p: whitePieces) {
                 if (p->pt == PieceType::K) {
-                    if (!isBlackKingStuck()) { return false; }
+                    if (!isWhiteKingStuck()) {
+                        return false;
+                    }
                 } else {
-                    if (!p->isStuck(tiles)) { return false; }
+                    if (!p->isStuck(tiles)) {
+                        return false;
+                    }
                 }
             }
         }

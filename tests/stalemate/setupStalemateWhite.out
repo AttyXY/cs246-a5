@@ -1,0 +1,63 @@
+WELCOME TO CHESS! PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:
+- setup
+- game [player1] [player2]
+
+STARTING SETUP
+
+8  -------K
+7  --------
+6  --------
+5  --------
+4  --------
+3  --------
+2  --------
+1  --------
+   abcdefgh
+
+8  -------K
+7  --------
+6  --------
+5  --------
+4  --------
+3  --------
+2  --------
+1  ------r-
+   abcdefgh
+
+8  -------K
+7  r-------
+6  --------
+5  --------
+4  --------
+3  --------
+2  --------
+1  ------r-
+   abcdefgh
+
+8  -------K
+7  r-------
+6  --------
+5  --------
+4  --------
+3  --------
+2  --------
+1  k-----r-
+   abcdefgh
+
+STARTING GAME!
+
+8  -------K
+7  r-------
+6  --------
+5  --------
+4  --------
+3  --------
+2  --------
+1  k-----r-
+   abcdefgh
+
+Stalemate!
+Final Score:
+White: 0.5
+Black: 0.5
+THANKS FOR PLAYING CHESS!
