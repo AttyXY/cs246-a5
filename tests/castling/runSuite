@@ -1,0 +1,50 @@
+#!/bin/bash
+
+usage () {
+  echo "Wrong number of argument given." 1>&2
+  exit 1
+}
+
+if [ $# -ne 2 ]; then
+  usage
+fi
+
+for args in $(cat "$1"); do
+	if ! [ -r $args.out ]; then
+		echo "Output file does not exist." 1>&2
+		exit 1
+	fi
+	
+	tmpfile=$(mktemp)
+	if [ -e $args.args ]; then	#if test.args exists
+		if [ -e $args.in ]; then
+			$2 $(echo $(cat "$args.args")) < $args.in > $tmpfile
+		else
+			$2 $(echo $(cat "$args.args")) > $tmpfile
+		fi
+	else
+		if [ -e $args.in ]; then
+			$2 < $args.in > $tmpfile
+		else
+			$2 > $tmpfile
+		fi
+	fi
+
+	difference=$(diff $tmpfile $args.out)
+	if ! [[ $difference = "" ]]; then
+		echo Test failed: $args
+		echo Args:
+		if [ -e $args.args ]; then
+			cat "$args.args"
+		fi
+		echo Input:
+		if [ -e $args.in ]; then
+                        cat "$args.in"
+                fi
+		echo Expected:
+		cat "$args.out"
+		echo Actual:
+		cat $tmpfile
+	fi
+	rm $tmpfile
+done

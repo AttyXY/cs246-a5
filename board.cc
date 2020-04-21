@@ -429,8 +429,7 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
     // TODO: SPECIAL MOVE CHECKS
     // castling
     if (isCastling(start, end)) {
-        castle(turn, start, end);
-        return true;
+        return castle(turn, start, end);
     }
 
     // pawn promotion
@@ -475,7 +474,7 @@ bool Board::isCastling(Coord start, Coord end) {
     return false;
 }
 
-void Board::castle(Colour turn, Coord start, Coord end) {
+bool Board::castle(Colour turn, Coord start, Coord end) {
    if(turn == Colour::White) {
        //right hand castling
        if(end.getCol() > start.getCol()) {
@@ -501,7 +500,7 @@ void Board::castle(Colour turn, Coord start, Coord end) {
                                 tiles[0][7] = make_shared<Empty>(
                                     Colour::NoColour, PieceType::X, Coord(0,7)
                                 );
-                                return;
+                                return true;
                        }
                    }
                }
@@ -526,7 +525,7 @@ void Board::castle(Colour turn, Coord start, Coord end) {
                                 tiles[0][0] = make_shared<Empty>(
                                     Colour::NoColour, PieceType::X, Coord(0,0)
                                 );
-                                return;
+                                return true;
                        }
                    }
                }
@@ -552,7 +551,7 @@ void Board::castle(Colour turn, Coord start, Coord end) {
                                 tiles[7][7] = make_shared<Empty>(
                                     Colour::NoColour, PieceType::X, Coord(7,7)
                                 );
-                                return;
+                                return true;
                        }
                    }
                }
@@ -577,11 +576,12 @@ void Board::castle(Colour turn, Coord start, Coord end) {
                                 tiles[7][0] = make_shared<Empty>(
                                     Colour::NoColour, PieceType::X, Coord(7,0)
                                 );
-                                return;
+                                return true;
                        }
                    }
                }
            }
        }
    }
+   return false;
 }

@@ -1,0 +1,100 @@
+WELCOME TO CHESS! PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:
+- setup
+- game [player1] [player2]
+
+STARTING GAME!
+
+8  rnbqkbnr
+7  pppppppp
+6  --------
+5  --------
+4  --------
+3  --------
+2  PPPPPPPP
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppppppp
+6  --------
+5  --------
+4  --------
+3  ----P---
+2  PPPP-PPP
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppp-ppp
+6  ----p---
+5  --------
+4  --------
+3  ----P---
+2  PPPP-PPP
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppp-ppp
+6  ----p---
+5  --------
+4  --------
+3  ----P---
+2  PPPPBPPP
+1  RNBQK-NR
+   abcdefgh
+
+8  rnbqk-nr
+7  ppppbppp
+6  ----p---
+5  --------
+4  --------
+3  ----P---
+2  PPPPBPPP
+1  RNBQK-NR
+   abcdefgh
+
+8  rnbqk-nr
+7  ppppbppp
+6  ----p---
+5  --------
+4  --------
+3  ----P--N
+2  PPPPBPPP
+1  RNBQK--R
+   abcdefgh
+
+8  rnbqk--r
+7  ppppbppp
+6  ----p--n
+5  --------
+4  --------
+3  ----P--N
+2  PPPPBPPP
+1  RNBQK--R
+   abcdefgh
+
+8  rnbqk--r
+7  ppppbppp
+6  ----p--n
+5  --------
+4  --------
+3  ----P--N
+2  PPPPBPPP
+1  RNBQ-RK-
+   abcdefgh
+
+8  rnbq-rk-
+7  ppppbppp
+6  ----p--n
+5  --------
+4  --------
+3  ----P--N
+2  PPPPBPPP
+1  RNBQ-RK-
+   abcdefgh
+
+Final Score:
+White: 0
+Black: 0
+THANKS FOR PLAYING CHESS!
