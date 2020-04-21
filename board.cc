@@ -349,19 +349,31 @@ bool Board::insufficientMaterial() {
 
 bool Board::isStalemate(const Colour turn) {
     if (!insufficientMaterial()) {
-        // if (turn == Colour::White) {
-        //     for (const auto &p: blackPieces) {
-        //         if (!p->isStuck(tiles)) {
-                    return false;
-        //         }
-        //     }
-        // } else if (turn == Colour::Black) {
-        //     for (const auto &p: whitePieces) {
-        //         if (!p->isStuck(tiles)) {
-        //             return false;
-        //         }
-        //     }
-        // }
+        if (turn == Colour::White) {
+            for (const auto &p: blackPieces) {
+                if (p->pt == PieceType::K) {
+                    if (!isBlackKingStuck()) {
+                        return false;
+                    }
+                } else {
+                    if (!p->isStuck(tiles)) {
+                        return false;
+                    }
+                }
+            }
+        } else if (turn == Colour::Black) {
+            for (const auto &p: whitePieces) {
+                if (p->pt == PieceType::K) {
+                    if (!isWhiteKingStuck()) {
+                        return false;
+                    }
+                } else {
+                    if (!p->isStuck(tiles)) {
+                        return false;
+                    }
+                }
+            }
+        }
     }
     return true;
 }
@@ -371,13 +383,10 @@ void Board::checkEndGame(const Colour turn) {
     blackInCheck = isBlackInCheck(true);
     whiteInCheck = isWhiteInCheck(true);
 
-    // checkmate
     if (blackInCheck || whiteInCheck) {
         checkmated = isCheckmate(turn);
-    }
-    // stalemate
-    if (isStalemate(turn)) {
-        stalemated = true;
+    } else {
+        stalemated = isStalemate(turn);
     }
     // TODO: threefold repetition
     // TODO: fifty-move-rule

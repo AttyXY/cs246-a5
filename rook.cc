@@ -94,13 +94,13 @@ bool Rook::isStuck(vector<vector<shared_ptr<Piece>>> &tiles) {
     Coord left{pos.getRow(), pos.getCol() - 1};
     Coord right{pos.getRow(), pos.getCol() + 1};
 
-    if (isLegalMove(pos, top, tiles) && tiles[pos.getRow() + 1][pos.getCol()]->pt != PieceType::X) {
+    if (isLegalMove(pos, top, tiles)) {
         return false;
-    } else if (isLegalMove(pos, bottom, tiles) && tiles[pos.getRow() - 1][pos.getCol()]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, bottom, tiles)) {
         return false;
-    } else if (isLegalMove(pos, left, tiles) && tiles[pos.getRow()][pos.getCol() - 1]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, left, tiles)) {
         return false;
-    } else if (isLegalMove(pos, right, tiles) && tiles[pos.getRow()][pos.getCol() + 1]->pt != PieceType::X) {
+    } else if (isLegalMove(pos, right, tiles)) {
         return false;
     }
     return true;
