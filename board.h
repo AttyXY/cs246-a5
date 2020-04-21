@@ -25,7 +25,7 @@ class Board : public Observer<State>, public Subject<State> {
         std::vector<std::shared_ptr<Piece>> whitePieces;
         std::vector<std::shared_ptr<Piece>> blackPieces;
         std::shared_ptr<Piece> wk;
-        std::shared_ptr<Piece> bk; 
+        std::shared_ptr<Piece> bk;
         std::shared_ptr<Piece> checker;
         std::vector<Coord> lineOfCheck;
         bool legalLastMove = true;
@@ -34,6 +34,7 @@ class Board : public Observer<State>, public Subject<State> {
         // Basic move
         void reset();
         bool init(const std::vector<std::vector<char>> &setupTiles);
+        void addCharPiece(const char piece, const int row, const int col);
 
         void addPiece(const Coord start, const Coord end);
         void removePiece(const Coord c);
@@ -47,7 +48,7 @@ class Board : public Observer<State>, public Subject<State> {
         bool isCheck();
         bool isMoveIntoCheck(const Colour turn, const Coord start, const Coord end);
         bool isLegalMove(const Colour turn, const Coord start, const Coord end,
-                         const PieceType promoteTo);
+                         const char promoteTo);
         // bool isCapture(Subject<State> &whoFrom);
 
 
@@ -56,6 +57,8 @@ class Board : public Observer<State>, public Subject<State> {
         bool blackCastled = false;
         bool isCastling(Coord start, Coord end);
         bool castle(Colour turn, Coord start, Coord end);
+        bool isPawnPromotion(const Colour turn, const Coord start, const Coord end);
+        void promotePawn(const Coord start, const Coord end, const char promoteTo);
 
         bool isEnPassanable = false;
         bool isEnPassant(Move m);

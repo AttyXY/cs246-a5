@@ -77,7 +77,8 @@ void Game::runGame(void) {
                 ss >> end;
                 m.start = start; m.end = end;
                 if (ss >> promoteTo) {
-                    m.promoteTo = charToPiece.at(promoteTo);
+                    charToPiece.at(promoteTo); // validate piece
+                    m.promoteTo = promoteTo;
                 }
             } catch (const std::invalid_argument &e) {
                 std::cerr << e.what() << std::endl;

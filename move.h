@@ -8,9 +8,9 @@ class Move {
     public:
         Coord start;
         Coord end;
-        PieceType promoteTo;
+        char promoteTo;
 
-        Move(Coord start = 0, Coord end = 0, PieceType promoteTo = PieceType::X);
+        Move(Coord start = 0, Coord end = 0, char promoteTo = 'X');
         ~Move();
 };
 
