@@ -11,7 +11,7 @@ int Coord::getCol(void) const {
 }
 
 ostream &operator<<(ostream &out, const Coord &c) {
-    out << c.idxToCol.at(c.col) << c.row + 1;
+    out << c.idxToCol.at(c.getCol()) << c.getRow() + 1;
     return out;
 }
 

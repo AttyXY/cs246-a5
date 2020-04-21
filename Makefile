@@ -1,5 +1,5 @@
 # Change the name of EXEC to your executable
-EXEC = main
+EXEC = chess
 CXX = g++
 CXXFLAGS = -std=c++14 -Wall -MMD -Werror=vla -g
 SOURCES = ${wildcard *.cc}

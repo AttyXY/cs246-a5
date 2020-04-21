@@ -148,22 +148,22 @@ bool Board::init(const vector<vector<char>> &setupTiles) {
 
 /* Move helpers */
 void Board::addPiece(const Coord start, const Coord end) {
-    charTiles[end.row][end.col] = charTiles[start.row][start.col];
-    tiles[end.row][end.col] = tiles[start.row][start.col];
-    tiles[end.row][end.col]->pos = {end.row, end.col};
-    if (tiles[end.row][end.col]->pt == PieceType::K) {
-        if (tiles[end.row][end.col]->colour == Colour::White) {
+    charTiles[end.getRow()][end.getCol()] = charTiles[start.getRow()][start.getCol()];
+    tiles[end.getRow()][end.getCol()] = tiles[start.getRow()][start.getCol()];
+    tiles[end.getRow()][end.getCol()]->pos = {end.getRow(), end.getCol()};
+    if (tiles[end.getRow()][end.getCol()]->pt == PieceType::K) {
+        if (tiles[end.getRow()][end.getCol()]->colour == Colour::White) {
             wk->pos = end;
-        } else if (tiles[end.row][end.col]->colour == Colour::Black) {
+        } else if (tiles[end.getRow()][end.getCol()]->colour == Colour::Black) {
             bk->pos = end;
         }
     }
 }
 
 void Board::removePiece(const Coord c) {
-    charTiles[c.row][c.col] = '-';
-    tiles[c.row][c.col] = make_shared<Empty>(
-        Colour::NoColour, PieceType::X, Coord(c.row, c.col)
+    charTiles[c.getRow()][c.getCol()] = '-';
+    tiles[c.getRow()][c.getCol()] = make_shared<Empty>(
+        Colour::NoColour, PieceType::X, Coord(c.getRow(), c.getCol())
     );
 }
 
@@ -171,15 +171,15 @@ void Board::movePiece(const Coord start, const Coord end, bool tempMove) {
     addPiece(start, end);
     removePiece(start);
     if (!tempMove) {
-        tiles[end.row][end.col]->hasMoved = true;
+        tiles[end.getRow()][end.getCol()]->hasMoved = true;
     }
 }
 
 // makes and undos Move m, getting and returning result of callback in-between
 bool Board::tempMove(Coord start, Coord end, bool (Board::*callback)(bool)) {
     // tempMove
-    shared_ptr<Piece> tempPiece = tiles[end.row][end.col];
-    char tempChar = charTiles[end.row][end.col];
+    shared_ptr<Piece> tempPiece = tiles[end.getRow()][end.getCol()];
+    char tempChar = charTiles[end.getRow()][end.getCol()];
     movePiece(start, end, true);
 
     // get result
@@ -187,8 +187,8 @@ bool Board::tempMove(Coord start, Coord end, bool (Board::*callback)(bool)) {
 
     // undo tempMove
     movePiece(end, start, true);
-    tiles[end.row][end.col] = tempPiece;
-    charTiles[end.row][end.col] = tempChar;
+    tiles[end.getRow()][end.getCol()] = tempPiece;
+    charTiles[end.getRow()][end.getCol()] = tempChar;
 
     return result;
 }
@@ -245,7 +245,7 @@ bool Board::isWhiteKingStuck() {
 
             Coord start = wk->pos;
             Coord end{wk->pos.getRow() + i, wk->pos.getCol() + j};
-            if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
+            if (tiles[start.getRow()][start.getCol()]->isLegalMove(start, end, tiles)) {
                 if (!tempMove(start, end, &Board::isWhiteInCheck)) {
                     return false; // escape exists
                 }
@@ -262,7 +262,7 @@ bool Board::isBlackKingStuck() {
 
             Coord start = bk->pos;
             Coord end{bk->pos.getRow() + i, bk->pos.getCol() + j};
-            if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
+            if (tiles[start.getRow()][start.getCol()]->isLegalMove(start, end, tiles)) {
                 if (!tempMove(start, end, &Board::isBlackInCheck)) {
                     return false; // escape exists
                 }
@@ -417,7 +417,7 @@ void Board::update(Subject<State> &whoFrom) {
 bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end,
                         const char promoteTo) {
     // Move other player's piece
-    if (turn != tiles[start.row][start.col]->colour) {
+    if (turn != tiles[start.getRow()][start.getCol()]->colour) {
         return false;
     }
 
@@ -458,7 +458,7 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end,
 
 
     // BASIC MOVE CHECKS
-    else if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
+    else if (tiles[start.getRow()][start.getCol()]->isLegalMove(start, end, tiles)) {
         movePiece(start, end);
         checkEndGame(turn);
         resetEnPassant(end);
@@ -472,22 +472,22 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end,
 /* Special moves */
 bool Board::isEnPassant(Colour turn, Coord start, Coord end) {
     // is it a pawn?
-    if(tiles[start.row][start.col]->pt == PieceType::P) {
+    if(tiles[start.getRow()][start.getCol()]->pt == PieceType::P) {
         // are they moving diagonally forward by one space?
-        if ((abs(start.row - end.row) == 1) &&
-            (abs(start.col - end.col) == 1)) {
+        if ((abs(start.getRow() - end.getRow()) == 1) &&
+            (abs(start.getCol() - end.getCol()) == 1)) {
                 if (turn == Colour::White) {
-                    if ((tiles[end.row][end.col]->pt == X) &&
-                        (tiles[end.row - 1][end.col]->pt == P) &&
-                        (tiles[end.row - 1][end.col]->colour == Colour::Black) &&
-                        (tiles[end.row - 1][end.col]->isEnPassanable)) {
+                    if ((tiles[end.getRow()][end.getCol()]->pt == X) &&
+                        (tiles[end.getRow() - 1][end.getCol()]->pt == P) &&
+                        (tiles[end.getRow() - 1][end.getCol()]->colour == Colour::Black) &&
+                        (tiles[end.getRow() - 1][end.getCol()]->isEnPassanable)) {
                             return true;
                         }
                 } else if (turn == Colour::Black) {
-                    if ((tiles[end.row][end.col]->pt == X) &&
-                        (tiles[end.row + 1][end.col]->pt == P) &&
-                        (tiles[end.row + 1][end.col]->colour == Colour::White) &&
-                        (tiles[end.row + 1][end.col]->isEnPassanable)) {
+                    if ((tiles[end.getRow()][end.getCol()]->pt == X) &&
+                        (tiles[end.getRow() + 1][end.getCol()]->pt == P) &&
+                        (tiles[end.getRow() + 1][end.getCol()]->colour == Colour::White) &&
+                        (tiles[end.getRow() + 1][end.getCol()]->isEnPassanable)) {
                             return true;
                         }
                 }
@@ -499,15 +499,15 @@ bool Board::isEnPassant(Colour turn, Coord start, Coord end) {
 bool Board::enPassant(Colour turn, Coord start, Coord end) {
     movePiece(start, end);
     if (turn == Colour::Black) {
-        charTiles[end.row + 1][end.col] = '-';
-        tiles[end.row + 1][end.col] = make_shared<Empty>(
-            Colour::NoColour, PieceType::X, Coord(end.row + 1, end.col)
+        charTiles[end.getRow() + 1][end.getCol()] = '-';
+        tiles[end.getRow() + 1][end.getCol()] = make_shared<Empty>(
+            Colour::NoColour, PieceType::X, Coord(end.getRow() + 1, end.getCol())
         );
         return true;
     } else if (turn == Colour::White) {
-        charTiles[end.row - 1][end.col] = '-';
-        tiles[end.row - 1][end.col] = make_shared<Empty>(
-            Colour::NoColour, PieceType::X, Coord(end.row - 1, end.col)
+        charTiles[end.getRow() - 1][end.getCol()] = '-';
+        tiles[end.getRow() - 1][end.getCol()] = make_shared<Empty>(
+            Colour::NoColour, PieceType::X, Coord(end.getRow() - 1, end.getCol())
         );
         return true;
     }
@@ -553,7 +553,7 @@ bool Board::castle(Colour turn, Coord start, Coord end) {
                             !tempMove(start, tiles[0][5]->pos, &Board::isWhiteInCheck) &&
                             !isWhiteInCheck()) {
                                 movePiece(start, end);
-                                wk = tiles[end.row][end.col];
+                                wk = tiles[end.getRow()][end.getCol()];
                                 charTiles[0][5] = charTiles[0][7];
                                 tiles[0][5] = tiles[0][7];
                                 tiles[0][5]->pos = {0,5};
@@ -577,7 +577,7 @@ bool Board::castle(Colour turn, Coord start, Coord end) {
                             !tempMove(start, tiles[0][3]->pos, &Board::isWhiteInCheck) &&
                             !isWhiteInCheck()) {
                                 movePiece(start, end);
-                                wk = tiles[end.row][end.col];
+                                wk = tiles[end.getRow()][end.getCol()];
                                 charTiles[0][3] = charTiles[0][0];
                                 charTiles[0][0] = '-';
                                 tiles[0][3] = tiles[0][0];
@@ -602,8 +602,8 @@ bool Board::castle(Colour turn, Coord start, Coord end) {
                             !tempMove(start, tiles[7][5]->pos, &Board::isBlackInCheck) &&
                             !isBlackInCheck()) {
                                 movePiece(start, end);
-                                tiles[end.row][end.col]->hasMoved = true;
-                                bk = tiles[end.row][end.col];
+                                tiles[end.getRow()][end.getCol()]->hasMoved = true;
+                                bk = tiles[end.getRow()][end.getCol()];
                                 charTiles[7][5] = charTiles[7][7];
                                 charTiles[7][7] = '-';
                                 tiles[7][5] = tiles[7][7];
@@ -627,8 +627,8 @@ bool Board::castle(Colour turn, Coord start, Coord end) {
                             !tempMove(start, tiles[7][3]->pos, &Board::isBlackInCheck) &&
                             !isBlackInCheck()) {
                                 movePiece(start, end);
-                                tiles[end.row][end.col]->hasMoved = true;
-                                bk = tiles[end.row][end.col];
+                                tiles[end.getRow()][end.getCol()]->hasMoved = true;
+                                bk = tiles[end.getRow()][end.getCol()];
                                 charTiles[7][3] = charTiles[7][0];
                                 charTiles[7][0] = '-';
                                 tiles[7][3] = tiles[7][0];
@@ -660,5 +660,5 @@ bool Board::isPawnPromotion(const Colour turn, const Coord start, const Coord en
 
 void Board::promotePawn(const Coord start, const Coord end, const char promoteTo) {
     removePiece(start);
-    addCharPiece(promoteTo, end.row, end.col);
+    addCharPiece(promoteTo, end.getRow(), end.getCol());
 }
