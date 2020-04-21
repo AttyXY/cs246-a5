@@ -6,7 +6,7 @@ Human::Human(Colour c, int score): Player(c, score) {}
 Human::~Human() {}
 
 void Human::move(Move m) {
-    State s{m, c};
+    State s{MoveType::H, m, c};
     setState(s);
     notify();
 }

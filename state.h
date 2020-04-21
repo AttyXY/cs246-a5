@@ -5,15 +5,17 @@
 #include "move.h"
 
 struct State {
+    MoveType mt;
     Move m;
     Colour colour;
     std::vector<std::vector<char>> tiles;
 
-    State(Move m = Move{},
+    State(MoveType mt = MoveType::H,
+          Move m = Move{},
           Colour colour = Colour::NoColour,
           const std::vector<std::vector<char>> &tiles =
             std::vector<std::vector<char>>()
-    ) : m{m}, colour{colour}, tiles{tiles} {}
+    ) : mt{mt}, m{m}, colour{colour}, tiles{tiles} {}
 };
 
 #endif

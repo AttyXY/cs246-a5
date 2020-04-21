@@ -409,7 +409,7 @@ void Board::update(Subject<State> &whoFrom) {
     legalLastMove = isLegalMove(s.colour, s.m.start, s.m.end, s.m.promoteTo);
 
     // update displays
-    State newS{s.m, s.colour, charTiles};
+    State newS{s.mt, s.m, s.colour, charTiles};
     setState(newS);
     notify();
 }

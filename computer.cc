@@ -8,7 +8,7 @@ Computer::Computer(Colour c, int score, int level) :
 Computer::~Computer() {}
 
 void Computer::move(Move m) {
-    State s{m, c};
+    State s{MoveType::L1, m, c};
     setState(s);
     notify();
 }
