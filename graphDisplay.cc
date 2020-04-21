@@ -15,9 +15,8 @@ GraphDisplay::GraphDisplay(){
   }
 }
 bool GraphDisplay::setupTiles(bool &isWhiteTurn, bool custom){
-    
     std::vector<char> row(8, '-');
-	  tiles = std::vector<std::vector<char>>(8, row);
+	tiles = std::vector<std::vector<char>>(8, row);
     if(!custom){
       for (int col = 0; col < 8; ++col) {
             for (int row = 0; row < 8; ++row) {
@@ -55,44 +54,6 @@ bool GraphDisplay::setupTiles(bool &isWhiteTurn, bool custom){
             }
         }
         updateTiles(tiles);
-    }else{
-      
-      std::string command;
-      char piece;
-      Coord coord;
-      while (std::cin >> command) {
-            if (command == "+") {
-                if (isValidPiece(piece) && IsValidInput(coord)) {
-                    tiles[coord.row][coord.col] = piece;
-                    updateTiles(tiles);
-                    
-                }
-            } else if (command == "-") {
-                if (isValidPiece(piece) && IsValidInput(coord)) {
-                    tiles[coord.row][coord.col] = '-';
-                    updateTiles(tiles);
-                }
-            } else if (command == "=") {
-                std::string turn;
-                std::cin >> turn;
-                if (turn == "black") {
-                    isWhiteTurn = false;
-                } else if (turn == "white") {
-                    isWhiteTurn = true;
-                } else {
-                    std::cout << "Invalid turn colour." << std::endl;
-                }
-            } else if (command == "done") {
-                // TODO: Check setup is valid
-                if (!isValidSetup()) {
-                    return false;
-                }
-                return true;
-            } else {
-                std::cout << "Invalid command." << std::endl;
-                // throw invalid_argument("Invalid command.");
-            }
-        }
     }
     return true;
 }

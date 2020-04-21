@@ -90,9 +90,9 @@ bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
                 }
             } else if (command == "done") {
                 // TODO: Check setup is valid
-                // if (!isValidSetup()) {
-                //     return false;
-                // }
+                if (!isValidSetup()) {
+                    return false;
+                }
                 return true;
             } else {
                 cout << "Invalid command." << endl;
