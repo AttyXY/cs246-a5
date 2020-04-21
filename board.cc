@@ -428,24 +428,35 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
     if (isCastling(start, end)) {
         bool isLegal = castle(turn, start, end);
         checkEndGame(turn);
+        if (isLegal) { resetEnPassant(end); }
         return isLegal;
     }
 
     // pawn promotion
     // else if (isPawnPromotion(start, end, promote)) {
         // promotePawn(whoFrom);
+        // If and only if pawn is promoted, pls call resetEnPassant(end);
         // checkEndGame(turn);
     // }
+
     // en passant
-    // else if (isEnPassant(m)) {
-    //     enPassant(m);
-        // checkEndGame(turn);
-    // }
+    else if (isEnPassant(turn, start, end)) {
+         bool isLegal = enPassant(turn, start, end);
+    //make sure to check if isEnPassanable change everytime it moves forward 2 steps
+        checkEndGame(turn);
+        if (isLegal) { resetEnPassant(end); }
+        return isLegal;
+    }
 
 
     // BASIC MOVE CHECKS
     if (tiles[start.row][start.col]->isLegalMove(start, end, tiles)) {
         movePiece(start, end);
+        if ((tiles[end.row][end.col]->pt == PieceType::P) &&
+            (tiles[end.row][end.col]->hasMoved == false) &&
+            (abs(end.row - start.row) == 2)) {
+                tiles[end.row][end.col]->isEnPassanable = true;
+        }
         tiles[end.row][end.col]->hasMoved = true;
         if (tiles[end.row][end.col]->pt == PieceType::K) {
             if (tiles[end.row][end.col]->colour == Colour::White) {
@@ -455,6 +466,7 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
             }
         }
         checkEndGame(turn);
+        resetEnPassant(end);
     } else {
         return false;
     }
@@ -463,6 +475,63 @@ bool Board::isLegalMove(const Colour turn, const Coord start, const Coord end) {
 
 
 /* Special moves */
+bool Board::isEnPassant(Colour turn, Coord start, Coord end) {
+    // is it a pawn?
+    if(tiles[start.row][start.col]->pt == PieceType::P) {
+        // are they moving diagonally forward by one space?
+        if ((abs(start.row - end.row) == 1) &&
+            (abs(start.col - end.col) == 1)) {
+                if (turn == Colour::White) {
+                    if ((tiles[end.row][end.col]->pt == X) &&
+                        (tiles[end.row - 1][end.col]->pt == P) &&
+                        (tiles[end.row - 1][end.col]->colour == Colour::Black) &&
+                        (tiles[end.row - 1][end.col]->isEnPassanable)) {
+                            return true;
+                        }
+                } else if (turn == Colour::Black) {
+                    if ((tiles[end.row][end.col]->pt == X) &&
+                        (tiles[end.row + 1][end.col]->pt == P) &&
+                        (tiles[end.row + 1][end.col]->colour == Colour::White) &&
+                        (tiles[end.row + 1][end.col]->isEnPassanable)) {
+                            return true;
+                        }
+                }
+            }
+    }
+    return false;
+}
+
+bool Board::enPassant(Colour turn, Coord start, Coord end) {
+    movePiece(start, end);
+    tiles[end.row][end.col]->hasMoved = true;
+    if (turn == Colour::Black) {
+        charTiles[end.row + 1][end.col] = '-';
+        tiles[end.row + 1][end.col] = make_shared<Empty>(
+            Colour::NoColour, PieceType::X, Coord(end.row + 1, end.col)
+        );
+        return true;
+    } else if (turn == Colour::White) {
+        charTiles[end.row - 1][end.col] = '-';
+        tiles[end.row - 1][end.col] = make_shared<Empty>(
+            Colour::NoColour, PieceType::X, Coord(end.row - 1, end.col)
+        );
+        return true;
+    }
+    return false;
+}
+
+void Board::resetEnPassant(Coord end) {
+    for(int m = 0; m < 8; m++) {
+        for(int n = 0; n < 8; n++) {
+            if(tiles[m][n]->pt == PieceType::P) {
+                if ((m != end.row) && (n != end.col)) {
+                    tiles[m][n]->isEnPassanable = false;
+                }
+            }
+        }
+    }
+}
+
 bool Board::isCastling(Coord start, Coord end) {
     if (((wk->pos.getCol() == start.getCol()) && (wk->pos.getRow() == start.getRow())) ||
         ((bk->pos.getCol() == start.getCol()) && (bk->pos.getRow() == start.getRow()))) {

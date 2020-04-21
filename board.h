@@ -55,9 +55,9 @@ class Board : public Observer<State>, public Subject<State> {
         bool blackCastled = false;
         bool isCastling(Coord start, Coord end);
         bool castle(Colour turn, Coord start, Coord end);
-
-        bool isEnPassanable = false;
-        bool isEnPassant(Move m);
+        bool isEnPassant(Colour turn, Coord start, Coord end);
+        bool enPassant(Colour turn, Coord start, Coord end);
+        void resetEnPassant(Coord end);
         bool isPawnPromotion(Move m);
 
 
