@@ -431,8 +431,9 @@ void Board::update(Subject<State> &whoFrom) {
     else if (s.mt == MoveType::L1) {
         legalLastMove = computerL1Move(s.colour);
     }
-    // } else if (s.mt == MoveType::L2) {
-    //     legalLastMove = computerL2Move(turn);
+    else if (s.mt == MoveType::L2) {
+        legalLastMove = computerL2Move(s.colour);
+    }
     // } else if (s.mt == MoveType::L3) {
     //     legalLastMove = computerL3Move(turn);
     // }
@@ -721,24 +722,51 @@ bool Board::computerL1Move(const Colour turn) {
     return false;
 }
 
-// void Board::computerL2Move(Colour turn) {
-//     // Prefer capture
-//     for (auto &bp: blackPieces) {
-//         for (auto &wp: whitePieces) {
-//             if (turn == Colour::White) {
-//                 if (isLegalMove(turn, bp->pos, wp->pos, 'Q')) {
-//                     return;
-//                 }
-//             } else {
-//                 if (isLegalMove(turn, wp->pos, bp->pos, 'q')) {
-//                     return;
-//                 }
-//             }
-//         }
-//     }
-//     // Prefer checking
-//     computerL1Move(turn);
-// }
+bool Board::computerL2Move(Colour turn) {
+    // Prefer capture
+    for (auto &bp: blackPieces) {
+        for (auto &wp: whitePieces) {
+            if (turn == Colour::White) {
+                if (isLegalMove(turn, bp->pos, wp->pos, 'Q')) {
+                    return true;
+                }
+            } else {
+                if (isLegalMove(turn, wp->pos, bp->pos, 'q')) {
+                    return true;
+                }
+            }
+        }
+    }
+    // Prefer checking
+    if (turn == Colour::White) {
+        for (auto &wp: whitePieces) {
+            for (int col = 0; col < (int)tiles.size(); ++col) {
+                for (int row = 0; row < (int)tiles[col].size(); ++row) {
+                    Coord end{row, col};
+                    if (tempMove(wp->pos, end, &Board::isBlackInCheck) &&
+                        isLegalMove(turn, wp->pos, end, 'Q')) {
+                        return true;
+                    }
+                }
+            }
+        }
+    } else {
+        for (auto &bp: blackPieces) {
+           for (int col = 0; col < (int)tiles.size(); ++col) {
+                for (int row = 0; row < (int)tiles[col].size(); ++row) {
+                    Coord end{row, col};
+                    if (tempMove(bp->pos, end, &Board::isWhiteInCheck) &&
+                        isLegalMove(turn, bp->pos, end, 'Q')) {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+
+    // Makes random move if no others are possible
+    return computerL1Move(turn);
+}
 
 // void Board::computerL3Move(Colour turn) {
 // }
