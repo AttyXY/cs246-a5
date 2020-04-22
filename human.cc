@@ -10,6 +10,3 @@ void Human::move(Move m) {
     setState(s);
     notify();
 }
-
-//void Human::undo(void);
-//void Human::redo(void);

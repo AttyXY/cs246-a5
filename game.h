@@ -8,13 +8,13 @@
 #include "player.h"
 #include "human.h"
 #include "computer.h"
-// #include "graphDisplay.h"
+#include "graphDisplay.h"
 
 // Wrapper class for game logic
 class Game {
     public:
         std::unique_ptr<TextDisplay> td = std::make_unique<TextDisplay> ();
-        // std::unique_ptr<GraphDisplay> gd = std::make_unique<GraphDisplay>();
+        std::unique_ptr<GraphDisplay> gd = std::make_unique<GraphDisplay>();
         std::unique_ptr<Board> b = std::make_unique<Board>();
         std::unique_ptr<Player> p1 = nullptr;
         std::unique_ptr<Player> p2 = nullptr;
