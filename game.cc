@@ -124,6 +124,13 @@ void Game::runGame() {
             } else {
                 p2->move(m);
             }
+
+            // Prompt human player to reenter move if last one was invalid
+            if (!b->legalLastMove) {
+                cout << "Invalid move. Input another move." << endl;
+            } else {
+                isWhiteTurn = !isWhiteTurn;
+            }
         }
         else if (command == "resign") {
             if (isWhiteTurn) {
@@ -160,11 +167,11 @@ void Game::runGame() {
             return;
         }
 
-        // Prompt human player to reenter move if last one was invalid
-        if (!b->legalLastMove) {
-            cout << "Invalid move. Input another move." << endl;
-        } else {
-            isWhiteTurn = !isWhiteTurn;
-        }
+        // // Prompt human player to reenter move if last one was invalid
+        // if (!b->legalLastMove) {
+        //     cout << "Invalid move. Input another move." << endl;
+        // } else {
+        //     isWhiteTurn = !isWhiteTurn;
+        // }
     }
 }

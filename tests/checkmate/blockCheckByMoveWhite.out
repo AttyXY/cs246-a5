@@ -64,8 +64,6 @@ PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO CONTINUE:
 PLEASE ENTER THE FOLLOWING COMMANDS TO BEGIN:
 - game [player1] [player2]
 
-Invalid command.
-Invalid command.
 STARTING GAME!
 
 8  --------
@@ -83,9 +81,30 @@ STARTING GAME!
 6  -------B
 5  ----k---
 4  --------
-3  -r------
+3  --------
 2  r-------
-1  ----K---
+1  -r--K---
+   abcdefgh
+
+White is in check.
+8  --------
+7  --------
+6  --------
+5  ----k---
+4  --------
+3  --------
+2  r-------
+1  -rB-K---
+   abcdefgh
+
+8  --------
+7  --------
+6  --------
+5  ----k---
+4  --------
+3  --------
+2  r-------
+1  -rB-K---
    abcdefgh
 
 Invalid move. Input another move.
@@ -94,33 +113,13 @@ Invalid move. Input another move.
 6  --------
 5  ----k---
 4  --------
-3  -r------
+3  --------
 2  r-------
-1  --B-K---
+1  --r-K---
    abcdefgh
 
-8  --------
-7  --------
-6  --------
-5  ----k---
-4  --------
-3  -r------
-2  r-------
-1  --B-K---
-   abcdefgh
-
-Invalid move. Input another move.
-8  --------
-7  --------
-6  --------
-5  ----k---
-4  --------
-3  -r------
-2  r-------
-1  --B-K---
-   abcdefgh
-
-Invalid move. Input another move.
+White is in check.
+Checkmate! Black wins!
 
 PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO CONTINUE:
 - setup (to create new setup)
@@ -130,4 +129,4 @@ PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO CONTINUE:
 THANKS FOR PLAYING CHESS!
 Final Score:
 White: 0
-Black: 0
+Black: 1

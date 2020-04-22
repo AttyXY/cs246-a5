@@ -87,8 +87,8 @@ Black is in check.
 1  k-------
    abcdefgh
 
-Black is in check.
 Invalid move. Input another move.
+Black is in check.
 8  --------
 7  --------
 6  --------
@@ -99,8 +99,8 @@ Invalid move. Input another move.
 1  k-------
    abcdefgh
 
-Black is in check.
 Invalid move. Input another move.
+Black is in check.
 
 PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO CONTINUE:
 - setup (to create new setup)

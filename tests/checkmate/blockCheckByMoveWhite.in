@@ -4,12 +4,10 @@ setup
 + r a2
 + r b3
 + B h6
-done
 = black
+done
 game human human
 move b3 b1
 move h6 c1 
 move b1 d1
 move b1 c1
-quit
-quit
