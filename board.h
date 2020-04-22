@@ -77,7 +77,7 @@ class Board : public Observer<State>, public Subject<State> {
 
     // Computer moves
     bool computerL1Move(const Colour turn);
-    // bool computerL2Move(const Colour turn);
+    bool computerL2Move(const Colour turn);
     // bool computerL3Move(const Colour turn);
 
     public:
