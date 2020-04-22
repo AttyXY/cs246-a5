@@ -7,3 +7,5 @@ setup
 done
 game human human
 move b3 b1
+quit
+quit

@@ -70,13 +70,6 @@ void GraphDisplay::updateTiles(const std::vector<std::vector<char>> &setupTiles)
     }
 }
 
-// bool GraphDisplay::setupTiles(bool &isWhiteTurn, bool custom){
-//     if(!custom){
-
-//     }else{
-
-//     }
-// }
 
 void GraphDisplay::reset(){
     for (int row = 0; row < 8; row++) {

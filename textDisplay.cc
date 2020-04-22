@@ -10,6 +10,10 @@ void TextDisplay::reset() {
     vector<char> row(8, '-');
 	tiles = vector<vector<char>>(8, row);
 }
+void TextDisplay::loadPreviousSetup(bool &isWhiteTurn) {
+    tiles = previousSetup;
+    isWhiteTurn = previousIsWhiteTurn;
+}
 
 void TextDisplay::printTiles() {
     for (int row = 8; row > 0; --row) { // print rows in reverse
@@ -27,6 +31,7 @@ void TextDisplay::printTiles() {
 bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
     reset(); // start with clear, fully initialized vector
     if (!custom) {
+        isWhiteTurn = true;
         for (int col = 0; col < 8; ++col) {
             for (int row = 0; row < 8; ++row) {
                 if (row == 0) {
@@ -63,9 +68,18 @@ bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
             }
         }
     } else {
+        cout << "WELCOME TO SETUP MODE!" << endl;
+        cout << "PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO CONTINUE:" << endl;
+        cout << "- + [PieceType] [Coordinate] (to add piece)" << endl;
+        cout << "- - [Coordinate] (to remove piece)" << endl;
+        cout << "- = [Colour] (to set turn)" << endl;
+        cout << "- done (to exit setup mode)" << endl;
+        cout << endl;
+
         string command;
         char piece;
         Coord coord;
+        isWhiteTurn = true; // by default
         while (cin >> command) {
             if (command == "+") {
                 if (isValidPiece(piece) && isValidInput(coord)) {
@@ -92,13 +106,15 @@ bool TextDisplay::setupTiles(bool &isWhiteTurn, bool custom) {
                 if (!isValidSetup()) {
                     return false;
                 }
-                return true;
+                break;
             } else {
                 cout << "Invalid command." << endl;
                 // throw invalid_argument("Invalid command.");
             }
         }
     }
+    previousSetup = tiles;
+    previousIsWhiteTurn = isWhiteTurn;
     return true;
 }
 

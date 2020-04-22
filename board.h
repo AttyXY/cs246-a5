@@ -1,6 +1,5 @@
 #ifndef BOARD_H
 #define BOARD_H
-#include <iostream>
 #include <vector>
 #include <functional>
 #include "observer.h"
@@ -28,7 +27,7 @@ class Board : public Observer<State>, public Subject<State> {
     std::shared_ptr<Piece> checker;
     std::vector<Coord> lineOfCheck;
 
-   // Basic move
+    // Basic move
     void reset();
     void addCharPiece(const char piece, const int row, const int col);
 
@@ -76,6 +75,11 @@ class Board : public Observer<State>, public Subject<State> {
     // void redo()
     // bool isThreefoldRepeat(Move m);
 
+    // Computer moves
+    // void computerL1Move(const Colour turn);
+    // void computerL2Move(const Colour turn);
+    // void computerL3Move(const Colour turn);
+
     public:
         bool whiteInCheck = false; //white is dying
         bool blackInCheck = false; //black is dying
@@ -84,6 +88,7 @@ class Board : public Observer<State>, public Subject<State> {
         bool legalLastMove = true;
 
         // Init board
+        Board();
         bool init(const std::vector<std::vector<char>> &setupTiles);
         bool isStalemate(const Colour turn);
 

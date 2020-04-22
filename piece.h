@@ -1,6 +1,5 @@
 #ifndef PIECE_H
 #define PIECE_H
-#include <iostream>
 #include <memory>
 #include <vector>
 #include "enums.h"

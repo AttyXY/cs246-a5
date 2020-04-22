@@ -1,8 +1,15 @@
-WELCOME TO CHESS! PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:
+WELCOME TO CHESS! 
+PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:
 - setup
 - game [player1] [player2]
+- quit (to exit)
 
-STARTING SETUP
+WELCOME TO SETUP MODE!
+PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO CONTINUE:
+- + [PieceType] [Coordinate] (to add piece)
+- - [Coordinate] (to remove piece)
+- = [Colour] (to set turn)
+- done (to exit setup mode)
 
 8  --------
 7  --------
@@ -46,4 +53,8 @@ STARTING SETUP
 
 Invalid setup.
 
+PLEASE ENTER THE FOLLOWING COMMANDS TO BEGIN:
+- game [player1] [player2]
+
 THANKS FOR PLAYING CHESS!
+Final Score:

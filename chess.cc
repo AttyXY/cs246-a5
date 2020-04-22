@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 #include "game.h"
 #include "enums.h"
@@ -7,17 +6,15 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 	// TODO: PARSE FLAGS
+    unique_ptr<Game> g = make_unique<Game>();
 
-	// TODO: PARSE SETUP
-    cout << "WELCOME TO CHESS! ";
+    cout << "WELCOME TO CHESS! " << endl;
     cout << "PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:" << endl;
     cout << "- setup" << endl;
     cout << "- game [player1] [player2]" << endl;
+    cout << "- quit (to exit)" << endl;
     cout << endl;
 
-    unique_ptr<Game> g = make_unique<Game>();
-
-    // SETUP BOARD
     string command;
     while (cin >> command) {
         if (command == "quit") {
@@ -27,20 +24,34 @@ int main(int argc, char *argv[]) {
             cout << "Invalid command." << endl;
         }
         else if (command == "game") {
-            if (!g->customSetup) {
-                g->td->setupTiles(g->isWhiteTurn, false);
-                // g->gd->setupTiles(g->isWhiteTurn, false);
-                g->b->init(g->td->tiles); // default setup is always valid
+            if (!g->ongoingGame) {
+                // Initialize default setup if setup wasn't called
+                if (!g->customSetup) {
+                    g->td->setupTiles(g->isWhiteTurn, false);
+                    // g->gd->setupTiles(g->isWhiteTurn, false);
+                    g->b->init(g->td->tiles);
+                }
+                g->b->attach(g->td.get());
+                // g->b->attach(g->gd.get());
+
+                // sets ongoingGame to true first time called
+                g->getPlayers();
+            } else {
+                g->td->loadPreviousSetup(g->isWhiteTurn);
+                g->b->init(g->td->tiles);
+                cout << "Starting new game with previous "
+                     << "setup and players." << endl;
             }
-            g->b->attach(g->td.get());
-            // g->b->attach(g->gd.get());
             g->runGame();
-            cout << "Final Score:" << endl;
-            cout << "White: " << g->p1->score << endl;
-            cout << "Black: " << g->p2->score << endl;
+
+            cout << endl;
+            cout << "PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO CONTINUE:" << endl;
+            cout << "- setup (to create new setup)" << endl;
+            cout << "- game (to continue with previous setup)" << endl;
+            cout << "- quit (to exit)" << endl;
+            cout << endl;
         }
         else if (command == "setup") {
-            cout << "STARTING SETUP" << endl << endl;
             if (g->td->setupTiles(g->isWhiteTurn, true) &&
                 g->b->init(g->td->tiles)) {
                 // g->gd->updateTiles(g->td->tiles);
@@ -48,8 +59,23 @@ int main(int argc, char *argv[]) {
             } else {
                 cout << "Invalid setup." << endl << endl;
             }
+
+            if (!g->ongoingGame) {
+                cout << "PLEASE ENTER THE FOLLOWING COMMANDS TO BEGIN:" << endl;
+                cout << "- game [player1] [player2]" << endl;
+                cout << endl;
+            } else {
+                cout << "PLEASE ENTER THE FOLLOWING COMMANDS TO BEGIN:" << endl;
+                cout << "- game (to continue with previous setup)" << endl;
+                cout << endl;
+            }
         }
     }
-    cout << "THANKS FOR PLAYING CHESS!" << endl;
 
+    cout << "THANKS FOR PLAYING CHESS!" << endl;
+    cout << "Final Score:" << endl;
+    if (g->p1 != nullptr && g->p2 != nullptr) {
+        cout << "White: " << g->p1->score << endl;
+        cout << "Black: " << g->p2->score << endl;
+    }
 }
