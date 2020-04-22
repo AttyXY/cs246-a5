@@ -70,72 +70,73 @@ void Game::runGame() {
     }
 
     // Start game
-    while (true) {
+    string line;
+    while (getline(cin, line)) {
         Move m;
+        istringstream ss{line};
+        string command;
+        ss >> command;
 
-        // Only parse commands for human players
-        if ((isWhiteTurn && !p1->hasDefaultMove()) ||
-            (!isWhiteTurn && !p2->hasDefaultMove())) {
-            // Keep reading input til valid move is parsed
-            string line;
-            while (getline(cin, line)) {
-                istringstream ss{line};
-                string command;
-                ss >> command;
-                if (command == "quit") {
-                    return;
-                }
-                else if (command == "move") {
-                    // Get move
-                    Coord start;
-                    Coord end;
-                    char promoteTo;
-                    try {
-                        ss >> start;
-                        ss >> end;
-                        m.start = start; m.end = end;
-                        if (ss >> promoteTo) {
-                            charToPiece.at(toupper(promoteTo)); // validate piece
-                            if (toupper(promoteTo) == 'X' ||
-                                toupper(promoteTo) == 'P' ||
-                                toupper(promoteTo) == 'K') {
-                                throw out_of_range("");
+
+        if (command == "") {
+            continue;
+        }
+        else if (command == "quit") {
+            return;
+        }
+        else if (command == "move") {
+            // Only parse coordinates for human players
+            if ((isWhiteTurn && !p1->hasDefaultMove()) ||
+                (!isWhiteTurn && !p2->hasDefaultMove())) {
+                // Keep reading input til valid move is parsed
+                Coord start;
+                Coord end;
+                char promoteTo;
+                try {
+                    ss >> start;
+                    ss >> end;
+                    m.start = start; m.end = end;
+                    if (ss >> promoteTo) {
+                        charToPiece.at(toupper(promoteTo)); // validate piece
+                        if (toupper(promoteTo) == 'X' ||
+                            toupper(promoteTo) == 'P' ||
+                            toupper(promoteTo) == 'K') {
+                            throw out_of_range("");
+                        } else {
+                            if (isWhiteTurn) {
+                                m.promoteTo = toupper(promoteTo);
                             } else {
-                                if (isWhiteTurn) {
-                                    m.promoteTo = toupper(promoteTo);
-                                } else {
-                                    m.promoteTo = tolower(promoteTo);
-                                }
+                                m.promoteTo = tolower(promoteTo);
                             }
                         }
-                        break;
-                    } catch (const std::invalid_argument &e) {
-                        cerr << e.what() << endl;
-                        continue;
-                    } catch (const out_of_range &e) {
-                        cout << "Invalid pawn promotion type." << endl;
-                        continue;
                     }
-                }
-                else if (command == "resign") {
-                    if (isWhiteTurn) {
-                        ++p2->score;
-                        cout << "Black wins!" << endl;
-                    } else {
-                        ++p1->score;
-                        cout << "White wins!" << endl;
-                    }
-                    return;
+                } catch (const std::invalid_argument &e) {
+                    cerr << e.what() << endl;
+                    continue;
+                } catch (const out_of_range &e) {
+                    cout << "Invalid pawn promotion type." << endl;
+                    continue;
                 }
             }
+            // Make move
+            if (isWhiteTurn) {
+                p1->move(m);
+            } else {
+                p2->move(m);
+            }
+        }
+        else if (command == "resign") {
+            if (isWhiteTurn) {
+                ++p2->score;
+                cout << "Black wins!" << endl;
+            } else {
+                ++p1->score;
+                cout << "White wins!" << endl;
+            }
+            return;
         }
 
-        // Make move
-        if (isWhiteTurn) {
-            p1->move(m);
-        } else {
-            p2->move(m);
-        }
+
 
         // Output board state
         if (b->whiteInCheck) {

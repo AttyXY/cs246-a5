@@ -5,5 +5,3 @@ setup
 done
 game human human
 move a7 a8 Q    
-quit
-quit
