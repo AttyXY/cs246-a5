@@ -727,11 +727,11 @@ bool Board::computerL2Move(Colour turn) {
     for (auto &bp: blackPieces) {
         for (auto &wp: whitePieces) {
             if (turn == Colour::White) {
-                if (isLegalMove(turn, bp->pos, wp->pos, 'Q')) {
+                if (isLegalMove(turn, wp->pos, bp->pos, 'Q')) {
                     return true;
                 }
             } else {
-                if (isLegalMove(turn, wp->pos, bp->pos, 'q')) {
+                if (isLegalMove(turn, bp->pos, wp->pos, 'q')) {
                     return true;
                 }
             }
