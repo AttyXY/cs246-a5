@@ -9,6 +9,7 @@ class Computer : public Player {
 
         Computer(int level, Colour c, int score = 0);
         ~Computer();
+        bool hasDefaultMove();
         void move(Move m);
 };
 

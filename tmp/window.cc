@@ -1,6 +1,5 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
-#include <iostream>
 #include <cstdlib>
 #include <string>
 #include <unistd.h>
@@ -14,17 +13,17 @@ Xwindow::Xwindow(int width, int height) {
 		cerr << "Cannot open display" << endl;
 		exit(1);
 	}
-	
+
 	s = DefaultScreen(d);
 	w = XCreateSimpleWindow(
-		d, RootWindow(d, s), 10, 10, width, height, 
+		d, RootWindow(d, s), 10, 10, width, height,
 		1, BlackPixel(d, s), WhitePixel(d, s)
 	);
 
 	XSelectInput(d, w, ExposureMask | KeyPressMask);
 
 	Pixmap pix = XCreatePixmap(
-		d, w, width, height, 
+		d, w, width, height,
 		DefaultDepth(d, DefaultScreen(d))
 	);
 
@@ -36,12 +35,12 @@ Xwindow::Xwindow(int width, int height) {
 
 	const size_t numColours = 5;
 	char color_vals[numColours][10] = {
-		"white", "black", "red", 
+		"white", "black", "red",
 		"green", "blue"
 	};
 
 	cmap = DefaultColormap(d, DefaultScreen(d));
-	
+
 	for(unsigned int i = 0; i < numColours; ++i) {
 		XParseColor(d, cmap, color_vals[i], &xcolour);
 		XAllocColor(d, cmap, &xcolour);
@@ -60,7 +59,7 @@ Xwindow::Xwindow(int width, int height) {
 	// map window and flush
 	XMapRaised(d, w);
 	XFlush(d);
-	
+
 	// wait 1 second for setup
 	sleep(1);
 }
@@ -80,8 +79,8 @@ void Xwindow::drawString(int x, int y, string msg,int colour) {
 	// XDrawString(d, w, DefaultGC(d, s), x, y, msg.c_str(), msg.length());
 	// XFlush(d);
 	XFontStruct * f = XLoadQueryFont(d, "6x13");
-	
-	printMessage(x, y, msg, colour, *f); 
+
+	printMessage(x, y, msg, colour, *f);
 
 	delete f;
 }

@@ -1,6 +1,5 @@
 #ifndef MOVE_H
 #define MOVE_H
-#include <iostream>
 #include "coord.h"
 
 class Move {

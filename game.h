@@ -16,12 +16,13 @@ class Game {
         std::unique_ptr<TextDisplay> td = std::make_unique<TextDisplay> ();
         // std::unique_ptr<GraphDisplay> gd = std::make_unique<GraphDisplay>();
         std::unique_ptr<Board> b = std::make_unique<Board>();
-        std::shared_ptr<Player> p1;
-        std::shared_ptr<Player> p2;
+        std::unique_ptr<Player> p1 = nullptr;
+        std::unique_ptr<Player> p2 = nullptr;
 
         void getPlayers();
         void runGame();
 
+        bool ongoingGame = false;
         bool customSetup = false;
         bool isWhiteTurn = true;
 };

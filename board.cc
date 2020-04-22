@@ -1,9 +1,28 @@
 #include "board.h"
 using namespace std;
 
+Board::Board() {
+    reset();
+}
 
 // Initializes tiles and charTiles with clear boards.
 void Board::reset() {
+    // Default state values
+    whitePieces = vector<shared_ptr<Piece>>();
+    blackPieces = vector<shared_ptr<Piece>>();
+    wk = shared_ptr<King>();
+    bk = shared_ptr<King>();
+    checker = shared_ptr<Empty>();
+    lineOfCheck = vector<Coord>();
+    whiteCastled = false;
+    blackCastled = false;
+    whiteInCheck = false;
+    blackInCheck = false;
+    stalemated = false;
+    checkmated = false;
+    legalLastMove = true;
+
+    // Default tile values
     vector<char> row(8, '-');
 	charTiles = vector<vector<char>>(8, row);
 

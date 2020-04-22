@@ -1,6 +1,8 @@
-WELCOME TO CHESS! PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:
+WELCOME TO CHESS! 
+PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:
 - setup
 - game [player1] [player2]
+- quit (to exit)
 
 STARTING GAME!
 
@@ -206,7 +208,13 @@ Black is in check.
    abcdefgh
 
 Stalemate!
+
+PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO CONTINUE:
+- setup (to create new setup)
+- game (to continue with previous setup)
+- quit (to exit)
+
+THANKS FOR PLAYING CHESS!
 Final Score:
 White: 0.5
 Black: 0.5
-THANKS FOR PLAYING CHESS!

@@ -1,6 +1,5 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include <iostream>
 #include <vector>
 #include "enums.h"
 #include "move.h"
@@ -16,6 +15,7 @@ class Player : public Subject<State> {
 
         Player(Colour c, double score);
         ~Player();
+        virtual bool hasDefaultMove() { return false; }
         virtual void move(Move m) = 0;
         //virtual void undo(void) = 0;
         //virtual void redo(void) = 0;

@@ -7,6 +7,10 @@ Computer::Computer(int level, Colour c, int score) :
 
 Computer::~Computer() {}
 
+bool Computer::hasDefaultMove() {
+    return true;
+}
+
 void Computer::move(Move m) {
     State s;
     if (level == 1) {

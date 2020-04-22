@@ -1,6 +1,5 @@
 #ifndef GRAPH_DISPLAY_H
 #define GRAPH_DISPLAY_H
-#include <iostream>
 #include <vector>
 #include "window.h"
 #include "display.h"

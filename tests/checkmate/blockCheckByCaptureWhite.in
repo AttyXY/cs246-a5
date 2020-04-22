@@ -7,3 +7,5 @@ setup
 done
 game human human
 move d3 d1
+quit
+quit
