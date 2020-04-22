@@ -12,5 +12,4 @@ extern std::map<char, PieceType> charToPiece;
 extern std::map<std::string, PieceType> strToPiece;
 
 
-
 #endif

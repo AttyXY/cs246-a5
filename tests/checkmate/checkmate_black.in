@@ -1,9 +1,0 @@
-setup
-+ k a8
-+ K h1
-+ R b1
-+ R b2
-= white
-done
-game human human
-move b1 a1

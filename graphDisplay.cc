@@ -40,8 +40,6 @@ void GraphDisplay::updateTiles(const std::vector<std::vector<char>> &setupTiles)
 }
 
 
-
-
 void GraphDisplay::update(Subject<State> &whoFrom){
     State s = whoFrom.getState();
     reset();

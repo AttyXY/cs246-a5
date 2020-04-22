@@ -1,5 +1,0 @@
-setupCheck
-setupCheck2
-setupMoveToCheck
-setupMoveToCheck2
-setupMoveIntoCheck
