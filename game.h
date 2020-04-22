@@ -7,7 +7,7 @@
 #include "board.h"
 #include "player.h"
 #include "human.h"
-// #include "computer.h"
+#include "computer.h"
 // #include "graphDisplay.h"
 
 // Wrapper class for game logic

@@ -5,30 +5,44 @@ using namespace std;
 void Game::getPlayers(void) {
     bool validP1 = false;
     bool validP2 = false;
-    string player1;
-    string player2;
 
-    while (!validP1) {
-        cin >> player1;
-        if (player1 == "computer") {
-            // p1 = make_shared<Computer>(Colour::White);
-            validP1 = true;
-        } else if (player1 == "human") {
+    string player;
+    while (!validP1 || !validP2) {
+        cin >> player;
+        if (player == "human") {
             p1 = make_shared<Human>(Colour::White);
             validP1 = true;
         } else {
-           cout << "Invalid player type." << endl;
+            int level = (int)player.back() - '0';
+            player.pop_back();
+            if (player == "computer") {
+                if (level == 1 || level == 2 || level == 3) {
+                    p1 = make_shared<Computer>(level, Colour::White);
+                    validP1 = true;
+                }
+            }
         }
-    }
-    while (!validP2) {
-        cin >> player2;
-        if (player2 == "computer") {
-            // p2 = make_shared<Computer>(Colour::Black);
-            validP2 = true;
-        } else if (player2 == "human") {
+        if (!validP1) {
+            cout << "Invalid player type." << endl;
+            continue;
+        }
+
+        cin >> player;
+        if (player == "human") {
             p2 = make_shared<Human>(Colour::Black);
             validP2 = true;
         } else {
+            int level = (int)player.back() - '0';
+            player.pop_back();
+            if (player == "computer") {
+                if (level == 1 || level == 2 || level == 3) {
+                    p2 = make_shared<Computer>(level, Colour::Black);
+                    validP2 = true;
+                }
+            }
+        }
+        if (!validP2) {
+            validP1 = false;
             cout << "Invalid player type." << endl;
         }
     }
