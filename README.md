@@ -1,3 +1,1 @@
-# TODO
-[] Make commands case-insensitive
-[] Add exception handling throughout
+Implementation of Chess in C++ (CS246 Final Project)
