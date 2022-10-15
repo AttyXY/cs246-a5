@@ -1,0 +1,180 @@
+WELCOME TO CHESS! 
+PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO BEGIN:
+- setup
+- game [player1] [player2]
+- quit (to exit)
+
+STARTING GAME!
+
+8  rnbqkbnr
+7  pppppppp
+6  --------
+5  --------
+4  --------
+3  --------
+2  PPPPPPPP
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppppppp
+6  --------
+5  --------
+4  ----P---
+3  --------
+2  PPPP-PPP
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppp-ppp
+6  --------
+5  ----p---
+4  ----P---
+3  --------
+2  PPPP-PPP
+1  RNBQKBNR
+   abcdefgh
+
+8  rnbqkbnr
+7  pppp-ppp
+6  --------
+5  ----p---
+4  ----P-Q-
+3  --------
+2  PPPP-PPP
+1  RNB-KBNR
+   abcdefgh
+
+8  rnb-kbnr
+7  pppp-ppp
+6  --------
+5  ----p-q-
+4  ----P-Q-
+3  --------
+2  PPPP-PPP
+1  RNB-KBNR
+   abcdefgh
+
+8  rnb-kbnr
+7  pppp-ppp
+6  --------
+5  ----p-q-
+4  ----P-Q-
+3  -P------
+2  P-PP-PPP
+1  RNB-KBNR
+   abcdefgh
+
+8  rnb-kbnr
+7  p-pp-ppp
+6  -p------
+5  ----p-q-
+4  ----P-Q-
+3  -P------
+2  P-PP-PPP
+1  RNB-KBNR
+   abcdefgh
+
+8  rnb-kbnr
+7  p-pp-ppp
+6  -p------
+5  ----p-q-
+4  ----P-Q-
+3  -P------
+2  PBPP-PPP
+1  RN--KBNR
+   abcdefgh
+
+8  rn--kbnr
+7  pbpp-ppp
+6  -p------
+5  ----p-q-
+4  ----P-Q-
+3  -P------
+2  PBPP-PPP
+1  RN--KBNR
+   abcdefgh
+
+8  rn--kbnr
+7  pbpp-ppp
+6  -p------
+5  ----p-q-
+4  ----P-Q-
+3  -PN-----
+2  PBPP-PPP
+1  R---KBNR
+   abcdefgh
+
+8  r---kbnr
+7  pbpp-ppp
+6  -pn-----
+5  ----p-q-
+4  ----P-Q-
+3  -PN-----
+2  PBPP-PPP
+1  R---KBNR
+   abcdefgh
+
+8  r---kbnr
+7  pbpp-ppp
+6  -pn-----
+5  ----p-q-
+4  ---PP-Q-
+3  -PN-----
+2  PBP--PPP
+1  R---KBNR
+   abcdefgh
+
+8  r---kbnr
+7  pbp--ppp
+6  -pn-----
+5  ---pp-q-
+4  ---PP-Q-
+3  -PN-----
+2  PBP--PPP
+1  R---KBNR
+   abcdefgh
+
+8  r---kbnr
+7  pbp--ppp
+6  -pn-----
+5  ---pp-q-
+4  ---PP-Q-
+3  -PN-----
+2  PBP--PPP
+1  R---KBNR
+   abcdefgh
+
+Invalid move. Input another move.
+8  r---kbnr
+7  pbp--ppp
+6  -pn-----
+5  ---pp-q-
+4  ---PP-Q-
+3  -PN----P
+2  PBP--PP-
+1  R---KBNR
+   abcdefgh
+
+8  r---kbnr
+7  pbp--ppp
+6  -pn-----
+5  ---pp-q-
+4  ---PP-Q-
+3  -PN----P
+2  PBP--PP-
+1  R---KBNR
+   abcdefgh
+
+Invalid move. Input another move.
+
+PLEASE ENTER ONE OF THE FOLLOWING COMMANDS TO CONTINUE:
+- setup (to create new setup)
+- game (to continue with previous setup)
+- quit (to exit)
+
+THANKS FOR PLAYING CHESS!
+Final Score:
+White: 0
+Black: 0

@@ -1,0 +1,11 @@
+setup
++ K e1
++ k e5
++ r a2
++ r d3
+= black
+done
+game human human
+move d3 d1
+quit
+quit

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+usage () {
+  echo "Wrong number of argument given." 1>&2
+  exit 1
+}
+
+if [ $# -ne 2 ]; then
+  usage
+fi
+
+for args in $(cat "$1"); do
+	if [ -e $args.args ]; then
+		if [ -e $args.in ]; then
+			$2 $(echo $(cat "$args.args")) < $args.in > $args.out
+		else
+			$2 $(echo $(cat "$args.args")) > $args.out
+		fi
+	else 
+		if [ -e $args.in ]; then
+			$2 < $args.in > $args.out
+		else
+			$2 > $args.out
+		fi
+	fi
+done
