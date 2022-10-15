@@ -1,8 +1,0 @@
-insufficientMaterial
-insufficientMaterial2
-insufficientMaterial3
-insufficientMaterial4
-setupStalemateWhite
-stalemate_black
-gameStalemateBlack
-

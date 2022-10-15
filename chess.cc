@@ -28,16 +28,17 @@ int main(int argc, char *argv[]) {
                 // Initialize default setup if setup wasn't called
                 if (!g->customSetup) {
                     g->td->setupTiles(g->isWhiteTurn, false);
-                    // g->gd->setupTiles(g->isWhiteTurn, false);
+                    g->gd->updateTiles(g->td->tiles);
                     g->b->init(g->td->tiles);
                 }
                 g->b->attach(g->td.get());
-                // g->b->attach(g->gd.get());
+                g->b->attach(g->gd.get());
 
                 // sets ongoingGame to true first time called
                 g->getPlayers();
             } else {
                 g->td->loadPreviousSetup(g->isWhiteTurn);
+                g->gd->updateTiles(g->td->tiles);
                 g->b->init(g->td->tiles);
                 cout << "Starting new game with previous "
                      << "setup and players." << endl;
@@ -54,7 +55,7 @@ int main(int argc, char *argv[]) {
         else if (command == "setup") {
             if (g->td->setupTiles(g->isWhiteTurn, true) &&
                 g->b->init(g->td->tiles)) {
-                // g->gd->updateTiles(g->td->tiles);
+                g->gd->updateTiles(g->td->tiles);
                 g->customSetup = true;
             } else {
                 cout << "Invalid setup." << endl << endl;
